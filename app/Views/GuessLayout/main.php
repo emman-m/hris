@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-payments.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-vendors.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/demo.min.css'); ?>">
-    <title><?= $title ?></title>
+    <title><?= $this->renderSection('title') ?></title>
 </head>
+
 <body data-bs-theme="dark" class="d-flex flex-column">
+    
+    <?= $this->renderSection('content') ?>
+
+    <script src="<?= base_url('tabler/dist/js/tabler.min.js'); ?>"></script>
+</body>
+
+</html>

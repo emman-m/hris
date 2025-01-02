@@ -39,7 +39,9 @@ class AuthController extends BaseController
                         ]
                     );
 
-                    return redirect()->to('/dashboard');
+                    // return redirect()->to('/hris/dashboard');
+                    return redirect()->route('dashboard');
+                    
                 } else {
                     session()->setFlashdata('error', 'Invalid login credentials');
                 }
@@ -49,9 +51,7 @@ class AuthController extends BaseController
         // Page title
         $data['title'] = 'HRIS | Login';
 
-        return view('GuessLayout/header', $data)
-            . view('Auth/login')
-            . view('GuessLayout/footer');
+        return view('Pages/Auth/login');
     }
 
     public function logout()

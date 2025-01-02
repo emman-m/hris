@@ -1,3 +1,10 @@
+<?= $this->extend('GuessLayout/main') ?>
+
+<?= $this->section('title') ?>
+Login
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
 <div class="page page-center">
     <div class="container container-tight py-4">
         <div class="text-center mb-4">
@@ -60,3 +67,4 @@
         </div>
     </div>
 </div>
+<?= $this->endSection() ?>
