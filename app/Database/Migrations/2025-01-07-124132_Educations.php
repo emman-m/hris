@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Users extends Migration
+class Educations extends Migration
 {
     public function up()
     {
@@ -17,36 +17,45 @@ class Users extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'role' => [
-                'type' => 'VARCHAR',
-                'constraint' => '20',
+            'user_id' => [
+                'type' => 'INT',
+                'constraint' => 11,
+                'unsigned' => true,
+            ],
+            'level' => [
+                'type' => 'ENUM',
+                'constraint' => ['Elementary', 'Highschool', 'Undergraduate', 'Graduate', 'Post Graduate'],
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
             ],
-            'email' => [
+            'school' => [
                 'type' => 'VARCHAR',
-                'constraint' => '100',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
-            ],
-            'password' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
-            ],
-            'status' => [
-                'type' => 'VARCHAR',
-                'default' => 'active',
                 'constraint' => '50',
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
             ],
-            'code' => [
+            'address' => [
                 'type' => 'VARCHAR',
-                'constraint' => '6',
+                'constraint' => '150',
+                'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
-                'null' => true,
+            ],
+            'degree' => [
+                'type' => 'VARCHAR',
+                'constraint' => '150',
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_general_ci',
+            ],
+            'major_minor' => [
+                'type' => 'VARCHAR',
+                'constraint' => '150',
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_general_ci',
+            ],
+            'year_graduated' => [
+                'type' => 'DATE',
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_general_ci',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -64,13 +73,14 @@ class Users extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->createTable('users', true);
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('educations', true);
 
         $this->db->enableForeignKeyChecks();
     }
 
     public function down()
     {
-        $this->forge->dropTable('users', true);
+        $this->forge->dropTable('educations', true);
     }
 }

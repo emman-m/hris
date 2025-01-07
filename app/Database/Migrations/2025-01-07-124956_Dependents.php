@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Users extends Migration
+class Dependents extends Migration
 {
     public function up()
     {
@@ -17,36 +17,26 @@ class Users extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'role' => [
-                'type' => 'VARCHAR',
-                'constraint' => '20',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
+            'user_id' => [
+                'type' => 'INT',
+                'constraint' => 11,
+                'unsigned' => true,
             ],
-            'email' => [
+            'name' => [
                 'type' => 'VARCHAR',
-                'constraint' => '100',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
-            ],
-            'password' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
-            ],
-            'status' => [
-                'type' => 'VARCHAR',
-                'default' => 'active',
                 'constraint' => '50',
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
             ],
-            'code' => [
+            'birth' => [
+                'type' => 'DATE',
+                'charset' => 'utf8mb4',
+            ],
+            'relationship' => [
                 'type' => 'VARCHAR',
-                'constraint' => '6',
+                'constraint' => '150',
+                'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
-                'null' => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -64,13 +54,14 @@ class Users extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->createTable('users', true);
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('dependents', true);
 
         $this->db->enableForeignKeyChecks();
     }
 
     public function down()
     {
-        $this->forge->dropTable('users', true);
+        $this->forge->dropTable('dependents', true);
     }
 }
