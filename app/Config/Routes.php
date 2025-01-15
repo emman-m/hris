@@ -20,4 +20,9 @@ $routes->group('', ['filter' => 'unauth'], function($routes) {
 $routes->group('hris', ['filter' => 'auth'], function($routes) {
     $routes->get('', 'HomeController::index', ['as' => 'dashboard']);
     $routes->get('users', 'UserController::index', ['as' => 'users']);
+    
+    // redirect()->to(route_to('create-user', 'admin'));
+    $routes->get('create-user/(:any)', 'UserController::create/$1', ['as' => 'create-user']);
+
+    $routes->post('create-user', 'UserController::store');
 });

@@ -3,14 +3,17 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\UserModel;
+use App\Models\User;
+use App\Models\UserInfo;
 
 class AuthController extends BaseController
 {
-    protected $userModel;
+    protected $user;
+    protected $userInfo;
     public function __construct()
     {
-        $this->userModel = new UserModel();
+        $this->user = new User();
+        $this->userInfo = new UserInfo();
     }
     public function login()
     {
@@ -27,7 +30,8 @@ class AuthController extends BaseController
                 $email = $this->request->getPost('email');
                 $password = $this->request->getPost('password');
 
-                $user = $this->userModel->getUserByEmail($email);
+                $user = $this->user->getUserByEmail($email);
+                $userinfo = $this->userInfo->where('user_id', $user['id'])->first();
 
                 if ($user && password_verify($password, $user['password'])) {
                     $session = session();
@@ -35,21 +39,20 @@ class AuthController extends BaseController
                         [
                             'id' => $user['id'],
                             'email' => $user['email'],
+                            'name' => $userinfo['first_name'] . ' ' . $userinfo['middle_name'] . ' ' . $userinfo['last_name'],
+                            'role' => $user['role'],
                             'isLoggedIn' => true,
                         ]
                     );
 
                     // return redirect()->to('/hris/dashboard');
                     return redirect()->route('dashboard');
-                    
+
                 } else {
                     session()->setFlashdata('error', 'Invalid login credentials');
                 }
             }
         }
-
-        // Page title
-        $data['title'] = 'HRIS | Login';
 
         return view('Pages/Auth/login');
     }

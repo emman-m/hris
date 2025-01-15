@@ -18,8 +18,8 @@ class Users extends Migration
                 'auto_increment' => true,
             ],
             'role' => [
-                'type' => 'VARCHAR',
-                'constraint' => '20',
+                'type' => 'ENUM',
+                'constraint' => ['Admin', 'HR Admin', 'HR Staff', 'Employee'],
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
             ],
@@ -36,9 +36,9 @@ class Users extends Migration
                 'collation' => 'utf8mb4_general_ci',
             ],
             'status' => [
-                'type' => 'VARCHAR',
-                'default' => 'active',
-                'constraint' => '50',
+                'type' => 'ENUM',
+                'default' => 'Active',
+                'constraint' => ['Active', 'Inactive'],
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
             ],
@@ -50,12 +50,11 @@ class Users extends Migration
             ],
             'created_at' => [
                 'type' => 'DATETIME',
-                'null' => false,
+                'null' => true,
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
-                'on_update' => 'CURRENT_TIMESTAMP',
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',
