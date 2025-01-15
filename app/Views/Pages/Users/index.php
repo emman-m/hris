@@ -1,4 +1,6 @@
 <?php
+
+use App\Enums\UserRole;
 session()->set(['menu' => 'users']);
 ?>
 
@@ -21,6 +23,27 @@ Users
                     Users
                 </h2>
             </div>
+            <div class="col-auto ms-auto">
+                <div class="dropdown">
+                    <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        Create User
+                    </button>
+                    <div class="dropdown-menu">
+                        <?php foreach (UserRole::cases() as $role): ?>
+                            <a class="dropdown-item" href="<?= route_to('create-user', $role->name); ?>">
+                                <?= $role->value; ?>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -41,85 +64,37 @@ Users
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Title</th>
                                     <th>Email</th>
                                     <th>Role</th>
                                     <th class="w-1"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Paweł Kuna</td>
-                                    <td class="text-secondary">
-                                        UI Designer, Training
-                                    </td>
-                                    <td class="text-secondary"><a href="#"
-                                            class="text-reset">paweluna@howstuffworks.com</a></td>
-                                    <td class="text-secondary">
-                                        User
-                                    </td>
-                                    <td>
-                                        <a href="#">Edit</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Jeffie Lewzey</td>
-                                    <td class="text-secondary">
-                                        Chemical Engineer, Support
-                                    </td>
-                                    <td class="text-secondary"><a href="#" class="text-reset">jlewzey1@seesaa.net</a>
-                                    </td>
-                                    <td class="text-secondary">
-                                        Admin
-                                    </td>
-                                    <td>
-                                        <a href="#">Edit</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Mallory Hulme</td>
-                                    <td class="text-secondary">
-                                        Geologist IV, Support
-                                    </td>
-                                    <td class="text-secondary"><a href="#"
-                                            class="text-reset">mhulme2@domainmarket.com</a></td>
-                                    <td class="text-secondary">
-                                        User
-                                    </td>
-                                    <td>
-                                        <a href="#">Edit</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Dunn Slane</td>
-                                    <td class="text-secondary">
-                                        Research Nurse, Sales
-                                    </td>
-                                    <td class="text-secondary"><a href="#" class="text-reset">dslane3@epa.gov</a>
-                                    </td>
-                                    <td class="text-secondary">
-                                        Owner
-                                    </td>
-                                    <td>
-                                        <a href="#">Edit</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Emmy Levet</td>
-                                    <td class="text-secondary">
-                                        VP Product Management, Accounting
-                                    </td>
-                                    <td class="text-secondary"><a href="#" class="text-reset">elevet4@senate.gov</a>
-                                    </td>
-                                    <td class="text-secondary">
-                                        Admin
-                                    </td>
-                                    <td>
-                                        <a href="#">Edit</a>
-                                    </td>
-                                </tr>
+                                <?php foreach ($data as $item): ?>
+                                    <tr>
+                                        <td><?= $item['name'] ?></td>
+                                        <td class="text-secondary">
+                                            <?= $item['email'] ?>
+                                        </td>
+                                        <td class="text-secondary">
+                                            <?= $item['role'] ?>
+                                        </td>
+                                        <td>
+                                            <a href="#">Edit</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php if (empty($data)): ?>
+                                    <tr>
+                                        <td colspan="5" style="text-align:center">No Data</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="my-2 px-2 m-0 ms-auto ">
+                        <?= $pager->links(); ?>
                     </div>
                 </div>
             </div>

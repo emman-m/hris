@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Users extends Migration
+class PositionHistory extends Migration
 {
     public function up()
     {
@@ -17,44 +17,33 @@ class Users extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'role' => [
-                'type' => 'ENUM',
-                'constraint' => ['Admin', 'HR Admin', 'HR Staff', 'Employee'],
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
+            'user_id' => [
+                'type' => 'INT',
+                'constraint' => 11,
+                'unsigned' => true,
             ],
-            'email' => [
+            'position' => [
                 'type' => 'VARCHAR',
-                'constraint' => '100',
+                'constraint' => '150',
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
             ],
-            'password' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
+            'date_from' => [
+                'type' => 'DATE',
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
-            'status' => [
-                'type' => 'ENUM',
-                'default' => 'Active',
-                'constraint' => ['Active', 'Inactive'],
+            'date_to' => [
+                'type' => 'DATE',
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
-            ],
-            'code' => [
-                'type' => 'VARCHAR',
-                'constraint' => '6',
-                'collation' => 'utf8mb4_general_ci',
-                'null' => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
+                'null' => false,
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
+                'on_update' => 'CURRENT_TIMESTAMP',
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',
@@ -63,13 +52,14 @@ class Users extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->createTable('users', true);
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('position_history', true);
 
         $this->db->enableForeignKeyChecks();
     }
 
     public function down()
     {
-        $this->forge->dropTable('users', true);
+        $this->forge->dropTable('position_history', true);
     }
 }
