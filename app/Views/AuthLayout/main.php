@@ -4,14 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler.min.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-flags.min.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-payments.min.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-vendors.min.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('tabler/dist/css/demo.min.css'); ?>">
-    <script src="<?= base_url('jquery/dist/jquery.min.js')?>"></script>
-    <script src="<?= base_url('sweetalert2/dist/sweetalert2.all.min.js')?>"></script>
-    <link rel="stylesheet" href="<?= base_url('sweetalert2/theme-borderless/borderless.min.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('dist/styles.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('dist/app.css') ?>">
+    <script src="<?= base_url('dist/app.bundle.js') ?>"></script>
+    <script src="<?= base_url('js/togglepassword.js') ?>"></script>
     <title>HRIS | <?= $this->renderSection('title') ?></title>
 </head>
 
@@ -33,9 +29,7 @@
             <?= $this->renderSection('content') ?>
         </div>
     </div>
-    <script src="<?= base_url('tabler/dist/js/tabler.min.js'); ?>"></script>
-    <script src="<?= base_url('tabler/dist/js/demo-theme.min.js'); ?>"></script>
-    <script src="<?= base_url('tabler/dist/js/demo.min.js'); ?>"></script>
+    <script src="<?= base_url('dist/footer.bundle.js') ?>"></script>
 </body>
 
 </html>

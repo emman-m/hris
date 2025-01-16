@@ -9,6 +9,7 @@ class HomeController extends BaseController
 {
     public function index()
     {
+        withToast('success', 'Success');
         return view('Pages/dashboard');
     }
 }

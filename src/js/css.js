@@ -1,0 +1,5 @@
+import '@tabler/core/dist/css/tabler.min.css';
+import '@tabler/core/dist/css/tabler-flags.min.css';
+import '@tabler/core/dist/css/tabler-payments.min.css';
+import '@tabler/core/dist/css/tabler-vendors.min.css';
+import '@tabler/core/dist/css/demo.min.css';
