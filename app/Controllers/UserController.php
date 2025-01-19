@@ -29,11 +29,67 @@ class UserController extends BaseController
 
     public function index()
     {
-        // Get paginated results
-        $response = $this->user
-            ->displayList();
-        
-        return view('Pages/Users/index', $response);
+        // Retrieve filters from the request
+        $filters = [
+            'role' => $this->request->getGet('role'),
+            'status' => $this->request->getGet('status'),
+            'search' => $this->request->getGet('search'),
+        ];
+
+        // Get the query builder from the model
+        $queryBuilder = $this->user->getFilteredQuery($filters);
+
+        // Apply pagination
+        $data = $queryBuilder->paginate();
+        $pager = $queryBuilder->pager;
+
+        // Pagination meta
+        $paginationInfo = [
+            'totalItems' => $pager->getTotal(),
+            'start' => ($pager->getCurrentPage() - 1) * $pager->getPerPage() + 1,
+            'end' => min($pager->getCurrentPage() * $pager->getPerPage(), $pager->getTotal()),
+        ];
+
+        return view('Pages/Users/index', [
+            'data' => $data,
+            'pager' => $pager,
+            'paginationInfo' => $paginationInfo,
+        ]);
+    }
+
+    public function download()
+    {
+        // Retrieve filters from the request
+        $filters = [
+            'role' => $this->request->getGet('role'),
+            'status' => $this->request->getGet('status'),
+            'search' => $this->request->getGet('search'),
+        ];
+
+        // Get the query builder from the model
+        $queryBuilder = $this->user->getFilteredQuery($filters);
+
+        // Retrieve all results
+        $results = $queryBuilder->get()->getResultArray();
+
+        // Prepare headers and data for CSV
+        $headers = ['No.', 'Name', 'Email', 'Role', 'Status'];
+        // Count number
+        $count = 0;
+        $data = array_map(function ($row) use (&$count) {
+            $count++;
+
+            return [
+                $count,
+                $row['name'],
+                $row['email'],
+                $row['role'],
+                $row['status'],
+            ];
+        }, $results);
+
+        // Use the global CSV download helper
+        return downloadCSV('User-'.date('Y-m-d H:i:s').'.csv', $headers, $data);
     }
 
     public function create($role)

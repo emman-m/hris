@@ -41,3 +41,82 @@ if (!function_exists('withToast')) {
     }
 }
 
+if (!function_exists('chunk')) {
+    /**
+     * Processes large datasets in chunks.
+     *
+     * @param string|\CodeIgniter\Database\BaseBuilder $query A table name or query builder instance.
+     * @param int $chunkSize Number of records per chunk.
+     * @param callable $callback Callback function to process each chunk.
+     */
+    function chunk($query, int $chunkSize, callable $callback)
+    {
+        $db = \Config\Database::connect();
+
+        // If a table name is passed, convert it to a query builder instance
+        if (is_string($query)) {
+            $builder = $db->table($query);
+        } elseif ($query instanceof \CodeIgniter\Database\BaseBuilder) {
+            $builder = $query;
+        } else {
+            throw new InvalidArgumentException('The $query parameter must be a string or a query builder instance.');
+        }
+
+        $offset = 0;
+
+        while (true) {
+            // Clone the query to preserve conditions
+            $chunkQuery = clone $builder;
+
+            // Get the next chunk of data
+            $results = $chunkQuery->limit($chunkSize, $offset)->get()->getResultArray();
+
+            // If no more results, break the loop
+            if (empty($results)) {
+                break;
+            }
+
+            // Process the chunk using the callback
+            $callback($results);
+
+            // Increment the offset for the next chunk
+            $offset += $chunkSize;
+        }
+    }
+}
+
+if (!function_exists('downloadCSV')) {
+    /**
+     * Generate and download a CSV file.
+     *
+     * @param string $filename Filename for the CSV download (e.g., 'users.csv').
+     * @param array $headers Array of column headers for the CSV file.
+     * @param array $data Array of associative arrays containing data for the CSV file.
+     * @return CodeIgniter\HTTP\ResponseInterface
+     */
+    function downloadCSV(string $filename, array $headers, array $data)
+    {
+        $output = fopen('php://output', 'w');
+        ob_start();
+
+        // Add the header row
+        fputcsv($output, $headers);
+
+        // Add data rows
+        foreach ($data as $row) {
+            fputcsv($output, $row);
+        }
+
+        fclose($output);
+
+        // Get the CSV content
+        $csvData = ob_get_clean();
+
+        // Create a response with headers
+        $response = service('response');
+        return $response
+            ->setHeader('Content-Type', 'text/csv')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($csvData);
+    }
+}

@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-payments.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-vendors.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/demo.min.css'); ?>">
-    <script src="<?= base_url('jquery/dist/jquery.min.js')?>"></script>
-    <script src="<?= base_url('sweetalert2/dist/sweetalert2.all.min.js')?>"></script>
+    <script src="<?= base_url('jquery/dist/jquery.min.js') ?>"></script>
+    <script src="<?= base_url('sweetalert2/dist/sweetalert2.all.min.js') ?>"></script>
     <link rel="stylesheet" href="<?= base_url('sweetalert2/theme-borderless/borderless.min.css'); ?>">
+
     <title>HRIS | <?= $this->renderSection('title') ?></title>
 </head>
 
@@ -36,6 +37,8 @@
     <script src="<?= base_url('tabler/dist/js/tabler.min.js'); ?>"></script>
     <script src="<?= base_url('tabler/dist/js/demo-theme.min.js'); ?>"></script>
     <script src="<?= base_url('tabler/dist/js/demo.min.js'); ?>"></script>
+
+    <?= $this->renderSection('footer-script') ?>
 </body>
 
 </html>

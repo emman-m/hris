@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\UserRole;
+use App\Enums\UserStatus;
 session()->set(['menu' => 'users']);
 ?>
 
@@ -53,7 +54,58 @@ Users
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
+                        <form method="get" action="<?= current_url() ?>" class="row g-3">
+                            <!-- User Role -->
+                            <div class="col-md-4">
+                                <select name="role" class="form-select">
+                                    <option value="">All Roles</option>
+                                    <?php foreach (UserRole::cases() as $role): ?>
+                                        <option value="<?= $role->value ?>"
+                                            <?= (service('request')->getGet('role') == $role->name) ? 'selected' : '' ?>>
+                                            <?= $role->value ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <!-- User Status -->
+                            <div class="col-md-4">
+                                <select name="status" class="form-select">
+                                    <option value="">All Status</option>
+                                    <?php foreach (UserStatus::cases() as $role): ?>
+                                        <option value="<?= $role->value ?>"
+                                            <?= (service('request')->getGet('status') == $role->name) ? 'selected' : '' ?>>
+                                            <?= $role->value ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <!-- Name Email key -->
+                            <div class="col-md-4">
+                                <input type="text" name="search" class="form-control"
+                                    value="<?= service('request')->getGet('search') ?>"
+                                    placeholder="Search by name or email">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                            </div>
+                        </form>
                     </div>
+
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="col-auto ms-auto">
+                    <a href="<?= route_to('users-download') . '?' . http_build_query($_GET) ?>" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                            <path d="M7 11l5 5l5 -5" />
+                            <path d="M12 4l0 12" />
+                        </svg>
+                        CSV
+                    </a>
                 </div>
             </div>
             <div class="col-12">
@@ -93,8 +145,13 @@ Users
                         </table>
                     </div>
                     <!-- Pagination -->
-                    <div class="my-2 px-2 m-0 ms-auto ">
-                        <?= $pager->links(); ?>
+                    <div class="card-footer d-flex align-items-center">
+                        <p class="m-0 text-secondary">
+                            Showing <?= $paginationInfo['start'] ?> to <?= $paginationInfo['end'] ?> of
+                            <?= $paginationInfo['totalItems'] ?>
+                            entries
+                        </p>
+                        <?= $pager->links('default', 'custom_pagination'); ?>
                     </div>
                 </div>
             </div>
