@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-payments.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-vendors.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/demo.min.css'); ?>">
+    <script src="<?= base_url('jquery/dist/jquery.min.js') ?>"></script>
+    <script src="<?= base_url('js/togglepassword.js') ?>"></script>
     <title><?= $this->renderSection('title') ?></title>
 </head>
 

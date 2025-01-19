@@ -25,35 +25,46 @@ class AuthController extends BaseController
             ];
 
             if (!$this->validate($rules)) {
+                // If validation fails, show errors
                 session()->setFlashdata('error', $this->validator->listErrors());
             } else {
                 $email = $this->request->getPost('email');
                 $password = $this->request->getPost('password');
 
+                // Get user by email
                 $user = $this->user->getUserByEmail($email);
-                $userinfo = $this->userInfo->where('user_id', $user['id'])->first();
 
-                if ($user && password_verify($password, $user['password'])) {
-                    $session = session();
-                    $session->set(
-                        [
-                            'id' => $user['id'],
-                            'email' => $user['email'],
-                            'name' => $userinfo['first_name'] . ' ' . $userinfo['middle_name'] . ' ' . $userinfo['last_name'],
-                            'role' => $user['role'],
-                            'isLoggedIn' => true,
-                        ]
-                    );
+                if ($user) {
+                    // Get user info if user exists
+                    $userinfo = $this->userInfo->where('user_id', $user['id'])->first();
 
-                    // return redirect()->to('/hris/dashboard');
-                    return redirect()->route('dashboard');
+                    if ($userinfo && password_verify($password, $user['password'])) {
+                        // If user is found and password is correct
+                        $session = session();
+                        $session->set(
+                            [
+                                'id' => $user['id'],
+                                'email' => $user['email'],
+                                'name' => $userinfo['first_name'] . ' ' . $userinfo['middle_name'] . ' ' . $userinfo['last_name'],
+                                'role' => $user['role'],
+                                'isLoggedIn' => true,
+                            ]
+                        );
 
+                        // Redirect to dashboard
+                        return redirect()->route('dashboard');
+                    } else {
+                        // Incorrect password
+                        session()->setFlashdata('error', 'Invalid login credentials');
+                    }
                 } else {
+                    // User not found with that email
                     session()->setFlashdata('error', 'Invalid login credentials');
                 }
             }
         }
 
+        // Return the login view if not POST or after validation failure
         return view('Pages/Auth/login');
     }
 

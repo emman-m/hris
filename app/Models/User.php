@@ -57,22 +57,39 @@ class User extends Model
         return $this->where('email', $email)->first();
     }
 
-    public function displayList()
+    public function getFilteredQuery(array $filters = [])
     {
         $builder = $this->table($this->table)
             ->select('
-                CONCAT(users_info.first_name, " ", users_info.middle_name, users_info.last_name) as name,
-                users.email,
-                users.role,
-                users.status,
-                users_info.*
-            ')
+            CONCAT(users_info.first_name, " ", users_info.middle_name, " ", users_info.last_name) as name,
+            users.email,
+            users.role,
+            users.status,
+            users_info.*
+        ')
             ->join('users_info', 'users.id = users_info.user_id');
-        $data = $builder->paginate();
 
-        // Setup pager data
-        $pager = $builder->pager;
+        // Apply role filter
+        if (!empty($filters['role'])) {
+            $builder->where('users.role', $filters['role']);
+        }
 
-        return ['data' => $data, 'pager' => $pager];
+        // Apply status filter
+        if (!empty($filters['status'])) {
+            $builder->where('users.status', $filters['status']);
+        }
+
+        // Apply search filter
+        if (!empty($filters['search'])) {
+            $builder->groupStart()
+                ->like('users_info.first_name', $filters['search'])
+                ->orLike('users_info.last_name', $filters['search'])
+                ->orLike('users_info.middle_name', $filters['search'])
+                ->orLike('users.email', $filters['search'])
+                ->groupEnd();
+        }
+
+        return $builder;
     }
+
 }
