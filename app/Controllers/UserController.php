@@ -89,7 +89,73 @@ class UserController extends BaseController
         }, $results);
 
         // Use the global CSV download helper
-        return downloadCSV('User-'.date('Y-m-d H:i:s').'.csv', $headers, $data);
+        return downloadCSV('User-' . date('Y-m-d H:i:s') . '.csv', $headers, $data);
+    }
+
+    public function print()
+    {
+        // Retrieve filters from the request
+        $filters = $this->request->getPost();
+        // Get the query builder from the model
+        $queryBuilder = $this->user->getFilteredQuery($filters);
+
+        // Retrieve filtered data
+        $data = $queryBuilder->get()->getResultArray();
+
+        // Get the current date
+        $currentDate = date('Y-m-d H:i:s');
+
+        // Prepare the printable layout
+        $html = '<html><head><title>Users</title>';
+        $html .= '<style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                table, th, td {
+                    border: 1px solid black;
+                }
+                th, td {
+                    padding: 10px;
+                    text-align: left;
+                }
+              </style>';
+        $html .= '</head><body>';
+        $html .= '<h1>Users</h1>';
+        $html .= '<p><strong>Print Date:</strong> ' . $currentDate . '</p>';
+        $html .= '<table>';
+        $html .= '<thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
+              </thead>';
+        $html .= '<tbody>';
+
+        // Add rows
+        foreach ($data as $index => $item) {
+            $html .= '<tr>
+                    <td>' . ($index + 1) . '</td>
+                    <td>' . $item['name'] . '</td>
+                    <td>' . $item['email'] . '</td>
+                    <td>' . $item['role'] . '</td>
+                  </tr>';
+        }
+
+        if (empty($data)) {
+            $html .= '<tr><td colspan="4" style="text-align:center">No data available</td></tr>';
+        }
+
+        $html .= '</tbody></table>';
+        $html .= '</body></html>';
+
+        // Return the printable content and updated CSRF token
+        return $this->response->setJSON([
+            'html' => $html,
+            'csrfToken' => csrf_hash(),
+        ]);
     }
 
     public function create($role)
