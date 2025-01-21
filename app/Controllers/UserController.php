@@ -102,54 +102,28 @@ class UserController extends BaseController
         // Retrieve filtered data
         $data = $queryBuilder->get()->getResultArray();
 
-        // Get the current date
-        $currentDate = date('Y-m-d H:i:s');
+        // Prepare headers for the table
+        $headers = ['Name', 'Email', 'Role'];
 
-        // Prepare the printable layout
-        $html = '<html><head><title>Users</title>';
-        $html .= '<style>
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-                table, th, td {
-                    border: 1px solid black;
-                }
-                th, td {
-                    padding: 10px;
-                    text-align: left;
-                }
-              </style>';
-        $html .= '</head><body>';
-        $html .= '<h1>Users</h1>';
-        $html .= '<p><strong>Print Date:</strong> ' . $currentDate . '</p>';
-        $html .= '<table>';
-        $html .= '<thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                </tr>
-              </thead>';
-        $html .= '<tbody>';
+        // Prepare rows
+        $rows = array_map(function ($item) {
+            return [
+                $item['name'],
+                $item['email'],
+                $item['role'],
+            ];
+        }, $data);
 
-        // Add rows
-        foreach ($data as $index => $item) {
-            $html .= '<tr>
-                    <td>' . ($index + 1) . '</td>
-                    <td>' . $item['name'] . '</td>
-                    <td>' . $item['email'] . '</td>
-                    <td>' . $item['role'] . '</td>
-                  </tr>';
-        }
+        // Get the name of the logged-in user (adjust this based on your auth system)
+        $downloadedBy = session()->get('name') ?? 'Anonymous';
 
-        if (empty($data)) {
-            $html .= '<tr><td colspan="4" style="text-align:center">No data available</td></tr>';
-        }
-
-        $html .= '</tbody></table>';
-        $html .= '</body></html>';
+        // Render the print template and return as JSON
+        $html = view('Templates/print', [
+            'title' => 'Users List',
+            'headers' => $headers,
+            'rows' => $rows,
+            'downloadedBy' => $downloadedBy,
+        ]);
 
         // Return the printable content and updated CSRF token
         return $this->response->setJSON([
