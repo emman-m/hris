@@ -2,6 +2,9 @@
 # Operating Specific Junk Files
 #-------------------------
 
+# Executable
+*.bat
+
 # OS X
 .DS_Store
 .AppleDouble
