@@ -98,7 +98,7 @@ div:where(.swal2-container) {
   -webkit-overflow-scrolling: touch;
 }
 div:where(.swal2-container).swal2-backdrop-show, div:where(.swal2-container).swal2-noanimation {
-  background: rgba(54, 70, 93, 0.99);
+  background: rgba(54, 70, 93, 0.088);
 }
 div:where(.swal2-container).swal2-backdrop-hide {
   background: transparent !important;
@@ -173,10 +173,11 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   padding: 0 0 1.25em;
   border: none;
   border-radius: 5px;
-  background: transparent;
+  /* background: transparent; */
   color: rgb(84.15, 84.15, 84.15);
   font-family: inherit;
   font-size: 1rem;
+  background-color: rgba(54, 70, 93, .99);
 }
 div:where(.swal2-container) div:where(.swal2-popup):focus {
   outline: none;

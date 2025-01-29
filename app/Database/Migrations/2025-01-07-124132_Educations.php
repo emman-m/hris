@@ -24,19 +24,13 @@ class Educations extends Migration
             ],
             'level' => [
                 'type' => 'ENUM',
-                'constraint' => ['Elementary', 'Highschool', 'Undergraduate', 'Graduate', 'Post Graduate'],
+                'constraint' => ['Elementary', 'High School', 'Under Graduate', 'Graduate', 'Post Graduate'],
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
             ],
-            'school' => [
+            'school_address' => [
                 'type' => 'VARCHAR',
-                'constraint' => '50',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
-            ],
-            'address' => [
-                'type' => 'VARCHAR',
-                'constraint' => '150',
+                'constraint' => '250',
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
             ],

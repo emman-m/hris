@@ -67,7 +67,10 @@ class User extends Model
             users.status,
             users_info.*
         ')
-            ->join('users_info', 'users.id = users_info.user_id');
+            ->join('users_info', 'users.id = users_info.user_id')
+            ->orderBy('users.status', 'ASC')
+            ->orderBy('users.updated_at', 'DESC')
+            ->where('users.deleted_at IS NULL');
 
         // Apply role filter
         if (!empty($filters['role'])) {

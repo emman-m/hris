@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Enums\UserStatus;
 use App\Models\User;
 use App\Models\UserInfo;
 
@@ -34,7 +35,7 @@ class AuthController extends BaseController
                 // Get user by email
                 $user = $this->user->getUserByEmail($email);
 
-                if ($user) {
+                if ($user && ($user['status'] === UserStatus::ACTIVE->value) && ($user['deleted_at'] === null)) {
                     // Get user info if user exists
                     $userinfo = $this->userInfo->where('user_id', $user['id'])->first();
 
