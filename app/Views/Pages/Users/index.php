@@ -113,7 +113,8 @@ Users
                         CSV
                     </a>
                     <!-- Add Print Button -->
-                    <button id="printButton" class="btn btn-outline-primary" data-url="<?= route_to('users-print') ?>" title="Print">
+                    <button id="printButton" class="btn btn-outline-primary" data-url="<?= route_to('users-print') ?>"
+                        title="Print">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-printer">
@@ -142,7 +143,11 @@ Users
                             <tbody>
                                 <?php foreach ($data as $item): ?>
                                     <tr>
-                                        <td><?= $item['name'] ?></td>
+                                        <td>
+                                            <span
+                                                class="badge bg-<?= $item['status'] === 'Active' ? 'green' : 'red' ?> badge-information"></span>
+                                            <?= $item['name'] ?>
+                                        </td>
                                         <td class="text-secondary">
                                             <?= $item['email'] ?>
                                         </td>

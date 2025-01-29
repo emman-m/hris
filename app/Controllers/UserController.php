@@ -103,7 +103,7 @@ class UserController extends BaseController
         $data = $queryBuilder->get()->getResultArray();
 
         // Prepare headers for the table
-        $headers = ['Name', 'Email', 'Role'];
+        $headers = ['Name', 'Email', 'Role', 'Status'];
 
         // Prepare rows
         $rows = array_map(function ($item) {
@@ -111,10 +111,11 @@ class UserController extends BaseController
                 $item['name'],
                 $item['email'],
                 $item['role'],
+                $item['status'],
             ];
         }, $data);
 
-        // Get the name of the logged-in user (adjust this based on your auth system)
+        // Get the name of the logged-in user
         $downloadedBy = session()->get('name') ?? 'Anonymous';
 
         // Render the print template and return as JSON
@@ -136,7 +137,9 @@ class UserController extends BaseController
     {
         // Validate the role (optional)
         if (!in_array($role, array_column(UserRole::cases(), 'name'))) {
-            return redirect()->back()->with('error', 'Invalid role selected.');
+            withToast('error', 'Invalid role selected.');
+
+            return redirect()->back();
         }
 
         return view('Pages/Users/Create/' . strtolower($role));
@@ -160,6 +163,44 @@ class UserController extends BaseController
 
         // insert for Employees
 
+        // dd($request->getPost());
+        // Load form validation service
+        $validation = Services::validation();
+
+        // Define validation rules for each dependent/beneficiary
+        $validation->setRules([
+            'd_name.*' => 'required|min_length[1]|max_length[100]|integer',
+            'd_birth.*' => 'required|valid_date',
+            'd_relationship.*' => 'required|min_length[3]|max_length[50]',
+        ]);
+
+        // Validate the form data
+        if (!$validation->withRequest($request)->run()) {
+            dd($validation->getErrors());
+            // Validation failed, set the errors in the session
+            return redirect()->back()->withInput()
+                ->with('validation', $validation->getErrors())
+                ->with('formData', $request->getPost());
+        }
+
+        // if ($this->request->getMethod() === 'post') {
+        //     $formData = $this->request->getPost(); // Get all post data
+
+        //     if ($this->validate()) {
+        //         // Handle the form submission logic (e.g., save to database)
+        //         // Redirect or return success response
+        //         return redirect()->to('success_url');
+        //     } else {
+        //         // If validation fails, pass the old input back to the view
+        //         return view('Pages/Users/Create/' . strtolower($request->getPost('role')), [
+        //             'validation' => $this->validator,
+        //             'formData' => $formData, // Pass the old input data
+        //         ]);
+        //     }
+        // }
+
+        // Load initial form view
+        return view('Pages/Users/Create/' . strtolower($request->getPost('role')));
     }
 
     // Save new Admin user
