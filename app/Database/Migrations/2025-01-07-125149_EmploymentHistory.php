@@ -34,11 +34,13 @@ class EmploymentHistory extends Migration
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_general_ci',
             ],
-            'inclusive_year' => [
-                'type' => 'INT',
-                'constraint' => '2',
+            'year_from' => [
+                'type' => 'YEAR',
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
+            ],
+            'year_to' => [
+                'type' => 'YEAR',
+                'charset' => 'utf8mb4',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
