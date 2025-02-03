@@ -5,6 +5,9 @@ use App\Enums\EducationLevel;
 use App\Enums\UserRole;
 use App\Enums\EmployeeStatus;
 session()->set(['menu' => 'users']);
+
+$formData = session()->get('formData');
+$errors = session()->get('errors');
 ?>
 
 <!-- Layout -->
@@ -64,39 +67,51 @@ Create Employee
                             <h2>Dependents/Beneficiaries</h2>
 
                             <div class="row">
-                                <div id="beneficiariesContainer">
+                                <div id="employmentContainer">
                                     <?php
-                                    $beneficiaries = isset($formData['d_name']) ? $formData['d_name'] : [''];
-                                    foreach ($beneficiaries as $index => $beneficiary): ?>
-                                        <div class="beneficiary-row row mb-3">
+                                    $employments = $formData['eh_name'] ?? [''];
+                                    foreach ($employments as $index => $employment): ?>
+                                        <div class="employment-row row mb-3">
                                             <div class="col-md-4">
-                                                <label class="form-label">Name</label>
-                                                <input type="text" name="d_name[]" class="form-control" placeholder="Enter name"
-                                                    value="<?= isset($formData['d_name'][$index]) ? esc($formData['d_name'][$index]) : '' ?>" />
-                                                <?php if (isset($validation) && $validation->getError("d_name.$index")): ?>
-                                                    <div class="text-danger"><?= $validation->getError("d_name.$index") ?></div>
+                                                <label class="form-label">Institution/Company</label>
+                                                <input type="text" name="eh_name[]" class="form-control" placeholder="Enter institution/company"
+                                                    value="<?= isset($formData['eh_name'][$index]) ? esc($formData['eh_name'][$index]) : '' ?>" />
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["eh_name.$index"]) && $errors["eh_name.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["eh_name.$index"] ?>
+                                                    </div>
                                                 <?php endif; ?>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="form-label">Date of Birth</label>
-                                                <input type="date" name="d_birth[]" class="form-control"
-                                                    value="<?= isset($formData['d_birth'][$index]) ? esc($formData['d_birth'][$index]) : '' ?>" />
-                                                <?php if (isset($validation) && $validation->getError("d_birth.$index")): ?>
-                                                    <div class="text-danger"><?= $validation->getError("d_birth.$index") ?></div>
+                                                <label class="form-label">Position</label>
+                                                <input type="text" name="eh_position[]" class="form-control" placeholder="Enter position"
+                                                    value="<?= isset($formData['eh_position'][$index]) ? esc($formData['eh_position'][$index]) : '' ?>" />
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["eh_position.$index"]) && $errors["eh_position.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["eh_position.$index"] ?>
+                                                    </div>
                                                 <?php endif; ?>
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">Relationship to Employee</label>
-                                                <input type="text" name="d_relationship[]" class="form-control" placeholder="Enter relationship"
-                                                    value="<?= isset($formData['d_relationship'][$index]) ? esc($formData['d_relationship'][$index]) : '' ?>" />
-                                                <?php if (isset($validation) && $validation->getError("d_relationship.$index")): ?>
-                                                    <div class="text-danger"><?= $validation->getError("d_relationship.$index") ?></div>
+                                                <label class="form-label">Inclusive Years</label>
+                                                <input type="text" name="eh_inclusive_year[]" class="form-control" placeholder="Enter inclusive years"
+                                                    value="<?= isset($formData['eh_inclusive_year'][$index]) ? esc($formData['eh_inclusive_year'][$index]) : '' ?>" />
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["eh_inclusive_year.$index"]) && $errors["eh_inclusive_year.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["eh_inclusive_year.$index"] ?>
+                                                    </div>
                                                 <?php endif; ?>
                                             </div>
                                             <div class="col-md-1 d-flex align-items-end">
-                                                <button type="button" class="btn btn-danger remove-beneficiary">
-                                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <!-- Remove button -->
+                                                <button type="button" class="btn btn-danger remove-employment" disabled>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                         <path d="M4 7l16 0" />
                                                         <path d="M10 11l0 6" />
                                                         <path d="M14 11l0 6" />
@@ -110,7 +125,7 @@ Create Employee
                                 </div>
                                 <div class="d-flex justify-content-between mt-4">
                                     <!-- Add Button -->
-                                    <button type="button" id="addBeneficiary" class="btn btn-primary">
+                                    <button type="button" id="addEmployment" class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                                             class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">

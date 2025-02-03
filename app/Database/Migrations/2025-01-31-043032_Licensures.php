@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class PositionHistory extends Migration
+class Licensures extends Migration
 {
     public function up()
     {
@@ -22,23 +22,20 @@ class PositionHistory extends Migration
                 'constraint' => 11,
                 'unsigned' => true,
             ],
-            'is_current' => [
-                'type' => 'BOOLEAN',
-                'null' => false,
-            ],
-            'position' => [
+            'license' => [
                 'type' => 'VARCHAR',
-                'constraint' => '150',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
+                'constraint' => '200',
             ],
-            'year_from' => [
-                'type' => 'YEAR',
-                'charset' => 'utf8mb4',
+            'year' => [
+                'type' => 'DATE',
             ],
-            'year_to' => [
-                'type' => 'YEAR',
-                'charset' => 'utf8mb4',
+            'rating' => [
+                'type' => 'VARCHAR',
+                'constraint' => '100',
+            ],
+            'license_no' => [
+                'type' => 'VARCHAR',
+                'constraint' => '200',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -57,13 +54,13 @@ class PositionHistory extends Migration
 
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('position_history', true);
+        $this->forge->createTable('licensures', true);
 
         $this->db->enableForeignKeyChecks();
     }
 
     public function down()
     {
-        $this->forge->dropTable('position_history', true);
+        $this->forge->dropTable('licensures', true);
     }
 }

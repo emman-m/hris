@@ -1,4 +1,15 @@
 $(function () {
+    $('#ei_status').on('change', function() {
+        const status = $(this).val();
+        console.log(employeeStatus);
+        console.log(status);
+        if (employeeStatus === status) {
+            $('.spouse-div').show();
+        } else {
+            $('.spouse-div').hide();
+        }
+    });
+
     // Stepper Functionality
     (function stepperFunctionality() {
         let currentStep = 1;
@@ -13,6 +24,12 @@ $(function () {
                 $('#back-form').css({ visibility: 'hidden', pointerEvents: 'none' });
             } else {
                 $('#back-form').css({ visibility: 'visible', pointerEvents: 'auto' });
+            }
+
+            if (step < 4) {
+                $('#next-form').show();
+            } else {
+                $('#next-form').hide();
             }
 
             // Update active step indicators
@@ -46,8 +63,6 @@ $(function () {
     (function beneficiariesFunctionality() {
         const maxRows = 100;
         const minRows = 1;
-
-        let index = $('.beneficiary-row').length;
         
         // Add beneficiary row
         $('#addBeneficiary').on('click', function () {
@@ -206,5 +221,87 @@ $(function () {
 
         // Initialize button states
         updateAffiliationSocioButtons();
+    })();
+
+    // Past Position
+    (function pastPositionFunctionality() {
+        const maxRows = 100;
+        const minRows = 1;
+
+        // Add row
+        $('#addPastPosition').on('click', function () {
+            const totalRows = $('.past-position-row').length;
+
+            if (totalRows < maxRows) {
+                // Clone the content of #pastPositionContainer
+                var newRow = $('#pastPositionContainer .past-position-row').first().clone();
+
+                // Append the cloned row to the container where you want to keep the cloned rows
+                $('#pastPositionContainer').append(newRow);
+                updatePastPositionButtons();
+            }
+        });
+
+        // Remove Past Position row
+        $(document).on('click', '.remove-past-position', function () {
+            const totalRows = $('.past-position-row').length;
+
+            if (totalRows > minRows) {
+                $(this).closest('.past-position-row').remove();
+                updatePastPositionButtons();
+            }
+        });
+
+        // Update Add/Remove button states
+        function updatePastPositionButtons() {
+            const totalRows = $('.past-position-row').length;
+
+            $('#addPastPosition').prop('disabled', totalRows >= maxRows);
+            $('.remove-past-position').prop('disabled', totalRows <= minRows);
+        }
+
+        // Initialize button states
+        updatePastPositionButtons();
+    })();
+
+    // Current Position
+    (function currentPositionFunctionality() {
+        const maxRows = 100;
+        const minRows = 1;
+
+        // Add row
+        $('#addCurrentPosition').on('click', function () {
+            const totalRows = $('.current-position-row').length;
+
+            if (totalRows < maxRows) {
+                // Clone the content of #currentPositionContainer
+                var newRow = $('#currentPositionContainer .current-position-row').first().clone();
+
+                // Append the cloned row to the container where you want to keep the cloned rows
+                $('#currentPositionContainer').append(newRow);
+                updateCurrentPositionButtons();
+            }
+        });
+
+        // Remove Past Position row
+        $(document).on('click', '.remove-current-position', function () {
+            const totalRows = $('.current-position-row').length;
+
+            if (totalRows > minRows) {
+                $(this).closest('.current-position-row').remove();
+                updateCurrentPositionButtons();
+            }
+        });
+
+        // Update Add/Remove button states
+        function updateCurrentPositionButtons() {
+            const totalRows = $('.current-position-row').length;
+
+            $('#addCurrentPosition').prop('disabled', totalRows >= maxRows);
+            $('.remove-current-position').prop('disabled', totalRows <= minRows);
+        }
+
+        // Initialize button states
+        updateCurrentPositionButtons();
     })();
 });

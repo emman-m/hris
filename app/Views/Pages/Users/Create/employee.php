@@ -5,6 +5,9 @@ use App\Enums\EducationLevel;
 use App\Enums\UserRole;
 use App\Enums\EmployeeStatus;
 session()->set(['menu' => 'users']);
+
+$formData = session()->get('formData');
+$errors = session()->get('errors');
 ?>
 
 <!-- Layout -->
@@ -63,8 +66,8 @@ Create Employee
                             <h2>Personal Information</h2>
                             <div class="row">
                                 <div class="col-sm-12 col-md-4">
-                                    <!-- Last Name -->
                                     <div class="mb-4">
+                                        <!-- Last Name -->
                                         <label class="form-label required">Family Name</label>
                                         <input type="text" name="ui_last_name" class="form-control mt-1 block w-full" value="<?= old('ui_last_name') ?>"
                                             autocomplete="off">
@@ -78,8 +81,8 @@ Create Employee
                                     
                                 </div>
                                 <div class="col-sm-12 col-md-4">
-                                    <!-- First Name -->
                                     <div class="mb-4">
+                                        <!-- First Name -->
                                         <label class="form-label required">Given Name</label>
                                         <input type="text" name="ui_first_name" class="form-control mt-1 block w-full" value="<?= old('ui_first_name') ?>"
                                             autocomplete="off">
@@ -92,8 +95,8 @@ Create Employee
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-4">
-                                    <!-- Middle Name -->
                                     <div class="mb-4">
+                                        <!-- Middle Name -->
                                         <label class="form-label">Middle Name</label>
                                         <input type="text" name="ui_middle_name" class="form-control mt-1 block w-full" value="<?= old('ui_middle_name') ?>"
                                             autocomplete="off">
@@ -109,8 +112,8 @@ Create Employee
                             <!-- Row -->
                             <div class="row">
                                 <div class="col-sm-12 col-md-3">
-                                    <!-- Date of Birth -->
                                     <div class="mb-4">
+                                        <!-- Date of Birth -->
                                         <label class="form-label">Date of Birth</label>
                                         <input type="date" name="ei_date_of_birth" class="form-control mt-1 block w-full" value="<?= old('ei_date_of_birth') ?>"
                                                     autocomplete="off">
@@ -123,8 +126,8 @@ Create Employee
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-3">
-                                    <!-- Place of Birth -->
                                     <div class="mb-4">
+                                        <!-- Place of Birth -->
                                         <label class="form-label">Place of Birth</label>
                                         <input type="text" name="ei_birth_place" class="form-control mt-1 block w-full" value="<?= old('ei_birth_place') ?>"
                                             autocomplete="off">
@@ -137,8 +140,8 @@ Create Employee
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-3">
-                                    <!-- Gender -->
                                     <div class="mb-4">
+                                        <!-- Gender -->
                                         <label class="form-label">Gender</label>
                                         <select name="ei_gender" class="form-select mt-1 block w-full">
                                             <option value="" selected disabled>- Please Select -</option>
@@ -154,8 +157,8 @@ Create Employee
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-3">
-                                    <!-- Status -->
                                     <div class="mb-4">
+                                        <!-- Status -->
                                         <label class="form-label">Status</label>
                                         <select id="ei_status" name="ei_status" class="form-select mt-1 block w-full">
                                             <option value="" selected disabled>- Please Select -</option>
@@ -178,8 +181,8 @@ Create Employee
                             <!-- Row -->
                             <div class="row">
                                 <div class="col-sm-12 col-md-4 spouse-div" style="display:none">
-                                    <!-- Spouse -->
                                     <div class="mb-4">
+                                        <!-- Spouse -->
                                         <label class="form-label">Spouse Name</label>
                                         <input type="text" name="ei_spouse" class="form-control mt-1 block w-full" value="<?= old('ei_spouse') ?>"
                                         autocomplete="off">
@@ -519,10 +522,10 @@ Create Employee
                             <!-- Row -->
                             <div class="row">
                                 <div class="col-12">
-                                    <!-- Email -->
-                                    <div class="mb-3">
+                                    <div class="mb-4">
+                                        <!-- Email -->
                                         <label class="form-label required">Email</label>
-                                        <input type="text" name="u_email" class="form-control" value="<?= old('u_email') ?>" autocomplete="off" />
+                                        <input type="text" name="u_email" class="form-control mt-1 block w-full" value="<?= old('u_email') ?>" autocomplete="off" />
                             
                                         <!-- Error Message -->
                                         <?php if (isset($errors['u_email'])): ?>
@@ -534,7 +537,7 @@ Create Employee
                                 </div>
                                 <div class="col-12">
                                     <!-- Password -->
-                                    <div class="mb-3">
+                                    <div class="mb-4">
                                         <label class="form-label required">Password</label>
                                         <div class="input-group input-group-flat">
                                             <input type="password" name="u_password" class="form-control toggle-password">
@@ -565,9 +568,9 @@ Create Employee
                                 </div>
                                 <div class="col-12">
                                     <!-- Confirm Password -->
-                                    <div class="mb-3">
+                                    <div class="mb-4">
                                         <label class="form-label required">Confirm Password</label>
-                                        <input type="password" name="u_confirm_password" class="form-control toggle-password" autocomplete="off" />
+                                        <input type="password" name="u_confirm_password" class="form-control mt-1 block w-full toggle-password" autocomplete="off" />
                             
                                         <!-- Error Message -->
                                         <?php if (isset($errors['u_confirm_password'])): ?>
@@ -585,30 +588,32 @@ Create Employee
                             <div class="row">
                                 <!-- Elementary -->
                                 <h4>Elementary</h4>
-                                <div class="row mb-3">
-                                    <input type="hidden" name="e_level[]" value="<?= EducationLevel::ELEMENTARY->value?>">
-                                    <div class="col-md-6">
+                                <div class="row">
+                                    <input type="hidden" name="e_elem" value="<?= EducationLevel::ELEMENTARY->value?>">
+                                    <div class="col-md-6 mb-4">
+                                        <!-- School/Address -->
                                         <label class="form-label">School/Address</label>
-                                        <input type="text" name="e_school_address[]" class="form-control"
-                                            value="<?= old('e_school_address') ?>"
+                                        <input type="text" name="e_elem_school_address" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_elem_school_address') ?>"
                                             placeholder="Enter school and address" />
 
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_school_address'])): ?>
+                                        <?php if (isset($errors['e_elem_school_address'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_school_address'] ?>
+                                                <?= $errors['e_elem_school_address'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mb-4">
+                                        <!-- Year Graduated -->
                                         <label class="form-label">Year Graduated</label>
-                                        <input type="date" name="e_year_graduated[]" class="form-control" 
-                                            value="<?= old('e_year_graduated') ?>"/>
+                                        <input type="date" name="e_elem_year_graduated" class="form-control mt-1 block w-full" 
+                                            value="<?= old('e_elem_year_graduated') ?>"/>
                                         
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_year_graduated'])): ?>
+                                        <?php if (isset($errors['e_elem_year_graduated'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_year_graduated'] ?>
+                                                <?= $errors['e_elem_year_graduated'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -616,30 +621,31 @@ Create Employee
                                 <hr>
                                 <!-- High School -->
                                 <h4>High School</h4>
-                                <div class="row mb-3">
-                                    <input type="hidden" name="e_level[]" value="<?= EducationLevel::HIGHSCHOOL->value ?>">
-                                    <div class="col-md-6">
+                                <div class="row">
+                                    <input type="hidden" name="e_hs" value="<?= EducationLevel::HIGHSCHOOL->value ?>">
+                                    <div class="col-md-6 mb-4">
+                                        <!-- School/Address -->
                                         <label class="form-label">School/Address</label>
-                                        <input type="text" name="e_school_address[]" class="form-control"
-                                            value="<?= old('e_school_address') ?>"
-                                            placeholder="Enter school and address" />
+                                        <input type="text" name="e_hs_school_address" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_hs_school_address') ?>"/>
                                     
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_school_address'])): ?>
+                                        <?php if (isset($errors['e_hs_school_address'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_school_address'] ?>
+                                                <?= $errors['e_hs_school_address'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mb-4">
+                                        <!-- Year Graduated -->
                                         <label class="form-label">Year Graduated</label>
-                                        <input type="date" name="e_year_graduated[]" class="form-control" 
-                                            value="<?= old('e_year_graduated') ?>" />
+                                        <input type="date" name="e_hs_year_graduated" class="form-control" 
+                                            value="<?= old('e_hs_year_graduated') ?>" />
                                     
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_year_graduated'])): ?>
+                                        <?php if (isset($errors['e_hs_year_graduated'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_year_graduated'] ?>
+                                                <?= $errors['e_hs_year_graduated'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -647,58 +653,59 @@ Create Employee
                                 <hr>
                                 <!-- Undergraduate -->
                                 <h4>Undergraduate</h4>
-                                <div class="row mb-3">
-                                    <input type="hidden" name="e_level[]" value="<?= EducationLevel::UNDERGRADUATE->value ?>">
-                                    <div class="col-md-4">
+                                <div class="row">
+                                    <input type="hidden" name="e_ug" value="<?= EducationLevel::UNDERGRADUATE->value ?>">
+                                    <div class="col-md-4 mb-4">
+                                        <!-- Degree -->
                                         <label class="form-label">Degree</label>
-                                        <input type="text" name="e_degree[]" class="form-control"
-                                            value="<?= old('e_degree')?>"
-                                            placeholder="Enter degree" />
+                                        <input type="text" name="e_ug_degree" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_ug_degree')?>"/>
 
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_degree'])): ?>
+                                        <?php if (isset($errors['e_ug_degree'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_degree'] ?>
+                                                <?= $errors['e_ug_degree'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 mb-4">
+                                        <!-- Major/Minor -->
                                         <label class="form-label">Major/Minor</label>
-                                        <input type="text" name="e_major_minor[]" class="form-control"
-                                            value="<?= old('e_major_minor') ?>"
-                                            placeholder="Enter major/minor" />
+                                        <input type="text" name="e_ug_major_minor" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_ug_major_minor') ?>"/>
                                         
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_major_minor'])): ?>
+                                        <?php if (isset($errors['e_ug_major_minor'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_major_minor'] ?>
+                                                <?= $errors['e_ug_major_minor'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 mb-4">
+                                        <!-- School/Address -->
                                         <label class="form-label">School/Address</label>
-                                        <input type="text" name="e_school_address[]" class="form-control"
-                                            value="<?= old('e_school_address') ?>"
-                                            placeholder="Enter school and address" />
+                                        <input type="text" name="e_ug_school_address" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_ug_school_address') ?>"/>
                                         
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_school_address'])): ?>
+                                        <?php if (isset($errors['e_ug_school_address'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_school_address'] ?>
+                                                <?= $errors['e_ug_school_address'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <!-- Year Graduated -->
                                         <label class="form-label">Year Graduated</label>
-                                        <input type="date" name="e_year_graduated[]" class="form-control"
-                                            value="<?= old('e_year_graduated') ?>"/>
+                                        <input type="date" name="e_ug_year_graduated" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_ug_year_graduated') ?>"/>
 
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_year_graduated'])): ?>
+                                        <?php if (isset($errors['e_ug_year_graduated'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_year_graduated'] ?>
+                                                <?= $errors['e_ug_year_graduated'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -706,58 +713,60 @@ Create Employee
                                 <hr>
                                 <!-- Graduate -->
                                 <h4>Graduate</h4>
-                                <div class="row mb-3">
-                                    <input type="hidden" name="e_level[]" value="<?= EducationLevel::GRADUATE->value ?>">
-                                    <div class="col-md-4">
+                                <div class="row">
+                                    <input type="hidden" name="e_g" value="<?= EducationLevel::GRADUATE->value ?>">
+                                    <div class="col-md-4 mb-4">
+                                        <!-- Degree -->
                                         <label class="form-label">Degree</label>
-                                        <input type="text" name="e_degree[]" class="form-control"
-                                            value="<?= old('e_degree') ?>"
-                                            placeholder="Enter degree" />
+                                        <input type="text" name="e_g_degree" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_g_degree') ?>" />
                                         
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_degree'])): ?>
+                                        <?php if (isset($errors['e_g_degree'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_degree'] ?>
+                                                <?= $errors['e_g_degree'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 b-4">
+                                        <!-- Major/Minor -->
                                         <label class="form-label">Major/Minor</label>
-                                        <input type="text" name="e_major_minor[]" class="form-control"
-                                            value="<?= old('e_major_minor') ?>"
+                                        <input type="text" name="e_g_major_minor" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_g_major_minor') ?>"
                                             placeholder="Enter major/minor" />
 
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_major_minor'])): ?>
+                                        <?php if (isset($errors['e_g_major_minor'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_major_minor'] ?>
+                                                <?= $errors['e_g_major_minor'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 mb-4">
+                                        <!-- School/Address -->
                                         <label class="form-label">School/Address</label>
-                                        <input type="text" name="e_school_address[]" class="form-control"
-                                            value="<?= old('e_school_address') ?>"
-                                            placeholder="Enter school and address" />
+                                        <input type="text" name="e_g_school_address" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_g_school_address') ?>"/>
                                         
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_school_address'])): ?>
+                                        <?php if (isset($errors['e_g_school_address'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_school_address'] ?>
+                                                <?= $errors['e_g_school_address'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <!-- Year Graduated -->
                                         <label class="form-label">Year Graduated</label>
-                                        <input type="date" name="e_year_graduated[]" class="form-control"
-                                            value="<?= old('e_year_graduated') ?>"/>
+                                        <input type="date" name="e_g_year_graduated" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_g_year_graduated') ?>"/>
 
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_year_graduated'])): ?>
+                                        <?php if (isset($errors['e_g_year_graduated'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_year_graduated'] ?>
+                                                <?= $errors['e_g_year_graduated'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -768,59 +777,60 @@ Create Employee
                                     Post Graduate<br>
                                     <small>Please indicate the number of units earned in your post-graduate course</small>
                                 </h4>
-                                <div class="row mb-3">
-                                    <input type="hidden" name="e_level[]" value="<?= EducationLevel::POSTGRADUATE->value ?>">
-                                    <div class="col-md-4">
+                                <div class="row">
+                                    <input type="hidden" name="e_pg" value="<?= EducationLevel::POSTGRADUATE->value ?>">
+                                    <div class="col-md-4 mb-4">
+                                        <!-- Degree -->
                                         <label class="form-label">Degree</label>
-                                        <input type="text" name="e_degree[]" class="form-control"
-                                            value="<?= old('e_degree') ?>"
-                                            placeholder="Enter degree" />
+                                        <input type="text" name="e_ph_degree" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_ph_degree') ?>"/>
 
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_degree'])): ?>
+                                        <?php if (isset($errors['e_ph_degree'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_degree'] ?>
+                                                <?= $errors['e_ph_degree'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
                                     
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 mb-4">
+                                        <!-- Major/Minor -->
                                         <label class="form-label">Major/Minor</label>
-                                        <input type="text" name="e_major_minor[]" class="form-control"
-                                            value="<?= old('e_major_minor') ?>"
-                                            placeholder="Enter major/minor" />
+                                        <input type="text" name="e_pg_major_minor" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_pg_major_minor') ?>"/>
                                         
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_major_minor'])): ?>
+                                        <?php if (isset($errors['e_pg_major_minor'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_major_minor'] ?>
+                                                <?= $errors['e_pg_major_minor'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 b-4">
+                                        <!-- School/Address -->
                                         <label class="form-label">School/Address</label>
-                                        <input type="text" name="e_school_address[]" class="form-control"
-                                            value="<?= old('e_school_address') ?>"
-                                            placeholder="Enter school and address" />
+                                        <input type="text" name="e_pg_school_address" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_pg_school_address') ?>"/>
                                         
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_school_address'])): ?>
+                                        <?php if (isset($errors['e_pg_school_address'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_school_address'] ?>
+                                                <?= $errors['e_pg_school_address'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <!-- Year Graduated -->
                                         <label class="form-label">Year Graduated</label>
-                                        <input type="date" name="e_year_graduated[]" class="form-control"
-                                            value="<?= old('e_year_graduated') ?>" />
+                                        <input type="date" name="e_pg_year_graduated" class="form-control mt-1 block w-full"
+                                            value="<?= old('e_pg_year_graduated') ?>" />
 
                                         <!-- Error Message -->
-                                        <?php if (isset($errors['e_year_graduated'])): ?>
+                                        <?php if (isset($errors['e_pg_year_graduated'])): ?>
                                             <div class="invalid-feedback d-block">
-                                                <?= $errors['e_year_graduated'] ?>
+                                                <?= $errors['e_pg_year_graduated'] ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -833,36 +843,66 @@ Create Employee
 
                             <div class="row">
                                 <div id="beneficiariesContainer">
-                                    <!-- Beneficiary Row Template -->
-                                    <div class="beneficiary-row row mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Name</label>
-                                            <input type="text" name="d_name[]" class="form-control" placeholder="Enter name" />
+                                    <?php
+                                    $beneficiaries = $formData['d_name'] ?? [''];
+                                    foreach ($beneficiaries as $index => $beneficiary):
+                                        ?>
+                                        <div class="beneficiary-row row">
+                                            <div class="col-md-4 mb-4">
+                                                <!-- Name -->
+                                                <label class="form-label">Name</label>
+                                                <input type="text" name="d_name[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['d_name'][$index]) ? esc($formData['d_name'][$index]) : '' ?>" />
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["d_name.$index"])): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["d_name.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                
+                                            </div>
+                                            <div class="col-md-4 mb-4">
+                                                <!-- Date of Birth -->
+                                                <label class="form-label">Date of Birth</label>
+                                                <input type="date" name="d_birth[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['d_birth'][$index]) ? esc($formData['d_birth'][$index]) : '' ?>" />
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["d_birth.$index"]) && $errors["d_birth.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["d_birth.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="col-md-3 mb-4">
+                                                <!-- Relationship to Employee -->
+                                                <label class="form-label">Relationship to Employee</label>
+                                                <input type="text" name="d_relationship[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['d_relationship'][$index]) ? esc($formData['d_relationship'][$index]) : '' ?>" />
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["d_relationship.$index"]) && $errors["d_relationship.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["d_relationship.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="col-md-1 d-flex align-items-center">
+                                                <button type="button" class="btn btn-danger remove-beneficiary">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M4 7l16 0" />
+                                                        <path d="M10 11l0 6" />
+                                                        <path d="M14 11l0 6" />
+                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Date of Birth</label>
-                                            <input type="date" name="d_birth[]" class="form-control" />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Relationship to Employee</label>
-                                            <input type="text" name="d_relationship[]" class="form-control" placeholder="Enter relationship" />
-                                        </div>
-                                        <div class="col-md-1 d-flex align-items-end">
-                                            <!-- Remove button -->
-                                            <button type="button" class="btn btn-danger remove-beneficiary" disabled>
-                                                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                    <path d="M4 7l16 0" />
-                                                    <path d="M10 11l0 6" />
-                                                    <path d="M14 11l0 6" />
-                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
-                                <div class="d-flex justify-content-between mt-4">
+                                <div class="d-flex justify-content-between">
                                     <!-- Add Button -->
                                     <button type="button" id="addBeneficiary" class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -881,36 +921,79 @@ Create Employee
                             <div class="row">
                                 <div id="employmentContainer">
                                     <!-- Employment Row Template -->
-                                    <div class="employment-row row mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Institution/Company</label>
-                                            <input type="text" name="eh_name[]" class="form-control" placeholder="Enter institution/company" />
+                                    <?php
+                                    $employments = $formData['eh_name'] ?? [''];
+                                    foreach ($employments as $index => $employment):
+                                    ?>
+                                        <div class="employment-row row">
+                                            <div class="col-md-4 mb-4">
+                                                <!-- Institution/Company -->
+                                                <label class="form-label">Institution/Company</label>
+                                                <input type="text" name="eh_name[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['eh_name'][$index]) ? esc($formData['eh_name'][$index]) : '' ?>"/>
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["eh_name.$index"]) && $errors["eh_name.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["eh_name.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="col-md-3 mb-4">
+                                                <!-- Position -->
+                                                <label class="form-label">Position</label>
+                                                <input type="text" name="eh_position[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['eh_position'][$index]) ? esc($formData['eh_position'][$index]) : '' ?>"/>
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["eh_position.$index"]) && $errors["eh_position.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["eh_position.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="col-md-4 row">
+                                                <!-- Inclusive Years -->
+                                                <label class="form-label">Inclusive Years</label>
+                                                <div class="col-md-6 col-sm-12 mb-4">
+                                                    <!-- From -->
+                                                    <input type="text" name="eh_year_from[]" class="form-control block w-full" placeholder="From"
+                                                    value="<?= isset($formData['eh_year_from'][$index]) ? esc($formData['eh_year_from'][$index]) : '' ?>" />
+                                                    <!-- Error Message -->
+                                                    <?php if (isset($errors["eh_year_from.$index"]) && $errors["eh_year_from.$index"]): ?>
+                                                        <div class="invalid-feedback d-block">
+                                                            <?= $errors["eh_year_from.$index"] ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 mb-4">
+                                                    <!-- To -->
+                                                    <input type="text" name="eh_year_to[]" class="form-control block w-full" placeholder="To"
+                                                    value="<?= isset($formData['eh_year_to'][$index]) ? esc($formData['eh_year_to'][$index]) : '' ?>" />
+                                                    <!-- Error Message -->
+                                                    <?php if (isset($errors["eh_year_to.$index"]) && $errors["eh_year_to.$index"]): ?>
+                                                        <div class="invalid-feedback d-block">
+                                                            <?= $errors["eh_year_to.$index"] ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 d-flex align-items-center">
+                                                <!-- Remove button -->
+                                                <button type="button" class="btn btn-danger remove-employment" disabled>
+                                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                        <path d="M4 7l16 0" />
+                                                        <path d="M10 11l0 6" />
+                                                        <path d="M14 11l0 6" />
+                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Position</label>
-                                            <input type="text" name="eh_position[]" class="form-control" placeholder="Enter position" />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Inclusive Years</label>
-                                            <input type="text" name="eh_inclusive_year[]" class="form-control" placeholder="Enter inclusive years" />
-                                        </div>
-                                        <div class="col-md-1 d-flex align-items-end">
-                                            <!-- Remove button -->
-                                            <button type="button" class="btn btn-danger remove-employment" disabled>
-                                                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                    <path d="M4 7l16 0" />
-                                                    <path d="M10 11l0 6" />
-                                                    <path d="M14 11l0 6" />
-                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
 
-                                <div class="d-flex justify-content-between mt-4">
+                                <div class="d-flex justify-content-between">
                                     <!-- Add button -->
                                     <button type="button" id="addEmployment" class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -928,33 +1011,53 @@ Create Employee
                             <h2>Affiliation in Professional Organization</h2>
                             <div class="row">
                                 <div id="affiliationProContainer">
-                                    <div class="affiliation-pro-row row mb-3">
-                                        <input type="hidden" name="type[]" value="<?= AffiliationType::PROFESSIONAL->value?>">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Name of Organization</label>
-                                            <input type="text" name="a_p_name[]" class="form-control" placeholder="Enter Name of Organization" />
+                                    <?php
+                                    $professionals = $formData['a_p_type'] ?? [''];
+                                    foreach ($professionals as $index => $professional): ?>
+                                        <div class="affiliation-pro-row row">
+                                            <input type="hidden" name="a_p_type[]" value="<?= AffiliationType::PROFESSIONAL->value?>">
+                                            <div class="col-md-6 mb-4">
+                                                <!-- Name of Organization -->
+                                                <label class="form-label">Name of Organization</label>
+                                                <input type="text" name="a_p_name[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['a_p_name'][$index]) ? esc($formData['a_p_name'][$index]) : '' ?>"/>
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["a_p_name.$index"]) && $errors["a_p_name.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["a_p_name.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="col-md-5 mb-4">
+                                                <!-- Position -->
+                                                <label class="form-label">Position</label>
+                                                <input type="text" name="a_p_position[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['a_p_position'][$index]) ? esc($formData['a_p_position'][$index]) : '' ?>"/>
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["a_p_position.$index"]) && $errors["a_p_position.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["a_p_position.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="col-md-1 d-flex align-items-center">
+                                                <!-- Remove button -->
+                                                <button type="button" class="btn btn-danger remove-affiliation-pro" disabled>
+                                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                        <path d="M4 7l16 0" />
+                                                        <path d="M10 11l0 6" />
+                                                        <path d="M14 11l0 6" />
+                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="col-md-5">
-                                            <label class="form-label">Position</label>
-                                            <input type="text" name="a_p_position[]" class="form-control" placeholder="Enter position" />
-                                        </div>
-                                        <div class="col-md-1 d-flex align-items-end">
-                                            <!-- Remove button -->
-                                            <button type="button" class="btn btn-danger remove-affiliation-pro" disabled>
-                                                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                    <path d="M4 7l16 0" />
-                                                    <path d="M10 11l0 6" />
-                                                    <path d="M14 11l0 6" />
-                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
 
-                                <div class="d-flex justify-content-between mt-4">
+                                <div class="d-flex justify-content-between">
                                     <!-- Add button -->
                                     <button type="button" id="addAffiliationPro" class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -972,35 +1075,55 @@ Create Employee
                             <h2>Affiliation in Socio-Civic Organization</h2>
                             <div class="row">
                                 <div id="affiliationSocioContainer">
-                                    <div class="affiliation-socio-row row mb-3">
-                                        <input type="hidden" name="type[]" value="<?= AffiliationType::SOCIOCIVIC->value ?>">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Name of Organization</label>
-                                            <input type="text" name="a_s_name[]" class="form-control" placeholder="Enter Name of Organization" />
+                                    <?php
+                                    $socios = $formData['a_s_type'] ?? [''];
+                                    foreach ($socios as $index => $socio): ?>
+                                        <div class="affiliation-socio-row row">
+                                            <input type="hidden" name="a_s_type[]" value="<?= AffiliationType::SOCIOCIVIC->value ?>">
+                                            <div class="col-md-6 mb-4">
+                                                <!-- Name of Organization -->
+                                                <label class="form-label">Name of Organization</label>
+                                                <input type="text" name="a_s_name[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['a_s_name'][$index]) ? esc($formData['a_s_name'][$index]) : '' ?>"/>
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["a_s_name.$index"]) && $errors["a_s_name.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["a_s_name.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="col-md-5 mb-4">
+                                                <!-- Position -->
+                                                <label class="form-label">Position</label>
+                                                <input type="text" name="a_s_position[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['a_s_position'][$index]) ? esc($formData['a_s_position'][$index]) : '' ?>"/>
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["a_s_position.$index"]) && $errors["a_s_position.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["a_s_position.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="col-md-1 d-flex align-items-center">
+                                                <!-- Remove button -->
+                                                <button type="button" class="btn btn-danger remove-affiliation-socio" disabled>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M4 7l16 0" />
+                                                        <path d="M10 11l0 6" />
+                                                        <path d="M14 11l0 6" />
+                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="col-md-5">
-                                            <label class="form-label">Position</label>
-                                            <input type="text" name="a_s_position[]" class="form-control" placeholder="Enter position" />
-                                        </div>
-                                        <div class="col-md-1 d-flex align-items-end">
-                                            <!-- Remove button -->
-                                            <button type="button" class="btn btn-danger remove-affiliation-socio" disabled>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M4 7l16 0" />
-                                                    <path d="M10 11l0 6" />
-                                                    <path d="M14 11l0 6" />
-                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
                             
-                                <div class="d-flex justify-content-between mt-4">
+                                <div class="d-flex justify-content-between">
                                     <!-- Add button -->
                                     <button type="button" id="addAffiliationSocio" class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -1018,29 +1141,211 @@ Create Employee
                         <!-- Step 4 -->
                         <div class="step-form step4">
                             <h2>Licensure/Government Exam Passed</h2>
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label class="form-label">Institution/Company</label>
-                                    <input type="text" name="eh_name[]" class="form-control" placeholder="Enter institution/company" />
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <!-- License -->
+                                    <label class="form-label">License</label>
+                                    <input type="text" name="l_license" class="form-control mt-1 block w-full"
+                                        value="<?php old('l_license')?>"/>
+                                    <!-- Error Message -->
+                                    <?php if (isset($errors["l_license"]) && $errors["l_license"]): ?>
+                                        <div class="invalid-feedback d-block">
+                                            <?= $errors["l_license"] ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Position</label>
-                                    <input type="text" name="eh_position[]" class="form-control" placeholder="Enter position" />
+                                <div class="col-md-4 mb-4">
+                                    <!-- Year Taken -->
+                                    <label class="form-label">Year Taken</label>
+                                    <input type="text" name="l_year" class="form-control mt-1 block w-full"
+                                        value="<?php old('l_year') ?>"/>
+                                    <!-- Error Message -->
+                                    <?php if (isset($errors["l_year"]) && $errors["l_year"]): ?>
+                                        <div class="invalid-feedback d-block">
+                                            <?= $errors["l_year"] ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Inclusive Years</label>
-                                    <input type="text" name="eh_inclusive_year[]" class="form-control" placeholder="Enter inclusive years" />
+                                <div class="col-md-4 mb-4">
+                                    <!-- Rating -->
+                                    <label class="form-label">Rating</label>
+                                    <input type="text" name="l_rating" class="form-control mt-1 block w-full"
+                                        value="<?php old('l_rating') ?>"/>
+                                    <!-- Error Message -->
+                                    <?php if (isset($errors["l_rating"]) && $errors["l_rating"]): ?>
+                                        <div class="invalid-feedback d-block">
+                                            <?= $errors["l_rating"] ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
-                                <div class="col-md-1 d-flex align-items-end">
-                                    <!-- Remove button -->
-                                    <button type="button" class="btn btn-danger remove-employment" disabled>
-                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                            <path d="M4 7l16 0" />
-                                            <path d="M10 11l0 6" />
-                                            <path d="M14 11l0 6" />
-                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                <div class="col-md-12 mb-4">
+                                    <!-- License No. -->
+                                    <label class="form-label">License No.</label>
+                                    <input type="text" name="l_license_no" class="form-control mt-1 block w-full"
+                                        value="<?php old('l_license_no') ?>" />
+                                    <!-- Error Message -->
+                                    <?php if (isset($errors["l_license_no"]) && $errors["l_license_no"]): ?>
+                                        <div class="invalid-feedback d-block">
+                                            <?= $errors["l_license_no"] ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- Past Position(s) held in LCCT -->
+                            <h2>Past Position(s) held in LCCT</h2>
+                            <div class="row">
+                                <div id="pastPositionContainer">
+                                    <?php
+                                    $socios = $formData['pp_is_current'] ?? [''];
+                                    foreach ($socios as $index => $socio): ?>
+                                        <div class="past-position-row row">
+                                            <input type="hidden" name="pp_is_current" value="0">
+                                            <div class="col-md-6 mb-4">
+                                                <!-- Position -->
+                                                <label class="form-label">Position</label>
+                                                <input type="text" name="pp_position[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['pp_position'][$index]) ? esc($formData['pp_position'][$index]) : '' ?>" />
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["pp_position.$index"]) && $errors["pp_position.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["pp_position.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="col-md-5 row mb-4">
+                                                <label class="form-label">Inclusive Year</label>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <!-- Year From -->
+                                                    <input type="text" name="pp_year_from[]" class="form-control mt-1 block w-full" placeholder="From"
+                                                        value="<?= isset($formData['pp_year_from'][$index]) ? esc($formData['pp_year_from'][$index]) : '' ?>" />
+                                                    <!-- Error Message -->
+                                                    <?php if (isset($errors["pp_year_from.$index"]) && $errors["pp_year_from.$index"]): ?>
+                                                        <div class="invalid-feedback d-block">
+                                                            <?= $errors["pp_year_from.$index"] ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <!-- Year To -->
+                                                    <input type="text" name="pp_year_to[]" class="form-control mt-1 block w-full" placeholder="to"
+                                                        value="<?= isset($formData['pp_year_to'][$index]) ? esc($formData['pp_year_to'][$index]) : '' ?>" />
+                                                    <!-- Error Message -->
+                                                    <?php if (isset($errors["pp_year_to.$index"]) && $errors["pp_year_to.$index"]): ?>
+                                                        <div class="invalid-feedback d-block">
+                                                            <?= $errors["pp_year_to.$index"] ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 d-flex align-items-center">
+                                                <!-- Remove button -->
+                                                <button type="button" class="btn btn-danger remove-past-position" disabled>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M4 7l16 0" />
+                                                        <path d="M10 11l0 6" />
+                                                        <path d="M14 11l0 6" />
+                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            
+                                <div class="d-flex justify-content-between">
+                                    <!-- Add button -->
+                                    <button type="button" id="addPastPosition" class="btn btn-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <!-- Current Position(s) -->
+                            <h2>Current Position(s)</h2>
+                            <div class="row">
+                                <div id="currentPositionContainer">
+                                    <?php
+                                    $socios = $formData['pp_is_current'] ?? [''];
+                                    foreach ($socios as $index => $socio): ?>
+                                        <div class="current-position-row row">
+                                            <input type="hidden" name="pp_is_current" value="1">
+                                            <div class="col-md-6 mb-4">
+                                                <!-- Position -->
+                                                <label class="form-label">Position</label>
+                                                <input type="text" name="pp_position[]" class="form-control mt-1 block w-full"
+                                                    value="<?= isset($formData['pp_position'][$index]) ? esc($formData['pp_position'][$index]) : '' ?>" />
+                                                <!-- Error Message -->
+                                                <?php if (isset($errors["pp_position.$index"]) && $errors["pp_position.$index"]): ?>
+                                                    <div class="invalid-feedback d-block">
+                                                        <?= $errors["pp_position.$index"] ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="col-md-5 row mb-4">
+                                                <label class="form-label">Inclusive Year</label>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <!-- Year From -->
+                                                    <input type="text" name="pp_year_from[]" class="form-control mt-1 block w-full" placeholder="From"
+                                                        value="<?= isset($formData['pp_year_from'][$index]) ? esc($formData['pp_year_from'][$index]) : '' ?>" />
+                                                    <!-- Error Message -->
+                                                    <?php if (isset($errors["pp_year_from.$index"]) && $errors["pp_year_from.$index"]): ?>
+                                                        <div class="invalid-feedback d-block">
+                                                            <?= $errors["pp_year_from.$index"] ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 mb-4">
+                                                    <!-- Year To -->
+                                                    <input type="text" name="pp_year_to[]" class="form-control mt-1 block w-full" placeholder="to"
+                                                        value="<?= isset($formData['pp_year_to'][$index]) ? esc($formData['pp_year_to'][$index]) : '' ?>" />
+                                                    <!-- Error Message -->
+                                                    <?php if (isset($errors["pp_year_to.$index"]) && $errors["pp_year_to.$index"]): ?>
+                                                        <div class="invalid-feedback d-block">
+                                                            <?= $errors["pp_year_to.$index"] ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 d-flex align-items-center">
+                                                <!-- Remove button -->
+                                                <button type="button" class="btn btn-danger remove-current-position" disabled>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M4 7l16 0" />
+                                                        <path d="M10 11l0 6" />
+                                                        <path d="M14 11l0 6" />
+                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            
+                                <div class="d-flex justify-content-between">
+                                    <!-- Add button -->
+                                    <button type="button" id="addCurrentPosition" class="btn btn-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
                                         </svg>
                                     </button>
                                 </div>
@@ -1060,6 +1365,6 @@ Create Employee
     </div>
 </div>
 <script>
-    const employeeStatus = '<?= EmployeeStatus::MARRIED->name?>'
+    const employeeStatus = '<?= EmployeeStatus::MARRIED->value?>'
 </script>
 <?= $this->endSection() ?>

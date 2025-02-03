@@ -169,35 +169,23 @@ class UserController extends BaseController
 
         // Define validation rules for each dependent/beneficiary
         $validation->setRules([
-            'd_name.*' => 'required|min_length[1]|max_length[100]|integer',
+            'd_name.*' => 'required|min_length[10]|max_length[100]|integer',
             'd_birth.*' => 'required|valid_date',
             'd_relationship.*' => 'required|min_length[3]|max_length[50]',
+            'eh_name.*' => 'required|min_length[10]|max_length[100]|integer',
+            'eh_position.*' => 'required|valid_date',
+            'eh_inclusive_year.*' => 'required|valid_email',
         ]);
 
         // Validate the form data
         if (!$validation->withRequest($request)->run()) {
-            dd($validation->getErrors());
+            // dd($validation->getErrors());
             // Validation failed, set the errors in the session
-            return redirect()->back()->withInput()
-                ->with('validation', $validation->getErrors())
+            return redirect()->back()
+                ->with('errors', $validation->getErrors())
                 ->with('formData', $request->getPost());
         }
 
-        // if ($this->request->getMethod() === 'post') {
-        //     $formData = $this->request->getPost(); // Get all post data
-
-        //     if ($this->validate()) {
-        //         // Handle the form submission logic (e.g., save to database)
-        //         // Redirect or return success response
-        //         return redirect()->to('success_url');
-        //     } else {
-        //         // If validation fails, pass the old input back to the view
-        //         return view('Pages/Users/Create/' . strtolower($request->getPost('role')), [
-        //             'validation' => $this->validator,
-        //             'formData' => $formData, // Pass the old input data
-        //         ]);
-        //     }
-        // }
 
         // Load initial form view
         return view('Pages/Users/Create/' . strtolower($request->getPost('role')));
