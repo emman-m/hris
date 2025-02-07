@@ -29,16 +29,12 @@ class PositionHistory extends Migration
             'position' => [
                 'type' => 'VARCHAR',
                 'constraint' => '150',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'year_from' => [
                 'type' => 'YEAR',
-                'charset' => 'utf8mb4',
             ],
             'year_to' => [
                 'type' => 'YEAR',
-                'charset' => 'utf8mb4',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -46,8 +42,7 @@ class PositionHistory extends Migration
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
-                'on_update' => 'CURRENT_TIMESTAMP',
+                'null' => false,
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',

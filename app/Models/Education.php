@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserInfo extends Model
+class Education extends Model
 {
-    protected $table            = 'users_info';
+    protected $table            = 'educations';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
@@ -14,9 +14,11 @@ class UserInfo extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'user_id',
-        'first_name',
-        'middle_name',
-        'last_name'
+        'level',
+        'school_address',
+        'degree',
+        'major_minor',
+        'year_graduated',
     ];
 
     protected bool $allowEmptyInserts = false;

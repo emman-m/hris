@@ -25,28 +25,22 @@ class UsersInfo extends Migration
             'first_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'middle_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'last_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
+                'null' => false,
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
+                'null' => false,
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',

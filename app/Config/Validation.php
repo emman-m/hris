@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Rules\RequiredIfRules;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
@@ -25,6 +26,16 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
+        // RequiredIfRules::class,
+    ];
+
+    /**
+     * Custom validation rules
+     *
+     * You can define custom rules like `required_if`, `unique_rule`, etc.
+     */
+    public $customRules = [
+        'required_if' => 'App\Rules\RequiredIfRule::required_if',
     ];
 
     /**

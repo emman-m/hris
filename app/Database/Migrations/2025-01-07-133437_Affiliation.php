@@ -25,20 +25,14 @@ class Affiliation extends Migration
             'type' => [
                 'type' => 'ENUM',
                 'constraint' => ['Professional Organizations', 'Socio-Civic Organizations'],
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '150',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'position' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -46,8 +40,7 @@ class Affiliation extends Migration
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
-                'on_update' => 'CURRENT_TIMESTAMP',
+                'null' => false,
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',
@@ -57,13 +50,13 @@ class Affiliation extends Migration
 
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('affiliation', true);
+        $this->forge->createTable('affiliations', true);
 
         $this->db->enableForeignKeyChecks();
     }
 
     public function down()
     {
-        $this->forge->dropTable('affiliation', true);
+        $this->forge->dropTable('affiliations', true);
     }
 }

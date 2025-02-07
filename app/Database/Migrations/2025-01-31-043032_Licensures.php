@@ -27,7 +27,7 @@ class Licensures extends Migration
                 'constraint' => '200',
             ],
             'year' => [
-                'type' => 'DATE',
+                'type' => 'YEAR',
             ],
             'rating' => [
                 'type' => 'VARCHAR',
@@ -43,8 +43,7 @@ class Licensures extends Migration
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
-                'on_update' => 'CURRENT_TIMESTAMP',
+                'null' => false,
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',

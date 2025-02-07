@@ -25,31 +25,23 @@ class Educations extends Migration
             'level' => [
                 'type' => 'ENUM',
                 'constraint' => ['Elementary', 'High School', 'Under Graduate', 'Graduate', 'Post Graduate'],
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'school_address' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'degree' => [
                 'type' => 'VARCHAR',
                 'constraint' => '150',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
+                'null' => true,
             ],
             'major_minor' => [
                 'type' => 'VARCHAR',
                 'constraint' => '150',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
+                'null' => true,
             ],
             'year_graduated' => [
-                'type' => 'DATE',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
+                'type' => 'YEAR',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -57,8 +49,7 @@ class Educations extends Migration
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
-                'on_update' => 'CURRENT_TIMESTAMP',
+                'null' => false,
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',

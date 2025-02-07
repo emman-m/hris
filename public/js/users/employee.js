@@ -1,15 +1,16 @@
 $(function () {
     $('#ei_status').on('change', function() {
         const status = $(this).val();
-        console.log(employeeStatus);
-        console.log(status);
+        spouseVisible(status);
+    });
+    const spouseVisible = (status) => {
         if (employeeStatus === status) {
             $('.spouse-div').show();
         } else {
             $('.spouse-div').hide();
         }
-    });
-
+    }
+    spouseVisible($('#ei_status').val());
     // Stepper Functionality
     (function stepperFunctionality() {
         let currentStep = 1;
@@ -26,7 +27,7 @@ $(function () {
                 $('#back-form').css({ visibility: 'visible', pointerEvents: 'auto' });
             }
 
-            if (step < 4) {
+            if (step < totalSteps) {
                 $('#next-form').show();
             } else {
                 $('#next-form').hide();

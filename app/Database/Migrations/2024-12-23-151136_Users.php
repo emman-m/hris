@@ -20,41 +20,32 @@ class Users extends Migration
             'role' => [
                 'type' => 'ENUM',
                 'constraint' => ['Admin', 'HR Admin', 'HR Staff', 'Employee'],
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'email' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'password' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'status' => [
                 'type' => 'ENUM',
                 'default' => 'Active',
                 'constraint' => ['Active', 'Inactive'],
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'code' => [
                 'type' => 'VARCHAR',
                 'constraint' => '6',
-                'collation' => 'utf8mb4_general_ci',
                 'null' => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
+                'null' => false,
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
+                'null' => false,
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',

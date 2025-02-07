@@ -24,7 +24,11 @@ $routes->group('hris', ['filter' => 'auth'], function($routes) {
     $routes->post('users/print', 'UserController::print', ['as' => 'users-print']);
 
     // redirect()->to(route_to('create-user', 'admin'));
-    $routes->get('create-user/(:any)', 'UserController::create/$1', ['as' => 'create-user']);
+    $routes->get('create-user', 'UserController::create', ['as' => 'create-user']);
+    $routes->get('users/(:any)', 'UserController::show/$1', ['as' => 'users-show']);
 
     $routes->post('create-user', 'UserController::store');
+
+    // Employees
+    $routes->get('employees', 'EmployeesController::index', ['as' => 'employees']);
 });
