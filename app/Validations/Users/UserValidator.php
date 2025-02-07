@@ -21,7 +21,7 @@ class UserValidator extends Validator
             ],
             'department' => [
                 'label' => 'Department',
-                'rules' => 'required_if:role,Employee|in_list[' . implode(',', EmployeeDepartment::list()) . ']',
+                'rules' => 'required_if[role,'.UserRole::EMPLOYEE->value.']',
                 'errors' => [
                     'required_if' => '{field} is required.',
                 ]

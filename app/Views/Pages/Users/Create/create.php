@@ -15,6 +15,7 @@ $title = 'Create Account';
 
 <!-- Custom import -->
 <?= $this->section('footer-script') ?>
+<script src="<?= base_url('js/togglepassword.js') ?>"></script>
 <script src="<?= base_url('js/users/create.js') ?>"></script>
 <?= $this->endSection() ?>
 

@@ -35,7 +35,7 @@ class EmployeeInfo extends Migration
             ],
             'birth' => [
                 'type' => 'DATE',
-                'null' => false
+                'null' => true
             ],
             'birth_place' => [
                 'type' => 'VARCHAR',
@@ -96,6 +96,7 @@ class EmployeeInfo extends Migration
             ],
             'date_of_coverage' => [
                 'type' => 'DATE',
+                'null' => true
             ],
             'pagibig' => [
                 'type' => 'VARCHAR',
@@ -114,7 +115,8 @@ class EmployeeInfo extends Migration
                 'constraint' => '20',
             ],
             'res_issued_on' => [
-                'type' => 'DATETIME',
+                'type' => 'DATE',
+                'null' => true
             ],
             'res_issued_at' => [
                 'type' => 'VARCHAR',
@@ -134,6 +136,7 @@ class EmployeeInfo extends Migration
             ],
             'employment_date' => [
                 'type' => 'DATE',
+                'null' => true
             ],
             'created_at' => [
                 'type' => 'DATETIME',
