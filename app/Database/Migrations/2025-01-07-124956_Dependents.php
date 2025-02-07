@@ -25,8 +25,6 @@ class Dependents extends Migration
             'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'birth' => [
                 'type' => 'DATE',
@@ -35,8 +33,6 @@ class Dependents extends Migration
             'relationship' => [
                 'type' => 'VARCHAR',
                 'constraint' => '150',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -44,8 +40,7 @@ class Dependents extends Migration
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
-                'on_update' => 'CURRENT_TIMESTAMP',
+                'null' => false,
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',

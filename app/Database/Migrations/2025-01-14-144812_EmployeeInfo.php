@@ -22,162 +22,129 @@ class EmployeeInfo extends Migration
                 'constraint' => 11,
                 'unsigned' => true,
             ],
+            'department' => [
+                'type' => 'ENUM',
+                'constraint' => [
+                    'Lower School',
+                    'Middle High School',
+                    'Junior High School',
+                    'Senior High School',
+                    'College',
+                    'Non Teaching Personnel'
+                ],
+            ],
             'birth' => [
                 'type' => 'DATE',
-                'charset' => 'utf8mb4',
-                'null' => false
+                'null' => true
             ],
             'birth_place' => [
                 'type' => 'VARCHAR',
                 'constraint' => '150',
-                'charset' => 'utf8mb4',
                 'null' => false
             ],
             'gender' => [
                 'type' => 'ENUM',
                 'constraint' => ['Male', 'Female'],
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'status' => [
                 'type' => 'ENUM',
                 'constraint' => ['Single', 'Married', 'Widow/Widower'],
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'spouse' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'permanent_address' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'present_address' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'fathers_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'mothers_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'mothers_maiden_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'religion' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'tel' => [
                 'type' => 'VARCHAR',
                 'constraint' => '15',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'phone' => [
                 'type' => 'VARCHAR',
                 'constraint' => '15',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'nationality' => [
                 'type' => 'VARCHAR',
                 'constraint' => '30',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'sss' => [
                 'type' => 'VARCHAR',
                 'constraint' => '10',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'date_of_coverage' => [
                 'type' => 'DATE',
-                'charset' => 'utf8mb4',
+                'null' => true
             ],
             'pagibig' => [
                 'type' => 'VARCHAR',
                 'constraint' => '12',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'tin' => [
                 'type' => 'VARCHAR',
                 'constraint' => '12',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'philhealth' => [
                 'type' => 'VARCHAR',
                 'constraint' => '12',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'res_cert_no' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'res_issued_on' => [
-                'type' => 'DATETIME',
-                'charset' => 'utf8mb4',
+                'type' => 'DATE',
+                'null' => true
             ],
             'res_issued_at' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'contact_person' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'contact_person_no' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'contact_person_relation' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'employment_date' => [
                 'type' => 'DATE',
-                'charset' => 'utf8mb4',
+                'null' => true
             ],
             'created_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
+                'null' => false,
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
+                'null' => false,
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',

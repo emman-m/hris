@@ -57,6 +57,11 @@ class User extends Model
         return $this->where('email', $email)->first();
     }
 
+    public function getUserByuserId($id)
+    {
+        return $this->where('id', $id)->first();
+    }
+
     public function getFilteredQuery(array $filters = [])
     {
         $builder = $this->table($this->table)
@@ -65,9 +70,11 @@ class User extends Model
             users.email,
             users.role,
             users.status,
-            users_info.*
+            users_info.*,
+            employees_info.department
         ')
             ->join('users_info', 'users.id = users_info.user_id')
+            ->join('employees_info', 'users.id = employees_info.user_id', 'LEFT')
             ->orderBy('users.status', 'ASC')
             ->orderBy('users.updated_at', 'DESC')
             ->where('users.deleted_at IS NULL');
@@ -88,8 +95,14 @@ class User extends Model
                 ->like('users_info.first_name', $filters['search'])
                 ->orLike('users_info.last_name', $filters['search'])
                 ->orLike('users_info.middle_name', $filters['search'])
+                ->orLike("CONCAT(users_info.first_name, ' ', users_info.middle_name, ' ', users_info.last_name)", "%{$filters['search']}%")
                 ->orLike('users.email', $filters['search'])
                 ->groupEnd();
+        }
+
+        // Apply department filter
+        if (!empty($filters['department'])) {
+            $builder->where('employees_info.department', $filters['department']);
         }
 
         return $builder;

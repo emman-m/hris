@@ -1,8 +1,8 @@
 <?php
 
-use App\Enums\UserRole;
+use App\Enums\EmployeeDepartment;
 use App\Enums\UserStatus;
-session()->set(['menu' => 'users']);
+session()->set(['menu' => 'employees']);
 ?>
 
 <!-- Layout -->
@@ -10,7 +10,7 @@ session()->set(['menu' => 'users']);
 
 <!-- Title -->
 <?= $this->section('title') ?>
-Users
+Employees
 <?= $this->endSection() ?>
 
 <!-- Custom import -->
@@ -26,20 +26,8 @@ Users
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Users
+                    Employees
                 </h2>
-            </div>
-            <div class="col-auto ms-auto">
-                <a href="<?= route_to('create-user'); ?>" class="btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    Create User
-                </a>
             </div>
         </div>
     </div>
@@ -51,14 +39,13 @@ Users
                 <div class="card">
                     <div class="card-body">
                         <form method="get" action="<?= current_url() ?>" class="row g-3">
-                            <!-- User Role -->
+                            <!-- Department -->
                             <div class="col-md-4">
-                                <select name="role" class="form-select">
-                                    <option value="">All Roles</option>
-                                    <?php foreach (UserRole::cases() as $role): ?>
-                                        <option value="<?= $role->value ?>"
-                                            <?= (service('request')->getGet('role') == $role->value) ? 'selected' : '' ?>>
-                                            <?= $role->value ?>
+                                <select name="department" class="form-select">
+                                    <option value="">All Department</option>
+                                    <?php foreach (EmployeeDepartment::cases() as $department): ?>
+                                        <option value="<?= $department->value ?>" <?= (service('request')->getGet('department') == $department->value) ? 'selected' : '' ?>>
+                                            <?= $department->value ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
@@ -127,7 +114,7 @@ Users
                                 <tr>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Role</th>
+                                    <th>Department</th>
                                     <th class="w-1"></th>
                                 </tr>
                             </thead>
@@ -143,7 +130,7 @@ Users
                                             <?= $item['email'] ?>
                                         </td>
                                         <td class="text-secondary">
-                                            <?= $item['role'] ?>
+                                            <?= $item['department'] ?>
                                         </td>
                                         <td>
                                             <a href="<?= route_to('users-show', $item['user_id']) ?>">Edit</a>

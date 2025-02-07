@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Enums\UserRole;
-use App\Enums\UserStatus;
 use App\Models\Affiliation;
 use App\Models\Dependent;
 use App\Models\Education;
@@ -13,18 +12,13 @@ use App\Models\EmploymentHistory;
 use App\Models\Licensure;
 use App\Models\PositionHistory;
 use App\Models\User;
-use App\Models\UserInfo;
 use App\Validations\EmployeeUserValidator;
-use App\Validations\Users\UserValidator;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
-use Config\Services;
-use Exception;
 
-
-class UserController extends BaseController
+class EmployeesController extends BaseController
 {
     protected $user;
-    protected $usersInfo;
     protected $employeeInfo;
     protected $education;
     protected $dependent;
@@ -32,28 +26,25 @@ class UserController extends BaseController
     protected $affiliation;
     protected $licensure;
     protected $positionHistory;
-    protected $pager;
 
     public function __construct()
     {
         $this->user = new User();
-        $this->usersInfo = new UserInfo();
-        $this->employeeInfo = new EmployeeInfo;
+        $this->employeeInfo = new EmployeeInfo();
         $this->education = new Education();
         $this->dependent = new Dependent();
         $this->employmentHistory = new EmploymentHistory();
         $this->affiliation = new Affiliation();
         $this->licensure = new Licensure();
         $this->positionHistory = new PositionHistory();
-
-        $this->pager = Services::pager();
     }
 
     public function index()
     {
         // Retrieve filters from the request
         $filters = [
-            'role' => $this->request->getGet('role'),
+            'role' => UserRole::EMPLOYEE->value,
+            'department' => $this->request->getGet('department'),
             'status' => $this->request->getGet('status'),
             'search' => $this->request->getGet('search'),
         ];
@@ -72,212 +63,14 @@ class UserController extends BaseController
             'end' => min($pager->getCurrentPage() * $pager->getPerPage(), $pager->getTotal()),
         ];
 
-        return view('Pages/Users/index', [
+        return view('Pages/Employees/index', [
             'data' => $data,
             'pager' => $pager,
             'paginationInfo' => $paginationInfo,
         ]);
     }
 
-    public function download()
-    {
-        // Retrieve filters from the request
-        $filters = [
-            'role' => $this->request->getGet('role'),
-            'status' => $this->request->getGet('status'),
-            'search' => $this->request->getGet('search'),
-        ];
-
-        // Get the query builder from the model
-        $queryBuilder = $this->user->getFilteredQuery($filters);
-
-        // Retrieve all results
-        $results = $queryBuilder->get()->getResultArray();
-
-        // Prepare headers and data for CSV
-        $headers = ['No.', 'Name', 'Email', 'Role', 'Status'];
-        // Count number
-        $count = 0;
-        $data = array_map(function ($row) use (&$count) {
-            $count++;
-
-            return [
-                $count,
-                $row['name'],
-                $row['email'],
-                $row['role'],
-                $row['status'],
-            ];
-        }, $results);
-
-        // Use the global CSV download helper
-        return downloadCSV('User-' . date('Y-m-d H:i:s') . '.csv', $headers, $data);
-    }
-
-    public function print()
-    {
-        // Retrieve filters from the request
-        $filters = $this->request->getPost();
-        // Get the query builder from the model
-        $queryBuilder = $this->user->getFilteredQuery($filters);
-
-        // Retrieve filtered data
-        $data = $queryBuilder->get()->getResultArray();
-
-        // Prepare headers for the table
-        $headers = ['Name', 'Email', 'Role', 'Status'];
-
-        // Prepare rows
-        $rows = array_map(function ($item) {
-            return [
-                $item['name'],
-                $item['email'],
-                $item['role'],
-                $item['status'],
-            ];
-        }, $data);
-
-        // Get the name of the logged-in user
-        $downloadedBy = session()->get('name') ?? 'Anonymous';
-
-        // Render the print template and return as JSON
-        $html = view('Templates/print', [
-            'title' => 'Users List',
-            'headers' => $headers,
-            'rows' => $rows,
-            'downloadedBy' => $downloadedBy,
-        ]);
-
-        // Return the printable content and updated CSRF token
-        return $this->response->setJSON([
-            'html' => $html,
-            'csrfToken' => csrf_hash(),
-        ]);
-    }
-
-    public function create()
-    {
-        // // Validate the role (optional)
-        // if (!in_array($role, array_column(UserRole::cases(), 'name'))) {
-        //     withToast('error', 'Invalid role selected.');
-
-        //     return redirect()->back();
-        // }
-
-        // return view('Pages/Users/Create/' . strtolower($role));
-
-        return view('Pages/Users/Create/create');
-    }
-
-    public function store()
-    {
-        // Get the request object
-        $request = Services::request();
-
-        $validator = new UserValidator();
-        if (!$validator->runValidation($request)) {
-            // Validation failed, return to the form with errors
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('errors', $validator->getErrors());
-        }
-
-        $post = $request->getPost();
-
-        // Start a database transaction
-        $db = Database::connect();
-        $db->transStart();
-
-        try {
-            // Insert to users
-            $userData = [
-                'role' => $post['role'],
-                'email' => $post['email'],
-                'password' => password_hash($post['password'], PASSWORD_BCRYPT),
-                'status' => UserStatus::ACTIVE->value
-            ];
-            $userId = $this->user->insert($userData);
-
-            // Insert to users_info
-            $usersInfoData = [
-                'user_id' => $userId,
-                'first_name' => $post['first_name'],
-                'middle_name' => $post['middle_name'],
-                'last_name' => $post['last_name']
-            ];
-            $this->usersInfo->insert($usersInfoData);
-
-            if ($post['role'] === UserRole::EMPLOYEE->value) {
-                $this->employeeInfo->insert([
-                    'user_id' => $userId,
-                    'department' => $post['department']
-                ]);
-            }
-
-            $db->transComplete();
-
-            withToast('success', 'Success! New ' . $post['role'] . ' has been added.');
-        } catch (Exception $e) {
-            $db->transRollback();
-            log_message('info', $e);
-
-            withToast('error', 'Error! There was a problem saving user.');
-        }
-
-        return redirect()->route('users');
-    }
-
-    // Save new Admin user
-    private function createAdminUser($request)
-    {
-        // Validate Request
-        $validator = new UserValidator();
-        if (!$validator->runValidation($request)) {
-            // Validation failed, return to the form with errors
-            return redirect()->back()->withInput()->with('errors', $validator->getErrors());
-        }
-
-        $post = $request->getPost();
-
-        // Start a database transaction
-        $db = Database::connect();
-        $db->transStart();
-
-        try {
-            // Insert to users
-            $userData = [
-                'role' => $post['role'],
-                'email' => $post['email'],
-                'password' => password_hash($post['password'], PASSWORD_BCRYPT),
-                'status' => UserStatus::ACTIVE->value
-            ];
-            $userId = $this->user->insert($userData);
-
-            // Insert to users_info
-            $usersInfoData = [
-                'user_id' => $userId,
-                'first_name' => $post['first_name'],
-                'middle_name' => $post['middle_name'],
-                'last_name' => $post['last_name']
-            ];
-            $this->usersInfo->insert($usersInfoData);
-
-            // If both operations are successful, commit the transaction
-            $db->transComplete();
-
-            withToast('success', 'Success! New user has been added.');
-        } catch (Exception $e) {
-            // If any operation fails, rollback the transaction
-            $db->transRollback();
-
-            withToast('error', 'Error! There was a problem saving user.');
-        }
-
-        return redirect()->route('users');
-    }
-
-    private function createEmployeeUser($request)
+    public function store($request)
     {
         $post = $request->getPost();
 
@@ -300,24 +93,6 @@ class UserController extends BaseController
         $db->transStart();
 
         try {
-            // Insert to users
-            $userData = [
-                'role' => $post['role'],
-                'email' => $post['email'],
-                'password' => password_hash($post['password'], PASSWORD_BCRYPT),
-                'status' => UserStatus::ACTIVE->value
-            ];
-            $userId = $this->user->insert($userData);
-
-            // Insert to users_info
-            $usersInfoData = [
-                'user_id' => $userId,
-                'first_name' => $post['first_name'],
-                'middle_name' => $post['middle_name'],
-                'last_name' => $post['last_name']
-            ];
-            $this->usersInfo->insert($usersInfoData);
-
             // Insert to employees_info
             $this->employeeInfo->insert([
                 'user_id' => $userId,
@@ -439,10 +214,5 @@ class UserController extends BaseController
         }
 
         return redirect()->route('users');
-    }
-
-    public function show($request)
-    {
-        dd($this->user->getUserByuserId($request));
     }
 }

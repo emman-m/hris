@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserInfo extends Model
+class Licensure extends Model
 {
-    protected $table            = 'users_info';
+    protected $table            = 'licensures';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
@@ -14,9 +14,10 @@ class UserInfo extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'user_id',
-        'first_name',
-        'middle_name',
-        'last_name'
+        'license',
+        'year',
+        'rating',
+        'license_no',
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -26,7 +27,7 @@ class UserInfo extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

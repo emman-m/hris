@@ -25,14 +25,10 @@ class EmploymentHistory extends Migration
             'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '150',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'position' => [
                 'type' => 'VARCHAR',
                 'constraint' => '150',
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_general_ci',
             ],
             'year_from' => [
                 'type' => 'YEAR',
@@ -48,8 +44,7 @@ class EmploymentHistory extends Migration
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
-                'on_update' => 'CURRENT_TIMESTAMP',
+                'null' => false,
             ],
             'deleted_at' => [
                 'type' => 'DATETIME',

@@ -4,19 +4,44 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserInfo extends Model
+class EmployeeInfo extends Model
 {
-    protected $table            = 'users_info';
+    protected $table            = 'employees_info';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
+        'id',
         'user_id',
-        'first_name',
-        'middle_name',
-        'last_name'
+        'department',
+        'birth',
+        'birth_place',
+        'gender',
+        'status',
+        'spouse',
+        'permanent_address',
+        'present_address',
+        'fathers_name',
+        'mothers_name',
+        'mothers_maiden_name',
+        'religion',
+        'tel',
+        'phone',
+        'nationality',
+        'sss',
+        'date_of_coverage',
+        'pagibig',
+        'tin',
+        'philhealth',
+        'res_cert_no',
+        'res_issued_on',
+        'res_issued_at',
+        'contact_person',
+        'contact_person_no',
+        'contact_person_relation',
+        'employment_date',
     ];
 
     protected bool $allowEmptyInserts = false;
