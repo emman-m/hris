@@ -27,7 +27,7 @@ class UnAuthFilter implements FilterInterface
     {
         // Redirect to dashboard if logged in and accessing login page
         if (session()->get('isLoggedIn')) {
-            return redirect()->to('/hris/dashboard');
+            return redirect()->route('dashboard');
         }
 
         // Allow the request to proceed
