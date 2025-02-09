@@ -2,24 +2,26 @@ $(function () {
     $('.status-switch').on('change', function () {
         const url = $(this).data('url');
         const user_id = $(this).data('id');
-        const state = $(this).prop('checked');
-        console.log({ user_id, state });
-
-        const data = {
-            state: state,
-            user_id: user_id,
-            csrfTokenName: csrfTokenValue
+        const status = $(this).prop('checked');
+        console.log(status)
+        var data = {
+            status: status,
+            user_id: user_id
         };
 
+        data[csrfTokenName] = csrfTokenValue;
+
         $.ajax({
-            type: 'post',
             url: url,
+            type: 'POST',
             data: data,
             dataType: 'json',
             beforeSend: function () {
                 $('.status-switch').prop('disabled', true);
             },
             success: function (response) {
+                // Refresh token
+                csrfTokenValue = response.csrfToken;
                 if (response.success) {
                     $('.status-switch').prop('disabled', false);
                     const Toast = Swal.mixin({
@@ -41,6 +43,7 @@ $(function () {
                         icon: "success",
                         text: response.message,
                     });
+                    $('.status-switch').prop('disabled', false);
                 }
             },
             error: function (err) {

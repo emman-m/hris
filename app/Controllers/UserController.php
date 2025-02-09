@@ -542,7 +542,19 @@ class UserController extends BaseController
 
     public function update_status()
     {
-        $request = Services::request();
+        $request = $this->request->getPost();
         log_message('info', json_encode($request));
+
+        $status = !$request['status']
+            ? UserStatus::ACTIVE->value
+            : UserStatus::INACTIVE->value;
+
+        $this->user->update($request['user_id'], ['status' => $status]);
+
+        // Return the printable content and updated CSRF token
+        return $this->response->setJSON([
+            'success' => true,
+            'csrfToken' => csrf_hash(),
+        ]);
     }
 }
