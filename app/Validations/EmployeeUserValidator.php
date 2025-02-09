@@ -11,54 +11,7 @@ class EmployeeUserValidator extends Validator
 
     public function __construct()
     {
-        $userRules = [
-            // Common fields for all roles
-            'first_name' => [
-                'label' => 'First Name',
-                'rules' => 'required|max_length[50]',
-                'errors' => [
-                    'required' => '{field} is required.',
-                    'max_length' => '{field} must not exceed {param} characters long.',
-                ]
-            ],
-            'last_name' => [
-                'label' => 'Last Name',
-                'rules' => 'required|max_length[50]',
-                'errors' => [
-                    'required' => '{field} is required.',
-                ]
-            ],
-            'email' => [
-                'label' => 'Email',
-                'rules' => 'required|valid_email|max_length[100]|is_unique[users.email]',
-                'errors' => [
-                    'required' => '{field} is required.',
-                    'valid_email' => '{field} must be a valid email address.',
-                    'max_length' => '{field} must not exceed {param} characters long.',
-                    'is_unique' => '{field} already exists.'
-                ]
-            ],
-            'password' => [
-                'label' => 'Password',
-                'rules' => 'required|min_length[8]|max_length[255]',
-                'errors' => [
-                    'required' => '{field} is required.',
-                    'min_length' => '{field} must be at least {param} characters long.',
-                    'max_length' => '{field} must be at least {param} characters long.',
-                ]
-            ],
-            'confirm_password' => [
-                'label' => 'Confirm Password',
-                'rules' => 'required|matches[password]',
-                'errors' => [
-                    'required' => '{field} is required.',
-                    'matches' => 'The {field} does not match the Password field.'
-                ]
-            ],
-        ];
-
-        // Additional rules for employees
-        $employeeRules = [
+        $this->rules = [
             'ei_date_of_birth' => [
                 'label' => 'Date of Birth',
                 'rules' => 'required|valid_date',
@@ -90,7 +43,7 @@ class EmployeeUserValidator extends Validator
             ],
             'ei_spouse' => [
                 'label' => 'Spouse',
-                'rules' => 'required_if[ei_status,'. EmployeeStatus::MARRIED->value.']',
+                'rules' => 'required_if[ei_status,' . EmployeeStatus::MARRIED->value . ']',
                 'errors' => [
                     'required_if' => '{field} is required.',
                 ]
@@ -257,9 +210,5 @@ class EmployeeUserValidator extends Validator
                 ]
             ],
         ];
-
-        $this->rules = session()->get('role') === UserRole::EMPLOYEE->value
-            ? array_merge($userRules, $employeeRules)
-            : $userRules;
     }
 }

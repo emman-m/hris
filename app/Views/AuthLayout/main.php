@@ -37,7 +37,11 @@
     <script src="<?= base_url('tabler/dist/js/tabler.min.js'); ?>"></script>
     <script src="<?= base_url('tabler/dist/js/demo-theme.min.js'); ?>"></script>
     <script src="<?= base_url('tabler/dist/js/demo.min.js'); ?>"></script>
-
+    <!-- Script to update CSRF dynamically -->
+    <script>
+        const csrfTokenName = '<?= csrf_token() ?>';
+        let csrfTokenValue = '<?= csrf_hash() ?>';
+    </script>
     <?= $this->renderSection('footer-script') ?>
 </body>
 

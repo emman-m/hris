@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Validations\Users;
+
+use App\Enums\EmployeeDepartment;
+use App\Enums\UserRole;
+use App\Validations\Validator;
+
+class UpdateValidator extends Validator
+{
+    public function __construct()
+    {
+        $this->rules = [
+            'user_id' => [
+                'label' => 'User ID',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} is required.',
+                ]
+            ],
+            'role' => [
+                'label' => 'Role',
+                'rules' => 'required|in_list[' . implode(',', UserRole::list()) . ']',
+                'errors' => [
+                    'required' => '{field} is required.',
+                    'max_length' => '{field} must not exceed to {param} characters long.',
+                ]
+            ],
+            'department' => [
+                'label' => 'Department',
+                'rules' => 'required_if[role,'.UserRole::EMPLOYEE->value.']',
+                'errors' => [
+                    'required_if' => '{field} is required.',
+                ]
+            ],
+            'first_name' => [
+                'label' => 'First Name',
+                'rules' => 'required|max_length[50]',
+                'errors' => [
+                    'required' => '{field} is required.',
+                    'max_length' => '{field} must not exceed to {param} characters long.',
+                ]
+            ],
+            'last_name' => [
+                'label' => 'Last Name',
+                'rules' => 'required|max_length[50]',
+                'errors' => [
+                    'required' => '{field} is required.',
+                    'max_length' => '{field} must not exceed to {param} characters long.',
+                ]
+            ],
+            'email' => [
+                'label' => 'Email',
+                'rules' => 'required|valid_email|max_length[100]',
+                'errors' => [
+                    'required' => '{field} is required.',
+                    'valid_email' => '{field} must be a valid email address.',
+                    'max_length' => '{field} must not exceed to {param} characters long.'
+                ]
+            ],
+            'password' => [
+                'label' => 'Password',
+                'rules' => 'min_length[8]|max_length[255]|permit_empty',
+                'errors' => [
+                    'min_length' => '{field} must be at least {param} characters long.',
+                    'max_length' => '{field} must be at least {param} characters long.',
+                ]
+            ],
+            'confirm_password' => [
+                'label' => 'Confirm Password',
+                'rules' => 'required_with[password]|matches[password]',
+                'errors' => [
+                    'required_with' => '{field} is required.',
+                    'matches' => 'The {field} does not match the Password field.'
+                ]
+            ]
+        ];
+    }
+}

@@ -15,7 +15,9 @@ use App\Models\PositionHistory;
 use App\Models\User;
 use App\Models\UserInfo;
 use App\Validations\EmployeeUserValidator;
+use App\Validations\Users\UpdateValidator;
 use App\Validations\Users\UserValidator;
+use CodeIgniter\HTTP\Request;
 use Config\Database;
 use Config\Services;
 use Exception;
@@ -157,16 +159,7 @@ class UserController extends BaseController
 
     public function create()
     {
-        // // Validate the role (optional)
-        // if (!in_array($role, array_column(UserRole::cases(), 'name'))) {
-        //     withToast('error', 'Invalid role selected.');
-
-        //     return redirect()->back();
-        // }
-
-        // return view('Pages/Users/Create/' . strtolower($role));
-
-        return view('Pages/Users/Create/create');
+        return view('Pages/Users/create');
     }
 
     public function store()
@@ -220,7 +213,7 @@ class UserController extends BaseController
             withToast('success', 'Success! New ' . $post['role'] . ' has been added.');
         } catch (Exception $e) {
             $db->transRollback();
-            log_message('info', $e);
+            log_message('warning', $e);
 
             withToast('error', 'Error! There was a problem saving user.');
         }
@@ -429,6 +422,10 @@ class UserController extends BaseController
             // If both operations are successful, commit the transaction
             $db->transComplete();
 
+            if ($db->transStatus() === false) {
+                throw new Exception('Transaction failed');
+            }
+
             withToast('success', 'Success! New user has been added.');
         } catch (Exception $e) {
             // If any operation fails, rollback the transaction
@@ -441,8 +438,111 @@ class UserController extends BaseController
         return redirect()->route('users');
     }
 
-    public function show($request)
+    public function edit($userId)
     {
-        dd($this->user->getUserByuserId($request));
+        $user = $this->user->getUserByuserId($userId);
+        log_message('info', json_encode(['user' => $user]));
+        if (!$user) {
+            withToast('error', 'User not found.');
+
+            return redirect()->back();
+        }
+
+        return view('Pages/Users/edit', $user);
+    }
+
+    public function update()
+    {
+        // Get the request object
+        $request = Services::request();
+
+        // Validation
+        $validator = new UpdateValidator();
+        if (!$validator->runValidation($request)) {
+            log_message('debug', json_encode($validator->getErrors()));
+            // Validation failed, return to the form with errors
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', $validator->getErrors());
+        }
+
+        $post = $request->getPost();
+        log_message('info', json_encode(['post' => $post]));
+
+        // Start a database transaction
+        $db = Database::connect();
+        $db->transStart();
+
+        try {
+            // Prepare user data
+            $userData = [
+                'role' => $post['role'],
+                'email' => $post['email']
+            ];
+
+            // If password is provided, hash it
+            if (!empty($post['password'])) {
+                $userData['password'] = password_hash($post['password'], PASSWORD_BCRYPT);
+            }
+
+            // Update the users table
+            $this->user->update($post['user_id'], $userData);
+
+            // Prepare users_info data
+            $usersInfoData = [
+                'first_name' => $post['first_name'],
+                'middle_name' => $post['middle_name'],
+                'last_name' => $post['last_name']
+            ];
+
+            // Update the users_info table
+            $this->usersInfo->update($post['user_id'], $usersInfoData);
+
+            // Only handle employee info if role is EMPLOYEE
+            if ($post['role'] === UserRole::EMPLOYEE->value) {
+                $employeeData = [
+                    'user_id' => $post['user_id'],
+                    'department' => $post['department']
+                ];
+
+                // Check if employee info exists
+                $existingEmployeeInfo = $this->employeeInfo->where('user_id', $post['user_id'])->first();
+
+                if ($existingEmployeeInfo) {
+                    // If employee info exists, update it
+                    $this->employeeInfo->update($existingEmployeeInfo['id'], $employeeData);
+                } else {
+                    // If employee info doesn't exist, insert it
+                    $this->employeeInfo->insert($employeeData);
+                }
+            }
+
+            // Commit the transaction
+            $db->transComplete();
+
+            // Check if the transaction was successful
+            if ($db->transStatus() === false) {
+                throw new Exception('Transaction failed');
+            }
+
+            withToast('success', 'Success! ' . $post['role'] . ' has been updated.');
+
+            return redirect()->route('users');
+        } catch (Exception $e) {
+            // Rollback transaction in case of error
+            $db->transRollback();
+            log_message('warning', $e->getMessage());
+
+            withToast('error', 'Error! There was a problem saving the user.');
+
+            return redirect()->route('users');
+        }
+    }
+
+    public function update_status()
+    {
+        $request = Services::request();
+        log_message('info', json_encode($request));
     }
 }

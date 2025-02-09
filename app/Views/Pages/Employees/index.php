@@ -15,7 +15,7 @@ Employees
 
 <!-- Custom import -->
 <?= $this->section('footer-script') ?>
-<script src="<?= base_url('js/users/index.js') ?>"></script>
+<script src="<?= base_url('js/employees/index.js') ?>"></script>
 <?= $this->endSection() ?>
 
 <!-- Body -->
@@ -79,7 +79,7 @@ Employees
             <div class="col-12">
                 <div class="col-auto ms-auto">
                     <!-- Download CSV -->
-                    <a href="<?= route_to('users-download') . '?' . http_build_query($_GET) ?>" class="btn btn-primary">
+                    <a href="<?= route_to('employees-download') . '?' . http_build_query($_GET) ?>" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-download">
@@ -91,7 +91,7 @@ Employees
                         CSV
                     </a>
                     <!-- Add Print Button -->
-                    <button id="printButton" class="btn btn-outline-primary" data-url="<?= route_to('users-print') ?>"
+                    <button id="printButton" class="btn btn-outline-primary" data-url="<?= route_to('employees-print') ?>"
                         title="Print">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"

@@ -70,6 +70,90 @@ class EmployeesController extends BaseController
         ]);
     }
 
+    public function download()
+    {
+        // Retrieve filters from the request
+        $filters = [
+            'role' => UserRole::EMPLOYEE->value,
+            'department' => $this->request->getGet('department'),
+            'status' => $this->request->getGet('status'),
+            'search' => $this->request->getGet('search'),
+        ];
+
+        // Get the query builder from the model
+        $queryBuilder = $this->user->getFilteredQuery($filters);
+
+        // Retrieve all results
+        $results = $queryBuilder->get()->getResultArray();
+
+        // Prepare headers and data for CSV
+        $headers = ['No.', 'Name', 'Email', 'Department', 'Status'];
+        // Count number
+        $count = 0;
+        $data = array_map(function ($row) use (&$count) {
+            $count++;
+
+            return [
+                $count,
+                $row['name'],
+                $row['email'],
+                $row['department'],
+                $row['status'],
+            ];
+        }, $results);
+
+        // Use the global CSV download helper
+        return downloadCSV('User-' . date('Y-m-d H:i:s') . '.csv', $headers, $data);
+    }
+
+    public function print()
+    {
+        // Retrieve filters from the request
+        $filters = $this->request->getPost();
+        // Override role
+        $filters['role'] = UserRole::EMPLOYEE->value;
+        // Get the query builder from the model
+        $queryBuilder = $this->user->getFilteredQuery($filters);
+
+        // Retrieve filtered data
+        $data = $queryBuilder->get()->getResultArray();
+
+        // Prepare headers for the table
+        $headers = ['Name', 'Email', 'Department', 'Status'];
+
+        // Prepare rows
+        $rows = array_map(function ($item) {
+            return [
+                $item['name'],
+                $item['email'],
+                $item['department'],
+                $item['status'],
+            ];
+        }, $data);
+
+        // Get the name of the logged-in user
+        $downloadedBy = session()->get('name') ?? 'Anonymous';
+
+        // Render the print template and return as JSON
+        $html = view('Templates/print', [
+            'title' => 'Users List',
+            'headers' => $headers,
+            'rows' => $rows,
+            'downloadedBy' => $downloadedBy,
+        ]);
+
+        // Return the printable content and updated CSRF token
+        return $this->response->setJSON([
+            'html' => $html,
+            'csrfToken' => csrf_hash(),
+        ]);
+    }
+
+    public function edit($userId)
+    {
+        
+    }
+
     public function store($request)
     {
         $post = $request->getPost();
