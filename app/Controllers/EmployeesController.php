@@ -149,6 +149,11 @@ class EmployeesController extends BaseController
         ]);
     }
 
+    public function edit($userId)
+    {
+        
+    }
+
     public function store($request)
     {
         $post = $request->getPost();

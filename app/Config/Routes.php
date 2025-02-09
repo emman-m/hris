@@ -32,9 +32,12 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->get('users-download', 'UserController::download', ['as' => 'users-download']);
     // User Print
     $routes->post('users/print', 'UserController::print', ['as' => 'users-print']);
-
-    // Testing page for view user
-    $routes->get('users/(:any)', 'UserController::show/$1', ['as' => 'users-show']);
+    // Edit User
+    $routes->get('users/(:any)', 'UserController::edit/$1', ['as' => 'edit-users']);
+    // Update User
+    $routes->post('update-user', 'UserController::update' ,['as' => 'update-user']);
+    // Update user status
+    $routes->post('user-update-status', 'UserController::update_status' ,['as' => 'user-update-status']);
 
 
     /**

@@ -16,6 +16,7 @@ Users
 <!-- Custom import -->
 <?= $this->section('footer-script') ?>
 <script src="<?= base_url('js/users/index.js') ?>"></script>
+<script src="<?= base_url('js/users/switch.js') ?>"></script>
 <?= $this->endSection() ?>
 
 <!-- Body -->
@@ -134,9 +135,12 @@ Users
                             <tbody>
                                 <?php foreach ($data as $item): ?>
                                     <tr>
-                                        <td>
-                                            <span
-                                                class="badge bg-<?= $item['status'] === 'Active' ? 'green' : 'red' ?> badge-information"></span>
+                                        <td class="d-flex align-items-center">
+                                            <label class="form-check form-switch d-inline-block m-0">
+                                                <input type="checkbox" class="form-check-input status-switch" data-url="<?= route_to('user-update-status', $item['user_id'])?>" data-id="<?= $item['user_id'] ?>"
+                                                    <?= $item['status'] === UserStatus::ACTIVE->value ? 'checked' : '' ?> />
+                                            </label>
+
                                             <?= $item['name'] ?>
                                         </td>
                                         <td class="text-secondary">
@@ -146,7 +150,7 @@ Users
                                             <?= $item['role'] ?>
                                         </td>
                                         <td>
-                                            <a href="<?= route_to('users-show', $item['user_id']) ?>">Edit</a>
+                                            <a href="<?= route_to('edit-users', $item['user_id']) ?>">Edit</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -172,11 +176,5 @@ Users
         </div>
     </div>
 </div>
-
-<!-- Script to update CSRF dynamically -->
-<script>
-    const csrfTokenName = '<?= csrf_token() ?>';
-    let csrfTokenValue = '<?= csrf_hash() ?>';
-</script>
 
 <?= $this->endSection() ?>
