@@ -38,6 +38,11 @@ class User extends Model
 
     // Validation
     protected $validationRules = [];
+    
+public function validateStatusUpdate($status)
+{
+    return in_array($status, [UserStatus::ACTIVE->value, UserStatus::INACTIVE->value]);
+}
     protected $validationMessages = [];
     protected $skipValidation = false;
     protected $cleanValidationRules = true;

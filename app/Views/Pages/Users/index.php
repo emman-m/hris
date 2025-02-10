@@ -137,7 +137,7 @@ Users
                                     <tr>
                                         <td class="d-flex align-items-center">
                                             <label class="form-check form-switch d-inline-block m-0">
-                                                <input type="checkbox" class="form-check-input status-switch" data-url="<?= route_to('user-update-status', $item['user_id'])?>" data-id="<?= $item['user_id'] ?>"
+                                                <input type="checkbox" class="form-check-input status-switch" data-url="<?= route_to('user-update-status')?>" data-id="<?= $item['user_id'] ?>"
                                                     <?= $item['status'] === UserStatus::ACTIVE->value ? 'checked' : '' ?> />
                                             </label>
 
