@@ -2,8 +2,8 @@ $(function () {
     $('.status-switch').on('change', function () {
         const url = $(this).data('url');
         const user_id = $(this).data('id');
-        const status = $(this).prop('checked');
-        console.log(status)
+        const status = $(this).prop('checked') ? 1 : 0;
+        console.log(status);
         var data = {
             status: status,
             user_id: user_id

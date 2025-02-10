@@ -540,45 +540,46 @@ class UserController extends BaseController
         }
     }
 
-public function update_status()
-{
-    $request = $this->request->getPost();
+    public function update_status()
+    {
+        $request = $this->request->getPost();
 
-    // Validate input
-    if (!isset($request['user_id']) || !isset($request['status'])) {
-        return $this->response->setJSON([
-            'success' => false,
-            'message' => 'Invalid input data.',
-        ]);
+        // Validate input
+        if (!isset($request['user_id']) || !isset($request['status'])) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Invalid input data.',
+            ]);
+        }
+
+        // Determine the new status
+        $status = $request['status']
+            ? UserStatus::ACTIVE->value
+            : UserStatus::INACTIVE->value;
+
+        try {
+            $user = $this->user->getUserByuserId($request['user_id']);
+
+            // Update the user status
+            $this->user->update($request['user_id'], ['status' => $status]);
+
+            // Return the response with updated CSRF token
+            return $this->response->setJSON([
+                'success' => true,
+                'status' => $status,
+                'message' => $user['first_name'] . ' ' . $user['last_name'] . ' is now ' . $status,
+                'csrfToken' => csrf_hash(),
+            ]);
+        } catch (Exception $e) {
+            // Log the error
+            log_message('error', 'Failed to update user status: ' . $e->getMessage());
+
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Failed to update user status.',
+                'csrfToken' => csrf_hash(),
+            ]);
+        }
     }
-
-    // Determine the new status
-    $status = !$request['status']
-        ? UserStatus::ACTIVE->value
-        : UserStatus::INACTIVE->value;
-
-    try {
-        // Update the user status
-        $this->user->update($request['user_id'], ['status' => $status]);
-
-        // Log the status update
-        log_message('info', "User ID {$request['user_id']} status updated to {$status}.");
-
-        // Return the response with updated CSRF token
-        return $this->response->setJSON([
-            'success' => true,
-            'status' => $status,
-            'csrfToken' => csrf_hash(),
-        ]);
-    } catch (Exception $e) {
-        // Log the error
-        log_message('error', 'Failed to update user status: ' . $e->getMessage());
-
-        return $this->response->setJSON([
-            'success' => false,
-            'message' => 'Failed to update user status.',
-        ]);
-    }
-}
 
 }
