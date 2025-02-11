@@ -65,24 +65,6 @@ $title = 'Create Account';
                                 </div>
                             <?php endif; ?>
                         </div>
-                        <!-- department if user is employee -->
-                        <div class="mb-4 department-container" style="display:none">
-                            <label class="form-label">Department</label>
-                            <select name="department" class="form-select mt-1 block w-full">
-                                <option value="" selected disabled>- Please Select -</option>
-                                <?php foreach (EmployeeDepartment::cases() as $department): ?>
-                                    <option value="<?= $department->value ?>" <?= $department->value === old('department') ? 'selected' : '' ?>>
-                                        <?= $department->value ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <!-- Error Message -->
-                            <?php if (isset($errors['department'])): ?>
-                                <div class="invalid-feedback d-block">
-                                    <?= $errors['department'] ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
                         <!-- First name -->
                         <div class="mb-3">
                             <label class="form-label required">First Name</label>

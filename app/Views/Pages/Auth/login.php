@@ -33,7 +33,7 @@ Login
                     <div class="mb-2">
                         <label class="form-label">Password</label>
                         <div class="input-group input-group-flat">
-                                <input type="password" name="password" class="form-control toggle-password">
+                                <input type="password" name="password" class="form-control toggle-password" placeholder="password123">
                                 <span class="input-group-text">
                                     <a href="javascript:void(0)" class="link-secondary" id="togglePassword" data-bs-toggle="tooltip"
                                         aria-label="Show/Hide" data-bs-original-title="Show/Hide">

@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Validations\EmployeeUserValidator;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
+use Exception;
 
 class EmployeesController extends BaseController
 {
@@ -151,10 +152,20 @@ class EmployeesController extends BaseController
 
     public function edit($userId)
     {
+        $user = $this->user->getUserByuserId($userId);
+
+        // Return error if no param, or no user found, or role is not employee
+        if (empty($userId) || (empty($user)) || ($user['role'] !== UserRole::EMPLOYEE->value)) {
+            withToast('error', 'Employee not found.');
+
+            return redirect()->back();
+        }
         
+        return view('Pages/Employees/edit', ['user_id' => $userId]);
+
     }
 
-    public function store($request)
+    public function update($request)
     {
         $post = $request->getPost();
 
@@ -180,6 +191,7 @@ class EmployeesController extends BaseController
             // Insert to employees_info
             $this->employeeInfo->insert([
                 'user_id' => $userId,
+                'department' => $post['department'],
                 'birth' => $post['ei_date_of_birth'],
                 'birth_place' => $post['ei_birth_place'],
                 'gender' => $post['ei_gender'],

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserStatus;
 use CodeIgniter\Model;
 
 class User extends Model

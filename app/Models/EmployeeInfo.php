@@ -73,4 +73,11 @@ class EmployeeInfo extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function findById($id)
+    {
+        $builder = $this->table($this->table)
+            ->select('employees_info.*')
+            ->join('dependents', 'employees_info.user_id = dependents.user_id');
+    }
 }

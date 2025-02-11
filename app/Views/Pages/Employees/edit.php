@@ -2,6 +2,7 @@
 
 use App\Enums\AffiliationType;
 use App\Enums\EducationLevel;
+use App\Enums\EmployeeDepartment;
 use App\Enums\UserRole;
 use App\Enums\EmployeeStatus;
 session()->set(['menu' => 'users']);
@@ -44,7 +45,6 @@ Create Employee
           <span href="#" class="step-item"></span>
           <span href="#" class="step-item"></span>
           <span href="#" class="step-item"></span>
-          <span href="#" class="step-item"></span>
         </div>
       </div>
     </div>
@@ -55,127 +55,37 @@ Create Employee
     <div class="row row-deck row-cards">
       <div class="col-12">
 
-        <form action="<?= base_url('hris/create-user') ?>" class="card" method="post">
+        <form action="<?= route_to('employees-update') ?>" class="card" method="post">
           <?= csrf_field() ?>
           <div class="card-status-top bg-primary"></div>
           <!-- User role -->
-          <input type="hidden" name="role" value="<?= UserRole::EMPLOYEE->value ?>">
+          <input type="hidden" name="user_id" value="<?= $user_id ?>">
 
           <div class="card-body">
             <!-- Step 1 -->
             <div class="step-form step1">
-              <h2>Account Information</h2>
+              <h2>Personal Information</h2>
+              <!-- Row -->
               <div class="row">
-                <div class="col-12">
-                  <div class="mb-4">
-                    <!-- First Name -->
-                    <label class="form-label required">First Name</label>
-                    <input type="text" name="first_name" class="form-control" value="<?= old('first_name') ?>"
-                      autocomplete="off" />
-
-                    <!-- Error Message -->
-                    <?php if (isset($errors['first_name'])): ?>
-                      <div class="invalid-feedback d-block">
-                        <?= $errors['first_name'] ?>
-                      </div>
-                    <?php endif; ?>
-                  </div>
-
-                </div>
-                <div class="col-12">
-                  <div class="mb-4">
-                    <!-- Middle Name -->
-                    <label class="form-label">Middle Name</label>
-                    <input type="text" name="middle_name" class="form-control" value="<?= old('middle_name') ?>"
-                      autocomplete="off" />
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="mb-4">
-                    <!-- Last Name -->
-                    <label class="form-label required">Last Name</label>
-                    <input type="text" name="last_name" class="form-control" value="<?= old('last_name') ?>"
-                      autocomplete="off" />
-
-                    <!-- Error Message -->
-                    <?php if (isset($errors['last_name'])): ?>
-                      <div class="invalid-feedback d-block">
-                        <?= $errors['last_name'] ?>
-                      </div>
-                    <?php endif; ?>
-                  </div>
+                <div class="mb-4 department-container">
+                  <label class="form-label">Department</label>
+                  <select name="department" class="form-select mt-1 block w-full">
+                    <option value="" selected disabled>- Please Select -</option>
+                    <?php foreach (EmployeeDepartment::cases() as $department): ?>
+                      <option value="<?= $department->value ?>" <?= $department->value === old('department') ? 'selected' : '' ?>>
+                        <?= $department->value ?>
+                      </option>
+                    <?php endforeach; ?>
+                  </select>
+                  <!-- Error Message -->
+                  <?php if (isset($errors['department'])): ?>
+                    <div class="invalid-feedback d-block">
+                      <?= $errors['department'] ?>
+                    </div>
+                  <?php endif; ?>
                 </div>
               </div>
               <hr>
-              <!-- Row -->
-              <div class="row">
-                <div class="col-12">
-                  <div class="mb-4">
-                    <!-- Email -->
-                    <label class="form-label required">Email</label>
-                    <input type="text" name="email" class="form-control mt-1 block w-full" value="<?= old('email') ?>"
-                      autocomplete="off" />
-
-                    <!-- Error Message -->
-                    <?php if (isset($errors['email'])): ?>
-                      <div class="invalid-feedback d-block">
-                        <?= $errors['email'] ?>
-                      </div>
-                    <?php endif; ?>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <!-- Password -->
-                  <div class="mb-4">
-                    <label class="form-label required">Password</label>
-                    <div class="input-group input-group-flat">
-                      <input type="password" name="password" class="form-control toggle-password">
-                      <span class="input-group-text">
-                        <a href="javascript:void(0)" class="link-secondary" id="togglePassword" data-bs-toggle="tooltip"
-                          aria-label="Show/Hide" data-bs-original-title="Show/Hide">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon icon-tabler icons-tabler-outline icon-tabler-eye-closed">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M21 9c-2.4 2.667 -5.4 4 -9 4c-3.6 0 -6.6 -1.333 -9 -4" />
-                            <path d="M3 15l2.5 -3.8" />
-                            <path d="M21 14.976l-2.492 -3.776" />
-                            <path d="M9 17l.5 -4" />
-                            <path d="M15 17l-.5 -4" />
-                          </svg>
-                        </a>
-                      </span>
-                    </div>
-
-                    <!-- Error Message -->
-                    <?php if (isset($errors['password'])): ?>
-                      <div class="invalid-feedback d-block">
-                        <?= $errors['password'] ?>
-                      </div>
-                    <?php endif; ?>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <!-- Confirm Password -->
-                  <div class="mb-4">
-                    <label class="form-label required">Confirm Password</label>
-                    <input type="password" name="confirm_password"
-                      class="form-control mt-1 block w-full toggle-password" autocomplete="off" />
-
-                    <!-- Error Message -->
-                    <?php if (isset($errors['confirm_password'])): ?>
-                      <div class="invalid-feedback d-block">
-                        <?= $errors['confirm_password'] ?>
-                      </div>
-                    <?php endif; ?>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Step 2 -->
-            <div class="step-form step2">
-              <h2>Personal Information</h2>
-              <!-- Row -->
               <div class="row">
                 <div class="col-sm-12 col-md-3">
                   <div class="mb-4">
@@ -585,8 +495,8 @@ Create Employee
                 </div>
               </div>
             </div>
-            <!-- Step 3 -->
-            <div class="step-form step3">
+            <!-- Step 2 -->
+            <div class="step-form step2">
               <h2>Education</h2>
               <div class="row">
                 <?php
@@ -653,7 +563,7 @@ Create Employee
                         <?php endif; ?>
                       </div>
                     <?php else: ?>
-                      <input type="hidden" name="e_degree[]" class="form-control mt-1 block w-full"/>
+                      <input type="hidden" name="e_degree[]" class="form-control mt-1 block w-full" />
                       <input type="hidden" name="e_major_minor[]" class="form-control mt-1 block w-full" />
 
                     <?php endif; ?>
@@ -662,8 +572,8 @@ Create Employee
 
               </div>
             </div>
-            <!-- Step 4 -->
-            <div class="step-form step4">
+            <!-- Step 3 -->
+            <div class="step-form step3">
               <h2>Dependents/Beneficiaries</h2>
 
               <div class="row">
@@ -966,9 +876,8 @@ Create Employee
                 </div>
               </div>
             </div>
-
-            <!-- Step 5 -->
-            <div class="step-form step5">
+            <!-- Step 4 -->
+            <div class="step-form step4">
               <h2>Licensure/Government Exam Passed</h2>
               <div class="row">
                 <div class="col-md-4 mb-4">
