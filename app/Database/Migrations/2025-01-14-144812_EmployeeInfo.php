@@ -32,6 +32,7 @@ class EmployeeInfo extends Migration
                     'College',
                     'Non Teaching Personnel'
                 ],
+                'null' => true,
             ],
             'birth' => [
                 'type' => 'DATE',
@@ -45,54 +46,67 @@ class EmployeeInfo extends Migration
             'gender' => [
                 'type' => 'ENUM',
                 'constraint' => ['Male', 'Female'],
+                'null' => true,
             ],
             'status' => [
                 'type' => 'ENUM',
                 'constraint' => ['Single', 'Married', 'Widow/Widower'],
+                'null' => true,
             ],
             'spouse' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
+                'null' => true,
             ],
             'permanent_address' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
+                'null' => true,
             ],
             'present_address' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
+                'null' => true,
             ],
             'fathers_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
+                'null' => true,
             ],
             'mothers_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
+                'null' => true,
             ],
             'mothers_maiden_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
+                'null' => true,
             ],
             'religion' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
+                'null' => true,
             ],
             'tel' => [
                 'type' => 'VARCHAR',
                 'constraint' => '15',
+                'null' => true,
             ],
             'phone' => [
                 'type' => 'VARCHAR',
                 'constraint' => '15',
+                'null' => true,
             ],
             'nationality' => [
                 'type' => 'VARCHAR',
                 'constraint' => '30',
+                'null' => true,
             ],
             'sss' => [
                 'type' => 'VARCHAR',
                 'constraint' => '10',
+                'null' => true,
             ],
             'date_of_coverage' => [
                 'type' => 'DATE',
@@ -101,18 +115,22 @@ class EmployeeInfo extends Migration
             'pagibig' => [
                 'type' => 'VARCHAR',
                 'constraint' => '12',
+                'null' => true,
             ],
             'tin' => [
                 'type' => 'VARCHAR',
                 'constraint' => '12',
+                'null' => true,
             ],
             'philhealth' => [
                 'type' => 'VARCHAR',
                 'constraint' => '12',
+                'null' => true,
             ],
             'res_cert_no' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20',
+                'null' => true,
             ],
             'res_issued_on' => [
                 'type' => 'DATE',
@@ -121,31 +139,29 @@ class EmployeeInfo extends Migration
             'res_issued_at' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20',
+                'null' => true,
             ],
             'contact_person' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50',
+                'null' => true,
             ],
             'contact_person_no' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20',
+                'null' => true,
             ],
             'contact_person_relation' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20',
+                'null' => true,
             ],
             'employment_date' => [
                 'type' => 'DATE',
                 'null' => true
             ],
-            'created_at' => [
-                'type' => 'DATETIME',
-                'null' => false,
-            ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => false,
-            ],
+            'created_at datetime default current_timestamp',
+            'updated_at datetime default current_timestamp on update current_timestamp',
             'deleted_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

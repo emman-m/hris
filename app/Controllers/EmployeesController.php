@@ -12,9 +12,12 @@ use App\Models\EmploymentHistory;
 use App\Models\Licensure;
 use App\Models\PositionHistory;
 use App\Models\User;
+use App\Services\EmployeeService;
 use App\Validations\EmployeeUserValidator;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
+use Config\Services;
+use Exception;
 
 class EmployeesController extends BaseController
 {
@@ -151,11 +154,49 @@ class EmployeesController extends BaseController
 
     public function edit($userId)
     {
-        
+        $user = $this->user->getUserByuserId($userId);
+
+        // Return error if no param, or no user found, or role is not employee
+        if (empty($userId) || (empty($user)) || ($user['role'] !== UserRole::EMPLOYEE->value)) {
+            withToast('error', 'Employee not found.');
+
+            return redirect()->back();
+        }
+
+        if (!session()->has('errors')) {
+            $employeeInfo = $this->employeeInfo->findByUserId($userId)->idAs('ei_id')->first() ?? [];
+            $educations = $this->education->findAllByUserId($userId) ?? [];
+            $dependents = $this->dependent->findAllByUserId($userId) ?? [];
+            $employmentHistory = $this->employmentHistory->findAllByUserId($userId) ?? [];
+            $affiliationPro = $this->affiliation->findAllProByUserId($userId) ?? [];
+            $affiliationSocio = $this->affiliation->findAllSocioByUserId($userId) ?? [];
+            $licensure = $this->licensure->findByUserId($userId)->idAs('license_id')->first() ?? [];
+            $pastPosition = $this->positionHistory->findAllPastByUserId($userId) ?? [];
+            $currentPosition = $this->positionHistory->findAllCurrentByUserId($userId) ?? [];
+
+            $context = $employeeInfo;
+            $context = array_merge($context, $licensure);
+            $context = array_merge($context, ['educations' => $educations]);
+            $context = array_merge($context, ['dependents' => $dependents]);
+            $context = array_merge($context, ['employmentHistory' => $employmentHistory]);
+            $context = array_merge($context, ['affiliationPro' => $affiliationPro]);
+            $context = array_merge($context, ['affiliationSocio' => $affiliationSocio]);
+            $context = array_merge($context, ['pastPosition' => $pastPosition]);
+            $context = array_merge($context, ['currentPosition' => $currentPosition]);
+
+            // Render the edit template and store in flash data
+            EmployeeService::parseEmployeesInfo($context);
+        }
+
+        return view('Pages/Employees/edit', ['user_id' => $userId]);
+
     }
 
-    public function store($request)
+    public function update()
     {
+        // Get the request object
+        $request = Services::request();
+
         $post = $request->getPost();
 
         $validator = new EmployeeUserValidator();
@@ -168,18 +209,20 @@ class EmployeesController extends BaseController
                 ->back()
                 ->withInput()
                 ->with('errors', $validator->getErrors())
-                ->with('formData', $request->getPost());
+                ->with('form', $request->getPost());
         }
-
 
         // Start a database transaction
         $db = Database::connect();
         $db->transStart();
 
+        log_message('info', json_encode($post));
         try {
             // Insert to employees_info
-            $this->employeeInfo->insert([
-                'user_id' => $userId,
+            $this->employeeInfo->upsert([
+                'id' => $post['ei_id'],
+                'user_id' => $post['user_id'],
+                'department' => $post['department'],
                 'birth' => $post['ei_date_of_birth'],
                 'birth_place' => $post['ei_birth_place'],
                 'gender' => $post['ei_gender'],
@@ -210,8 +253,9 @@ class EmployeesController extends BaseController
 
             // Education
             foreach ($post['e_level'] as $key => $value) {
-                $this->education->insert([
-                    'user_id' => $userId,
+                $this->education->upsert([
+                    'id' => $post['e_id'][$key],
+                    'user_id' => $post['user_id'],
                     'level' => $value,
                     'school_address' => $post['e_school_address'][$key],
                     'degree' => $post['e_degree'][$key] ?? null,
@@ -222,8 +266,9 @@ class EmployeesController extends BaseController
 
             // Dependents
             foreach ($post['d_name'] as $key => $value) {
-                $this->dependent->insert([
-                    'user_id' => $userId,
+                $this->dependent->upsert([
+                    'id' => $post['d_id'][$key],
+                    'user_id' => $post['user_id'],
                     'name' => $value,
                     'birth' => $post['d_birth'][$key] ?? null,
                     'relationship' => $post['d_relationship'][$key] ?? null,
@@ -232,8 +277,9 @@ class EmployeesController extends BaseController
 
             // Employment History
             foreach ($post['eh_name'] as $key => $value) {
-                $this->employmentHistory->insert([
-                    'user_id' => $userId,
+                $this->employmentHistory->upsert([
+                    'id' => $post['eh_id'][$key],
+                    'user_id' => $post['user_id'],
                     'name' => $value,
                     'position' => $post['eh_position'][$key],
                     'year_from' => $post['eh_year_from'][$key],
@@ -244,8 +290,9 @@ class EmployeesController extends BaseController
             // Affiliation Pro
             foreach ($post['a_p_type'] as $key => $value) {
                 if ($post['a_p_name'][$key] !== '' && $post['a_p_position'][$key] !== '') {
-                    $this->affiliation->insert([
-                        'user_id' => $userId,
+                    $this->affiliation->upsert([
+                        'id' => $post['a_p_id'][$key],
+                        'user_id' => $post['user_id'],
                         'type' => $value,
                         'name' => $post['a_p_name'][$key],
                         'position' => $post['a_p_position'][$key],
@@ -256,8 +303,9 @@ class EmployeesController extends BaseController
             // Affiliation Socio
             foreach ($post['a_s_type'] as $key => $value) {
                 if ($post['a_s_name'][$key] !== '' && $post['a_s_position'][$key] !== '') {
-                    $this->affiliation->insert([
-                        'user_id' => $userId,
+                    $this->affiliation->upsert([
+                        'id' => $post['a_s_id'][$key],
+                        'user_id' => $post['user_id'],
                         'type' => $value,
                         'name' => $post['a_s_name'][$key],
                         'position' => $post['a_s_position'][$key],
@@ -266,8 +314,9 @@ class EmployeesController extends BaseController
             }
 
             // Licensure
-            $this->licensure->insert([
-                'user_id' => $userId,
+            $this->licensure->upsert([
+                'id' => $post['l_id'],
+                'user_id' => $post['user_id'],
                 'license' => $post['l_license'],
                 'year' => $post['l_year'],
                 'rating' => $post['l_rating'],
@@ -276,8 +325,9 @@ class EmployeesController extends BaseController
 
             // Position History
             foreach ($post['pp_is_current'] as $key => $value) {
-                $this->positionHistory->insert([
-                    'user_id' => $userId,
+                $this->positionHistory->upsert([
+                    'id' => $post['pp_id'][$key],
+                    'user_id' => $post['user_id'],
                     'is_current' => $value,
                     'position' => $post['pp_position'][$key],
                     'year_from' => $post['pp_year_from'][$key],
@@ -285,18 +335,34 @@ class EmployeesController extends BaseController
                 ]);
             }
 
-            // If both operations are successful, commit the transaction
+            // Current position
+            foreach ($post['cp_is_current'] as $key => $value) {
+                $this->positionHistory->upsert([
+                    'id' => $post['cp_id'][$key],
+                    'user_id' => $post['user_id'],
+                    'is_current' => $value,
+                    'position' => $post['cp_position'][$key],
+                    'year_from' => $post['cp_year_from'][$key],
+                    'year_to' => $post['cp_year_to'][$key],
+                ]);
+            }
+
             $db->transComplete();
 
-            withToast('success', 'Success! New user has been added.');
+            // Check if the transaction was successful
+            if ($db->transStatus() === false) {
+                throw new Exception('Transaction failed');
+            }
+
+            withToast('success', 'Employee has been updated');
         } catch (Exception $e) {
             // If any operation fails, rollback the transaction
             $db->transRollback();
             log_message('info', $e);
 
-            withToast('error', 'Error! There was a problem saving user.');
+            withToast('error', 'Error! There was a problem saving changes.');
         }
 
-        return redirect()->route('users');
+        return redirect()->route('employees');
     }
 }

@@ -19,6 +19,9 @@ class Education extends Model
         'degree',
         'major_minor',
         'year_graduated',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -50,4 +53,11 @@ class Education extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function findAllByUserId($userId)
+    {
+        return $this->table($this->table)
+            ->where('user_id', $userId)
+            ->findAll();
+    }
 }

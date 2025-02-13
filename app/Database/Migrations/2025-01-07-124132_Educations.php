@@ -25,10 +25,12 @@ class Educations extends Migration
             'level' => [
                 'type' => 'ENUM',
                 'constraint' => ['Elementary', 'High School', 'Under Graduate', 'Graduate', 'Post Graduate'],
+                'null' => true,
             ],
             'school_address' => [
                 'type' => 'VARCHAR',
                 'constraint' => '250',
+                'null' => true,
             ],
             'degree' => [
                 'type' => 'VARCHAR',
@@ -42,15 +44,10 @@ class Educations extends Migration
             ],
             'year_graduated' => [
                 'type' => 'YEAR',
+                'null' => true,
             ],
-            'created_at' => [
-                'type' => 'DATETIME',
-                'null' => false,
-            ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => false,
-            ],
+            'created_at datetime default current_timestamp',
+            'updated_at datetime default current_timestamp on update current_timestamp',
             'deleted_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

@@ -499,25 +499,6 @@ class UserController extends BaseController
             // Update the users_info table
             $this->usersInfo->update($post['user_id'], $usersInfoData);
 
-            // Only handle employee info if role is EMPLOYEE
-            if ($post['role'] === UserRole::EMPLOYEE->value) {
-                $employeeData = [
-                    'user_id' => $post['user_id'],
-                    'department' => $post['department']
-                ];
-
-                // Check if employee info exists
-                $existingEmployeeInfo = $this->employeeInfo->where('user_id', $post['user_id'])->first();
-
-                if ($existingEmployeeInfo) {
-                    // If employee info exists, update it
-                    $this->employeeInfo->update($existingEmployeeInfo['id'], $employeeData);
-                } else {
-                    // If employee info doesn't exist, insert it
-                    $this->employeeInfo->insert($employeeData);
-                }
-            }
-
             // Commit the transaction
             $db->transComplete();
 

@@ -18,6 +18,9 @@ class EmploymentHistory extends Model
         'position',
         'year_from',
         'year_to',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -49,4 +52,10 @@ class EmploymentHistory extends Model
     protected $afterFind = [];
     protected $beforeDelete = [];
     protected $afterDelete = [];
+
+    public function findAllByUserId($userId)
+    {
+        return $this->where('user_id', $userId)
+            ->findAll();
+    }
 }

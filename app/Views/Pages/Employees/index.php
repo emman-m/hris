@@ -133,7 +133,7 @@ Employees
                                             <?= $item['department'] ?>
                                         </td>
                                         <td>
-                                            <a href="<?= route_to('users-show', $item['user_id']) ?>">Edit</a>
+                                            <a href="<?= route_to('employees-edit', $item['user_id']) ?>">Edit</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

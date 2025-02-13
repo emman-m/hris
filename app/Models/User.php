@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserStatus;
 use CodeIgniter\Model;
 
 class User extends Model
@@ -20,6 +21,7 @@ class User extends Model
         'status',
         'code',
         'created_at',
+        'updated_at',
         'deleted_at'
     ];
 
@@ -38,11 +40,11 @@ class User extends Model
 
     // Validation
     protected $validationRules = [];
-    
-public function validateStatusUpdate($status)
-{
-    return in_array($status, [UserStatus::ACTIVE->value, UserStatus::INACTIVE->value]);
-}
+
+    public function validateStatusUpdate($status)
+    {
+        return in_array($status, [UserStatus::ACTIVE->value, UserStatus::INACTIVE->value]);
+    }
     protected $validationMessages = [];
     protected $skipValidation = false;
     protected $cleanValidationRules = true;

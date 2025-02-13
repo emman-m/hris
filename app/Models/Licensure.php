@@ -18,6 +18,9 @@ class Licensure extends Model
         'year',
         'rating',
         'license_no',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -27,7 +30,7 @@ class Licensure extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -49,4 +52,15 @@ class Licensure extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function findByUserId($userId)
+    {
+        return $this->table($this->table)->select('*')
+            ->where('user_id', $userId);
+    }
+
+    public function idAs($alias)
+    {
+        return $this->select("id as $alias");
+    }
 }

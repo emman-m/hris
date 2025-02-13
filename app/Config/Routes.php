@@ -35,9 +35,9 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     // Edit User
     $routes->get('users/(:any)', 'UserController::edit/$1', ['as' => 'edit-users']);
     // Update User
-    $routes->post('update-user', 'UserController::update' ,['as' => 'update-user']);
+    $routes->post('update-user', 'UserController::update', ['as' => 'update-user']);
     // Update user status
-    $routes->post('user-update-status', 'UserController::update_status' ,['as' => 'user-update-status']);
+    $routes->post('user-update-status', 'UserController::update_status', ['as' => 'user-update-status']);
 
 
     /**
@@ -48,4 +48,8 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->get('employees-download', 'EmployeesController::download', ['as' => 'employees-download']);
     // Employees Print
     $routes->post('employees/print', 'EmployeesController::print', ['as' => 'employees-print']);
+    // Edit Employee
+    $routes->get('employees/(:any)', 'EmployeesController::edit/$1', ['as' => 'employees-edit']);
+    // Update Employee
+    $routes->post('employees-update', 'EmployeesController::update', ['as' => 'employees-update']);
 });

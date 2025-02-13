@@ -195,14 +195,42 @@ class EmployeeUserValidator extends Validator
                     'required' => '{field} is required.',
                 ]
             ],
-            'e_degree.*' => [
+            'e_degree.2' => [
                 'label' => 'Degree',
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} is required.',
                 ]
             ],
-            'e_major_minor.*' => [
+            'e_degree.3' => [
+                'label' => 'Degree',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} is required.',
+                ]
+            ],
+            'e_degree.4' => [
+                'label' => 'Degree',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} is required.',
+                ]
+            ],
+            'e_major_minor.2' => [
+                'label' => 'Major/Minor',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} is required.',
+                ]
+            ],
+            'e_major_minor.3' => [
+                'label' => 'Major/Minor',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} is required.',
+                ]
+            ],
+            'e_major_minor.4' => [
                 'label' => 'Major/Minor',
                 'rules' => 'required',
                 'errors' => [

@@ -29,21 +29,18 @@ class PositionHistory extends Migration
             'position' => [
                 'type' => 'VARCHAR',
                 'constraint' => '150',
+                'null' => true,
             ],
             'year_from' => [
                 'type' => 'YEAR',
+                'null' => true,
             ],
             'year_to' => [
                 'type' => 'YEAR',
+                'null' => true,
             ],
-            'created_at' => [
-                'type' => 'DATETIME',
-                'null' => false,
-            ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => false,
-            ],
+            'created_at datetime default current_timestamp',
+            'updated_at datetime default current_timestamp on update current_timestamp',
             'deleted_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

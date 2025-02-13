@@ -18,6 +18,9 @@ class PositionHistory extends Model
         'position',
         'year_from',
         'year_to',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -49,4 +52,17 @@ class PositionHistory extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function findAllPastByUserId($userId)
+    {
+        return $this->where('user_id', $userId)
+            ->where('is_current', false)
+            ->findAll();
+    }
+    public function findAllCurrentByUserId($userId)
+    {
+        return $this->where('user_id', $userId)
+            ->where('is_current', true)
+            ->findAll();
+    }
 }

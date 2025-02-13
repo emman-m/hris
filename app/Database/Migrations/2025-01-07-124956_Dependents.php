@@ -25,23 +25,20 @@ class Dependents extends Migration
             'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50',
+                'null' => true,
             ],
             'birth' => [
                 'type' => 'DATE',
                 'charset' => 'utf8mb4',
+                'null' => true,
             ],
             'relationship' => [
                 'type' => 'VARCHAR',
                 'constraint' => '150',
+                'null' => true,
             ],
-            'created_at' => [
-                'type' => 'DATETIME',
-                'null' => false,
-            ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => false,
-            ],
+            'created_at datetime default current_timestamp',
+            'updated_at datetime default current_timestamp on update current_timestamp',
             'deleted_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
