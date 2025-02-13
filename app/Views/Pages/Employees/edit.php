@@ -5,10 +5,12 @@ use App\Enums\EducationLevel;
 use App\Enums\EmployeeDepartment;
 use App\Enums\UserRole;
 use App\Enums\EmployeeStatus;
-session()->set(['menu' => 'users']);
+session()->set(['menu' => 'employees']);
 
-$formData = session()->get('formData');
+$form = session()->get('form');
 $errors = session()->get('errors');
+
+$pageTitle = 'Update Employee';
 ?>
 
 <!-- Layout -->
@@ -22,7 +24,7 @@ $errors = session()->get('errors');
 
 <!-- Title -->
 <?= $this->section('title') ?>
-Create Employee
+<?= $pageTitle ?>
 <?= $this->endSection() ?>
 
 <!-- Body -->
@@ -33,7 +35,7 @@ Create Employee
     <div class="row g-2 align-items-center">
       <div class="col">
         <h2 class="page-title">
-          Create Employee
+          <?= $pageTitle ?>
         </h2>
       </div>
     </div>
@@ -65,8 +67,10 @@ Create Employee
             <!-- Step 1 -->
             <div class="step-form step1">
               <h2>Personal Information</h2>
+              <input type="hidden" name="ei_id" value="<?= old('ei_id') ?>">
               <!-- Row -->
               <div class="row">
+                <!-- Department -->
                 <div class="mb-4 department-container">
                   <label class="form-label">Department</label>
                   <select name="department" class="form-select mt-1 block w-full">
@@ -121,8 +125,8 @@ Create Employee
                     <label class="form-label">Gender</label>
                     <select name="ei_gender" class="form-select mt-1 block w-full">
                       <option value="" selected disabled>- Please Select -</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
+                      <option value="Male" <?= old('ei_gender') === 'Male' ? 'selected' : '' ?>>Male</option>
+                      <option value="Female" <?= old('ei_gender') === 'Female' ? 'selected' : '' ?>>Female</option>
                     </select>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_gender'])): ?>
@@ -502,13 +506,15 @@ Create Employee
                 <?php
                 foreach (EducationLevel::cases() as $key => $val): ?>
                   <h3><?= $val->value ?></h3>
+                  <input type="hidden" name="e_id[]"
+                    value="<?= isset($form['e_id'][$key]) ? esc($form['e_id'][$key]) : '' ?>">
                   <input type="hidden" name="e_level[]" value="<?= $val->value ?>">
                   <div class="row">
                     <div class="col-md-6 mb-4">
                       <!-- School/Address -->
                       <label class="form-label">School/Address</label>
                       <input type="text" name="e_school_address[]" class="form-control mt-1 block w-full"
-                        value="<?= isset($formData['e_school_address'][$key]) ? esc($formData['e_school_address'][$key]) : '' ?>" />
+                        value="<?= isset($form['e_school_address'][$key]) ? esc($form['e_school_address'][$key]) : '' ?>" />
 
                       <!-- Error Message -->
                       <?php if (isset($errors["e_school_address.$key"])): ?>
@@ -521,7 +527,7 @@ Create Employee
                       <!-- Year Graduated -->
                       <label class="form-label">Year Graduated</label>
                       <input type="text" name="e_year_graduated[]" class="form-control mt-1 block w-full"
-                        value="<?= isset($formData['e_year_graduated'][$key]) ? esc($formData['e_year_graduated'][$key]) : '' ?>" />
+                        value="<?= isset($form['e_year_graduated'][$key]) ? esc($form['e_year_graduated'][$key]) : '' ?>" />
 
                       <!-- Error Message -->
                       <?php if (isset($errors["e_year_graduated.$key"])): ?>
@@ -540,7 +546,7 @@ Create Employee
                         <!-- Degree -->
                         <label class="form-label">Degree</label>
                         <input type="text" name="e_degree[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['e_degree'][$key]) ? esc($formData['e_degree'][$key]) : '' ?>" />
+                          value="<?= isset($form['e_degree'][$key]) ? esc($form['e_degree'][$key]) : '' ?>" />
 
                         <!-- Error Message -->
                         <?php if (isset($errors["e_degree.$key"])): ?>
@@ -553,7 +559,7 @@ Create Employee
                         <!-- Major/Minor -->
                         <label class="form-label">Major/Minor</label>
                         <input type="text" name="e_major_minor[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['e_major_minor'][$key]) ? esc($formData['e_major_minor'][$key]) : '' ?>" />
+                          value="<?= isset($form['e_major_minor'][$key]) ? esc($form['e_major_minor'][$key]) : '' ?>" />
 
                         <!-- Error Message -->
                         <?php if (isset($errors["e_major_minor.$key"])): ?>
@@ -579,15 +585,17 @@ Create Employee
               <div class="row">
                 <div id="beneficiariesContainer">
                   <?php
-                  $beneficiaries = $formData['d_name'] ?? [''];
+                  $beneficiaries = $form['d_name'] ?? [''];
                   foreach ($beneficiaries as $index => $beneficiary):
                     ?>
+                    <input type="hidden" name="d_id[]"
+                      value="<?= isset($form['d_id'][$index]) ? esc($form['d_id'][$index]) : '' ?>">
                     <div class="beneficiary-row row">
                       <div class="col-md-4 mb-4">
                         <!-- Name -->
                         <label class="form-label">Name</label>
                         <input type="text" name="d_name[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['d_name'][$index]) ? esc($formData['d_name'][$index]) : '' ?>" />
+                          value="<?= isset($form['d_name'][$index]) ? esc($form['d_name'][$index]) : '' ?>" />
                         <!-- Error Message -->
                         <?php if (isset($errors["d_name.$index"])): ?>
                           <div class="invalid-feedback d-block">
@@ -600,7 +608,7 @@ Create Employee
                         <!-- Date of Birth -->
                         <label class="form-label">Date of Birth</label>
                         <input type="date" name="d_birth[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['d_birth'][$index]) ? esc($formData['d_birth'][$index]) : '' ?>" />
+                          value="<?= isset($form['d_birth'][$index]) ? esc($form['d_birth'][$index]) : '' ?>" />
                         <!-- Error Message -->
                         <?php if (isset($errors["d_birth.$index"]) && $errors["d_birth.$index"]): ?>
                           <div class="invalid-feedback d-block">
@@ -612,7 +620,7 @@ Create Employee
                         <!-- Relationship to Employee -->
                         <label class="form-label">Relationship to Employee</label>
                         <input type="text" name="d_relationship[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['d_relationship'][$index]) ? esc($formData['d_relationship'][$index]) : '' ?>" />
+                          value="<?= isset($form['d_relationship'][$index]) ? esc($form['d_relationship'][$index]) : '' ?>" />
                         <!-- Error Message -->
                         <?php if (isset($errors["d_relationship.$index"]) && $errors["d_relationship.$index"]): ?>
                           <div class="invalid-feedback d-block">
@@ -657,15 +665,17 @@ Create Employee
                 <div id="employmentContainer">
                   <!-- Employment Row Template -->
                   <?php
-                  $employments = $formData['eh_name'] ?? [''];
+                  $employments = $form['eh_name'] ?? [''];
                   foreach ($employments as $index => $employment):
                     ?>
+                    <input type="hidden" name="eh_id[]"
+                      value="<?= isset($form['eh_id'][$index]) ? esc($form['eh_id'][$index]) : '' ?>">
                     <div class="employment-row row">
                       <div class="col-md-4 mb-4">
                         <!-- Institution/Company -->
                         <label class="form-label">Institution/Company</label>
                         <input type="text" name="eh_name[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['eh_name'][$index]) ? esc($formData['eh_name'][$index]) : '' ?>" />
+                          value="<?= isset($form['eh_name'][$index]) ? esc($form['eh_name'][$index]) : '' ?>" />
                         <!-- Error Message -->
                         <?php if (isset($errors["eh_name.$index"]) && $errors["eh_name.$index"]): ?>
                           <div class="invalid-feedback d-block">
@@ -677,7 +687,7 @@ Create Employee
                         <!-- Position -->
                         <label class="form-label">Position</label>
                         <input type="text" name="eh_position[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['eh_position'][$index]) ? esc($formData['eh_position'][$index]) : '' ?>" />
+                          value="<?= isset($form['eh_position'][$index]) ? esc($form['eh_position'][$index]) : '' ?>" />
                         <!-- Error Message -->
                         <?php if (isset($errors["eh_position.$index"]) && $errors["eh_position.$index"]): ?>
                           <div class="invalid-feedback d-block">
@@ -691,7 +701,7 @@ Create Employee
                         <div class="col-md-6 col-sm-12 mb-4">
                           <!-- From -->
                           <input type="text" name="eh_year_from[]" class="form-control block w-full" placeholder="From"
-                            value="<?= isset($formData['eh_year_from'][$index]) ? esc($formData['eh_year_from'][$index]) : '' ?>" />
+                            value="<?= isset($form['eh_year_from'][$index]) ? esc($form['eh_year_from'][$index]) : '' ?>" />
                           <!-- Error Message -->
                           <?php if (isset($errors["eh_year_from.$index"]) && $errors["eh_year_from.$index"]): ?>
                             <div class="invalid-feedback d-block">
@@ -702,7 +712,7 @@ Create Employee
                         <div class="col-md-6 col-sm-12 mb-4">
                           <!-- To -->
                           <input type="text" name="eh_year_to[]" class="form-control block w-full" placeholder="To"
-                            value="<?= isset($formData['eh_year_to'][$index]) ? esc($formData['eh_year_to'][$index]) : '' ?>" />
+                            value="<?= isset($form['eh_year_to'][$index]) ? esc($form['eh_year_to'][$index]) : '' ?>" />
                           <!-- Error Message -->
                           <?php if (isset($errors["eh_year_to.$index"]) && $errors["eh_year_to.$index"]): ?>
                             <div class="invalid-feedback d-block">
@@ -749,15 +759,17 @@ Create Employee
               <div class="row">
                 <div id="affiliationProContainer">
                   <?php
-                  $professionals = $formData['a_p_type'] ?? [''];
+                  $professionals = $form['a_p_type'] ?? [''];
                   foreach ($professionals as $index => $professional): ?>
+                    <input type="hidden" name="a_p_id[]"
+                      value="<?= isset($form['a_p_id'][$index]) ? esc($form['a_p_id'][$index]) : '' ?>">
                     <div class="affiliation-pro-row row">
                       <input type="hidden" name="a_p_type[]" value="<?= AffiliationType::PROFESSIONAL->value ?>">
                       <div class="col-md-6 mb-4">
                         <!-- Name of Organization -->
                         <label class="form-label">Name of Organization</label>
                         <input type="text" name="a_p_name[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['a_p_name'][$index]) ? esc($formData['a_p_name'][$index]) : '' ?>" />
+                          value="<?= isset($form['a_p_name'][$index]) ? esc($form['a_p_name'][$index]) : '' ?>" />
                         <!-- Error Message -->
                         <?php if (isset($errors["a_p_name.$index"]) && $errors["a_p_name.$index"]): ?>
                           <div class="invalid-feedback d-block">
@@ -769,7 +781,7 @@ Create Employee
                         <!-- Position -->
                         <label class="form-label">Position</label>
                         <input type="text" name="a_p_position[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['a_p_position'][$index]) ? esc($formData['a_p_position'][$index]) : '' ?>" />
+                          value="<?= isset($form['a_p_position'][$index]) ? esc($form['a_p_position'][$index]) : '' ?>" />
                         <!-- Error Message -->
                         <?php if (isset($errors["a_p_position.$index"]) && $errors["a_p_position.$index"]): ?>
                           <div class="invalid-feedback d-block">
@@ -815,15 +827,17 @@ Create Employee
               <div class="row">
                 <div id="affiliationSocioContainer">
                   <?php
-                  $socios = $formData['a_s_type'] ?? [''];
+                  $socios = $form['a_s_type'] ?? [''];
                   foreach ($socios as $index => $socio): ?>
+                    <input type="hidden" name="a_s_id[]"
+                      value="<?= isset($form['a_s_id'][$index]) ? esc($form['a_s_id'][$index]) : '' ?>">
                     <div class="affiliation-socio-row row">
                       <input type="hidden" name="a_s_type[]" value="<?= AffiliationType::SOCIOCIVIC->value ?>">
                       <div class="col-md-6 mb-4">
                         <!-- Name of Organization -->
                         <label class="form-label">Name of Organization</label>
                         <input type="text" name="a_s_name[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['a_s_name'][$index]) ? esc($formData['a_s_name'][$index]) : '' ?>" />
+                          value="<?= isset($form['a_s_name'][$index]) ? esc($form['a_s_name'][$index]) : '' ?>" />
                         <!-- Error Message -->
                         <?php if (isset($errors["a_s_name.$index"]) && $errors["a_s_name.$index"]): ?>
                           <div class="invalid-feedback d-block">
@@ -835,7 +849,7 @@ Create Employee
                         <!-- Position -->
                         <label class="form-label">Position</label>
                         <input type="text" name="a_s_position[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['a_s_position'][$index]) ? esc($formData['a_s_position'][$index]) : '' ?>" />
+                          value="<?= isset($form['a_s_position'][$index]) ? esc($form['a_s_position'][$index]) : '' ?>" />
                         <!-- Error Message -->
                         <?php if (isset($errors["a_s_position.$index"]) && $errors["a_s_position.$index"]): ?>
                           <div class="invalid-feedback d-block">
@@ -879,12 +893,13 @@ Create Employee
             <!-- Step 4 -->
             <div class="step-form step4">
               <h2>Licensure/Government Exam Passed</h2>
+              <input type="hidden" name="l_id" value="<?= old('l_id') ?>">
               <div class="row">
                 <div class="col-md-4 mb-4">
                   <!-- License -->
                   <label class="form-label">License</label>
                   <input type="text" name="l_license" class="form-control mt-1 block w-full"
-                    value="<?php old('l_license') ?>" />
+                    value="<?= old('l_license') ?>" />
                   <!-- Error Message -->
                   <?php if (isset($errors["l_license"]) && $errors["l_license"]): ?>
                     <div class="invalid-feedback d-block">
@@ -896,7 +911,7 @@ Create Employee
                   <!-- Year Taken -->
                   <label class="form-label">Year Taken</label>
                   <input type="text" name="l_year" class="form-control mt-1 block w-full"
-                    value="<?php old('l_year') ?>" />
+                    value="<?= old('l_year') ?>" />
                   <!-- Error Message -->
                   <?php if (isset($errors["l_year"]) && $errors["l_year"]): ?>
                     <div class="invalid-feedback d-block">
@@ -908,7 +923,7 @@ Create Employee
                   <!-- Rating -->
                   <label class="form-label">Rating</label>
                   <input type="text" name="l_rating" class="form-control mt-1 block w-full"
-                    value="<?php old('l_rating') ?>" />
+                    value="<?= old('l_rating') ?>" />
                   <!-- Error Message -->
                   <?php if (isset($errors["l_rating"]) && $errors["l_rating"]): ?>
                     <div class="invalid-feedback d-block">
@@ -920,7 +935,7 @@ Create Employee
                   <!-- License No. -->
                   <label class="form-label">License No.</label>
                   <input type="text" name="l_license_no" class="form-control mt-1 block w-full"
-                    value="<?php old('l_license_no') ?>" />
+                    value="<?= old('l_license_no') ?>" />
                   <!-- Error Message -->
                   <?php if (isset($errors["l_license_no"]) && $errors["l_license_no"]): ?>
                     <div class="invalid-feedback d-block">
@@ -935,15 +950,17 @@ Create Employee
               <div class="row">
                 <div id="pastPositionContainer">
                   <?php
-                  $socios = $formData['pp_is_current'] ?? [''];
-                  foreach ($socios as $index => $socio): ?>
+                  $pasts = $form['pp_is_current'] ?? [''];
+                  foreach ($pasts as $index => $past): ?>
+                    <input type="hidden" name="pp_id[]"
+                      value="<?= isset($form['pp_id'][$index]) ? esc($form['pp_id'][$index]) : '' ?>">
                     <div class="past-position-row row">
                       <input type="hidden" name="pp_is_current[]" value="0">
                       <div class="col-md-6 mb-4">
                         <!-- Position -->
                         <label class="form-label">Position</label>
                         <input type="text" name="pp_position[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['pp_position'][$index]) ? esc($formData['pp_position'][$index]) : '' ?>" />
+                          value="<?= isset($form['pp_position'][$index]) ? esc($form['pp_position'][$index]) : '' ?>" />
                         <!-- Error Message -->
                         <?php if (isset($errors["pp_position.$index"]) && $errors["pp_position.$index"]): ?>
                           <div class="invalid-feedback d-block">
@@ -957,7 +974,7 @@ Create Employee
                           <!-- Year From -->
                           <input type="text" name="pp_year_from[]" class="form-control mt-1 block w-full"
                             placeholder="From"
-                            value="<?= isset($formData['pp_year_from'][$index]) ? esc($formData['pp_year_from'][$index]) : '' ?>" />
+                            value="<?= isset($form['pp_year_from'][$index]) ? esc($form['pp_year_from'][$index]) : '' ?>" />
                           <!-- Error Message -->
                           <?php if (isset($errors["pp_year_from.$index"]) && $errors["pp_year_from.$index"]): ?>
                             <div class="invalid-feedback d-block">
@@ -968,7 +985,7 @@ Create Employee
                         <div class="col-md-6 col-sm-12">
                           <!-- Year To -->
                           <input type="text" name="pp_year_to[]" class="form-control mt-1 block w-full" placeholder="to"
-                            value="<?= isset($formData['pp_year_to'][$index]) ? esc($formData['pp_year_to'][$index]) : '' ?>" />
+                            value="<?= isset($form['pp_year_to'][$index]) ? esc($form['pp_year_to'][$index]) : '' ?>" />
                           <!-- Error Message -->
                           <?php if (isset($errors["pp_year_to.$index"]) && $errors["pp_year_to.$index"]): ?>
                             <div class="invalid-feedback d-block">
@@ -1016,19 +1033,21 @@ Create Employee
               <div class="row">
                 <div id="currentPositionContainer">
                   <?php
-                  $socios = $formData['pp_is_current'] ?? [''];
-                  foreach ($socios as $index => $socio): ?>
+                  $currents = $form['cp_is_current'] ?? [''];
+                  foreach ($currents as $index => $current): ?>
+                    <input type="hidden" name="cp_id[]"
+                      value="<?= isset($form['cp_id'][$index]) ? esc($form['cp_id'][$index]) : '' ?>">
                     <div class="current-position-row row">
-                      <input type="hidden" name="pp_is_current[]" value="1">
+                      <input type="hidden" name="cp_is_current[]" value="1">
                       <div class="col-md-6 mb-4">
                         <!-- Position -->
                         <label class="form-label">Position</label>
-                        <input type="text" name="pp_position[]" class="form-control mt-1 block w-full"
-                          value="<?= isset($formData['pp_position'][$index]) ? esc($formData['pp_position'][$index]) : '' ?>" />
+                        <input type="text" name="cp_position[]" class="form-control mt-1 block w-full"
+                          value="<?= isset($form['cp_position'][$index]) ? esc($form['cp_position'][$index]) : '' ?>" />
                         <!-- Error Message -->
-                        <?php if (isset($errors["pp_position.$index"]) && $errors["pp_position.$index"]): ?>
+                        <?php if (isset($errors["cp_position.$index"]) && $errors["cp_position.$index"]): ?>
                           <div class="invalid-feedback d-block">
-                            <?= $errors["pp_position.$index"] ?>
+                            <?= $errors["cp_position.$index"] ?>
                           </div>
                         <?php endif; ?>
                       </div>
@@ -1036,24 +1055,24 @@ Create Employee
                         <label class="form-label">Inclusive Year</label>
                         <div class="col-md-6 col-sm-12">
                           <!-- Year From -->
-                          <input type="text" name="pp_year_from[]" class="form-control mt-1 block w-full"
+                          <input type="text" name="cp_year_from[]" class="form-control mt-1 block w-full"
                             placeholder="From"
-                            value="<?= isset($formData['pp_year_from'][$index]) ? esc($formData['pp_year_from'][$index]) : '' ?>" />
+                            value="<?= isset($form['cp_year_from'][$index]) ? esc($form['cp_year_from'][$index]) : '' ?>" />
                           <!-- Error Message -->
-                          <?php if (isset($errors["pp_year_from.$index"]) && $errors["pp_year_from.$index"]): ?>
+                          <?php if (isset($errors["cp_year_from.$index"]) && $errors["cp_year_from.$index"]): ?>
                             <div class="invalid-feedback d-block">
-                              <?= $errors["pp_year_from.$index"] ?>
+                              <?= $errors["cp_year_from.$index"] ?>
                             </div>
                           <?php endif; ?>
                         </div>
                         <div class="col-md-6 col-sm-12 mb-4">
                           <!-- Year To -->
-                          <input type="text" name="pp_year_to[]" class="form-control mt-1 block w-full" placeholder="to"
-                            value="<?= isset($formData['pp_year_to'][$index]) ? esc($formData['pp_year_to'][$index]) : '' ?>" />
+                          <input type="text" name="cp_year_to[]" class="form-control mt-1 block w-full" placeholder="to"
+                            value="<?= isset($form['cp_year_to'][$index]) ? esc($form['cp_year_to'][$index]) : '' ?>" />
                           <!-- Error Message -->
-                          <?php if (isset($errors["pp_year_to.$index"]) && $errors["pp_year_to.$index"]): ?>
+                          <?php if (isset($errors["cp_year_to.$index"]) && $errors["cp_year_to.$index"]): ?>
                             <div class="invalid-feedback d-block">
-                              <?= $errors["pp_year_to.$index"] ?>
+                              <?= $errors["cp_year_to.$index"] ?>
                             </div>
                           <?php endif; ?>
                         </div>

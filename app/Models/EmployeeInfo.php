@@ -42,6 +42,9 @@ class EmployeeInfo extends Model
         'contact_person_no',
         'contact_person_relation',
         'employment_date',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -74,10 +77,14 @@ class EmployeeInfo extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function findById($id)
+    public function findByUserId($userId)
     {
-        $builder = $this->table($this->table)
-            ->select('employees_info.*')
-            ->join('dependents', 'employees_info.user_id = dependents.user_id');
+        return $this->table($this->table)->select('*')
+            ->where('user_id', $userId);
+    }
+
+    public function idAs($alias)
+    {
+        return $this->select("id as $alias");
     }
 }
