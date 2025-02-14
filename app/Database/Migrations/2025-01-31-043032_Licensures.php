@@ -27,7 +27,8 @@ class Licensures extends Migration
                 'constraint' => '200',
             ],
             'year' => [
-                'type' => 'YEAR',
+                'type' => 'VARCHAR',
+                'constraint' => '4',
             ],
             'rating' => [
                 'type' => 'VARCHAR',

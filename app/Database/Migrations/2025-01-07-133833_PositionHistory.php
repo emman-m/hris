@@ -32,11 +32,13 @@ class PositionHistory extends Migration
                 'null' => true,
             ],
             'year_from' => [
-                'type' => 'YEAR',
+                'type' => 'VARCHAR',
+                'constraint' => '4',
                 'null' => true,
             ],
             'year_to' => [
-                'type' => 'YEAR',
+                'type' => 'VARCHAR',
+                'constraint' => '4',
                 'null' => true,
             ],
             'created_at datetime default current_timestamp',

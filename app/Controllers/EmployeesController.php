@@ -216,7 +216,6 @@ class EmployeesController extends BaseController
         $db = Database::connect();
         $db->transStart();
 
-        log_message('info', json_encode($post));
         try {
             // Insert to employees_info
             $this->employeeInfo->upsert([
@@ -281,7 +280,7 @@ class EmployeesController extends BaseController
                     'id' => $post['eh_id'][$key],
                     'user_id' => $post['user_id'],
                     'name' => $value,
-                    'position' => $post['eh_position'][$key],
+                    'position' => $post['eh_position'][$key] ?? null,
                     'year_from' => $post['eh_year_from'][$key],
                     'year_to' => $post['eh_year_to'][$key]
                 ]);
