@@ -203,7 +203,6 @@ class EmployeesController extends BaseController
         // Validate Request
 
         if (!$validator->runValidation($request)) {
-            log_message('info', json_encode($validator->getErrors()));
             // Validation failed, return to the form with errors
             return redirect()
                 ->back()
@@ -216,7 +215,6 @@ class EmployeesController extends BaseController
         $db = Database::connect();
         $db->transStart();
 
-        log_message('info', json_encode($post));
         try {
             // Insert to employees_info
             $this->employeeInfo->upsert([
@@ -281,7 +279,7 @@ class EmployeesController extends BaseController
                     'id' => $post['eh_id'][$key],
                     'user_id' => $post['user_id'],
                     'name' => $value,
-                    'position' => $post['eh_position'][$key],
+                    'position' => $post['eh_position'][$key] ?? null,
                     'year_from' => $post['eh_year_from'][$key],
                     'year_to' => $post['eh_year_to'][$key]
                 ]);
@@ -358,11 +356,62 @@ class EmployeesController extends BaseController
         } catch (Exception $e) {
             // If any operation fails, rollback the transaction
             $db->transRollback();
-            log_message('info', $e);
+            log_message('error', $e);
 
             withToast('error', 'Error! There was a problem saving changes.');
         }
 
         return redirect()->route('employees');
+    }
+
+    public function update_lock_state()
+    {
+        $request = $this->request->getPost();
+
+        // Validate input
+        if (!isset($request['user_id']) || !isset($request['state'])) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Invalid input data.',
+                'csrfToken' => csrf_hash(),
+            ]);
+        }
+
+        // Determine the new status
+        $state = $request['state'];
+        
+        try {
+            // check if employee is existing
+            $employee = $this->employeeInfo->findByUserId($request['user_id'])->first();
+            
+            if (!empty($employee)) {
+                $this->employeeInfo->set('is_lock', $state)
+                    ->where('user_id', $request['user_id'])
+                    ->update();
+            } else {
+                $this->employeeInfo->insert([
+                    'user_id' => $request['user_id'],
+                    'is_lock' => $state,
+                ]);
+            }
+
+            $stateMsg = $state ? 'Locked' : 'Unlocked';
+            // Return the response with updated CSRF token
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => "Employee's information is now $stateMsg",
+                'csrfToken' => csrf_hash(),
+            ]);
+
+        } catch (Exception $e) {
+            // Log the error
+            log_message('error', 'Failed to update Employee status: ' . $e->getMessage());
+
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Failed to update Employee status.',
+                'csrfToken' => csrf_hash(),
+            ]);
+        }
     }
 }

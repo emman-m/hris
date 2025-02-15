@@ -22,6 +22,10 @@ class EmployeeInfo extends Migration
                 'constraint' => 11,
                 'unsigned' => true,
             ],
+            'is_lock' => [
+                'type' => 'BOOLEAN',
+                'null' => false,
+            ],
             'department' => [
                 'type' => 'ENUM',
                 'constraint' => [

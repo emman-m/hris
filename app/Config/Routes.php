@@ -52,4 +52,6 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->get('employees/(:any)', 'EmployeesController::edit/$1', ['as' => 'employees-edit']);
     // Update Employee
     $routes->post('employees-update', 'EmployeesController::update', ['as' => 'employees-update']);
+    // Update Employee lock state
+    $routes->post('employees-lock-info', 'EmployeesController::update_lock_state', ['as' => 'employees-lock-info']);
 });

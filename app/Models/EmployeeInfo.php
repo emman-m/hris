@@ -15,6 +15,7 @@ class EmployeeInfo extends Model
     protected $allowedFields    = [
         'id',
         'user_id',
+        'is_lock',
         'department',
         'birth',
         'birth_place',

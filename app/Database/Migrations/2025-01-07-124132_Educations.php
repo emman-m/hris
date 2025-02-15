@@ -43,7 +43,8 @@ class Educations extends Migration
                 'null' => true,
             ],
             'year_graduated' => [
-                'type' => 'YEAR',
+                'type' => 'VARCHAR',
+                'constraint' => '4',
                 'null' => true,
             ],
             'created_at datetime default current_timestamp',

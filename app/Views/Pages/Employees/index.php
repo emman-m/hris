@@ -16,6 +16,7 @@ Employees
 <!-- Custom import -->
 <?= $this->section('footer-script') ?>
 <script src="<?= base_url('js/employees/index.js') ?>"></script>
+<script src="<?= base_url('js/employees/lock_employee.js') ?>"></script>
 <?= $this->endSection() ?>
 
 <!-- Body -->
@@ -44,7 +45,8 @@ Employees
                                 <select name="department" class="form-select">
                                     <option value="">All Department</option>
                                     <?php foreach (EmployeeDepartment::cases() as $department): ?>
-                                        <option value="<?= $department->value ?>" <?= (service('request')->getGet('department') == $department->value) ? 'selected' : '' ?>>
+                                        <option value="<?= $department->value ?>"
+                                            <?= (service('request')->getGet('department') == $department->value) ? 'selected' : '' ?>>
                                             <?= $department->value ?>
                                         </option>
                                     <?php endforeach; ?>
@@ -79,7 +81,8 @@ Employees
             <div class="col-12">
                 <div class="col-auto ms-auto">
                     <!-- Download CSV -->
-                    <a href="<?= route_to('employees-download') . '?' . http_build_query($_GET) ?>" class="btn btn-primary">
+                    <a href="<?= route_to('employees-download') . '?' . http_build_query($_GET) ?>"
+                        class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-download">
@@ -91,8 +94,8 @@ Employees
                         CSV
                     </a>
                     <!-- Add Print Button -->
-                    <button id="printButton" class="btn btn-outline-primary" data-url="<?= route_to('employees-print') ?>"
-                        title="Print">
+                    <button id="printButton" class="btn btn-outline-primary"
+                        data-url="<?= route_to('employees-print') ?>" title="Print">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-printer">
@@ -132,7 +135,11 @@ Employees
                                         <td class="text-secondary">
                                             <?= $item['department'] ?>
                                         </td>
-                                        <td>
+                                        <td class="d-flex gap-2">
+                                            <a href="javascript:void(0)" class="lock-unlock-employee"
+                                                data-id="<?= $item['user_id'] ?>"
+                                                data-url="<?= route_to('employees-lock-info') ?>"
+                                                data-state="<?= $item['is_lock'] ?? 0 ?>"><?= $item['is_lock'] ? 'Unlock' : 'Lock' ?></a>
                                             <a href="<?= route_to('employees-edit', $item['user_id']) ?>">Edit</a>
                                         </td>
                                     </tr>
@@ -159,11 +166,5 @@ Employees
         </div>
     </div>
 </div>
-
-<!-- Script to update CSRF dynamically -->
-<script>
-    const csrfTokenName = '<?= csrf_token() ?>';
-    let csrfTokenValue = '<?= csrf_hash() ?>';
-</script>
 
 <?= $this->endSection() ?>
