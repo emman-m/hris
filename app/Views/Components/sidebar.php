@@ -1,3 +1,7 @@
+<?php
+
+use App\Enums\UserRole;
+?>
 <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
@@ -42,6 +46,7 @@
                     </a>
                 </li>
                 <!-- Users -->
+                <?php if (session()->get('role') !== UserRole::EMPLOYEE->value) : ?>
                 <li class="nav-item <?= session()->get('menu') == 'users' ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= route_to('users') ?>">
                         <span
@@ -61,7 +66,9 @@
                         </span>
                     </a>
                 </li>
+                <?php endif; ?>
                 <!-- Employees -->
+                <?php if (session()->get('role') !== UserRole::EMPLOYEE->value) : ?>
                 <li class="nav-item <?= session()->get('menu') == 'employees' ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= route_to('employees') ?>">
                         <span
@@ -82,6 +89,7 @@
                         </span>
                     </a>
                 </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Enums\UserRole;
+use App\Libraries\Policy\AuthPolicy;
 use App\Models\Affiliation;
 use App\Models\Dependent;
 use App\Models\Education;
@@ -14,6 +15,7 @@ use App\Models\PositionHistory;
 use App\Models\User;
 use App\Services\EmployeeService;
 use App\Validations\EmployeeUserValidator;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
 use Config\Services;
@@ -30,6 +32,9 @@ class EmployeesController extends BaseController
     protected $licensure;
     protected $positionHistory;
 
+    // Declare the AuthPolicy instance as a protected property
+    protected $auth;
+
     public function __construct()
     {
         $this->user = new User();
@@ -40,10 +45,18 @@ class EmployeesController extends BaseController
         $this->affiliation = new Affiliation();
         $this->licensure = new Licensure();
         $this->positionHistory = new PositionHistory();
+
+        // Initialize the AuthPolicy instance
+        $this->auth = new AuthPolicy();
     }
 
     public function index()
     {
+        // Auth user
+        if ($this->auth->isEmployee()) {
+            throw new PageNotFoundException('Page Not Found', 404);
+        }
+
         // Retrieve filters from the request
         $filters = [
             'role' => UserRole::EMPLOYEE->value,
@@ -75,6 +88,12 @@ class EmployeesController extends BaseController
 
     public function download()
     {
+        // Auth user
+        if ($this->auth->isEmployee()) {
+            // return $this->response->setStatusCode(404, 'Not Found')->setBody('Page not found');
+            throw new PageNotFoundException('Page Not Found', 404);
+        }
+
         // Retrieve filters from the request
         $filters = [
             'role' => UserRole::EMPLOYEE->value,
@@ -111,6 +130,12 @@ class EmployeesController extends BaseController
 
     public function print()
     {
+        // Auth user
+        if ($this->auth->isEmployee()) {
+            // return $this->response->setStatusCode(404, 'Not Found')->setBody('Page not found');
+            throw new PageNotFoundException('Page Not Found', 404);
+        }
+
         // Retrieve filters from the request
         $filters = $this->request->getPost();
         // Override role
@@ -154,6 +179,12 @@ class EmployeesController extends BaseController
 
     public function edit($userId)
     {
+        // Auth user
+        if ($this->auth->isEmployee()) {
+            // return $this->response->setStatusCode(404, 'Not Found')->setBody('Page not found');
+            throw new PageNotFoundException('Page Not Found', 404);
+        }
+
         $user = $this->user->getUserByuserId($userId);
 
         // Return error if no param, or no user found, or role is not employee
@@ -194,6 +225,12 @@ class EmployeesController extends BaseController
 
     public function update()
     {
+        // Auth user
+        if ($this->auth->isEmployee()) {
+            // return $this->response->setStatusCode(404, 'Not Found')->setBody('Page not found');
+            throw new PageNotFoundException('Page Not Found', 404);
+        }
+
         // Get the request object
         $request = Services::request();
 
@@ -366,6 +403,12 @@ class EmployeesController extends BaseController
 
     public function update_lock_state()
     {
+        // Auth user
+        if ($this->auth->isEmployee()) {
+            // return $this->response->setStatusCode(404, 'Not Found')->setBody('Page not found');
+            throw new PageNotFoundException('Page Not Found', 404);
+        }
+
         $request = $this->request->getPost();
 
         // Validate input
@@ -379,11 +422,11 @@ class EmployeesController extends BaseController
 
         // Determine the new status
         $state = $request['state'];
-        
+
         try {
             // check if employee is existing
             $employee = $this->employeeInfo->findByUserId($request['user_id'])->first();
-            
+
             if (!empty($employee)) {
                 $this->employeeInfo->set('is_lock', $state)
                     ->where('user_id', $request['user_id'])
