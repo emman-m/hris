@@ -1,5 +1,5 @@
-$(function() {
-    $('.lock-unlock-employee').on('click', function() {
+$(function () {
+    $('.lock-unlock-employee').on('click', function () {
         let ele = $(this);
         let userId = $(this).data('id');
         let url = $(this).data('url');
@@ -14,7 +14,9 @@ $(function() {
 
         Swal.fire({
             title: "Are you sure?",
-            text: state === 1 ? "Employee will not be able to edit his information" : "Employee will be able to edit his information",
+            text: state === 1
+                ? "Employee will not be able to edit his information"
+                : "Employee will be able to edit his information",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -22,7 +24,7 @@ $(function() {
             confirmButtonText: `Yes ${state === 0 ? 'Unlock' : 'Lock'} it!`,
         }).then((result) => {
             if (result.isConfirmed) {
-                
+
                 var data = {
                     state: state,
                     user_id: userId
