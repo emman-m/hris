@@ -79,7 +79,7 @@ class EmployeesController extends BaseController
             'end' => min($pager->getCurrentPage() * $pager->getPerPage(), $pager->getTotal()),
         ];
 
-        return view('Pages/Employees/index', [
+        return view('Pages/Employees/Admin/index', [
             'data' => $data,
             'pager' => $pager,
             'paginationInfo' => $paginationInfo,
@@ -219,7 +219,7 @@ class EmployeesController extends BaseController
             EmployeeService::parseEmployeesInfo($context);
         }
 
-        return view('Pages/Employees/edit', ['user_id' => $userId]);
+        return view('Pages/Employees/Admin/edit', ['user_id' => $userId]);
 
     }
 

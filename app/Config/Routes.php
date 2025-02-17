@@ -41,6 +41,7 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
 
 
     /**
+     * ADMIN
      * Employees Route
      */
     $routes->get('employees', 'EmployeesController::index', ['as' => 'employees']);
@@ -54,4 +55,8 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->post('employees-update', 'EmployeesController::update', ['as' => 'employees-update']);
     // Update Employee lock state
     $routes->post('employees-lock-info', 'EmployeesController::update_lock_state', ['as' => 'employees-lock-info']);
+
+    $routes->group('files', function ($routes) {
+        $routes->get('(:any)', 'EmployeesFileController::index', ['as' => 'files']);
+    });
 });
