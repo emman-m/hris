@@ -56,7 +56,23 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     // Update Employee lock state
     $routes->post('employees-lock-info', 'EmployeesController::update_lock_state', ['as' => 'employees-lock-info']);
 
-    $routes->group('files', function ($routes) {
-        $routes->get('(:any)', 'EmployeesFileController::index', ['as' => 'files']);
-    });
+    /**
+     * Files Route
+     */
+    // Admin - user files
+    $routes->get('files/(:any)', 'EmployeesFileController::index/$1', ['as' => 'files']);
+    // Employee - my files
+    $routes->get('files', 'EmployeesFileController::index', ['as' => 'my-files']);
+    // File list CSV download
+    $routes->get('files-download', 'EmployeesFileController::download', ['as' => 'files-download']);
+    // Files Print
+    $routes->post('files/print', 'EmployeesFileController::print', ['as' => 'files-print']);
+    // Files Save index
+    $routes->get('files-upload', 'EmployeesFileController::create', ['as' => 'files-upload']);
+    // Save new file
+    $routes->post('files-save', 'EmployeesFileController::store', ['as' => 'files-save']);
+    // Files edit index
+    $routes->get('files-edit/(:any)', 'EmployeesFileController::edit/$1', ['as' => 'files-edit']);
+    // Save new file
+    $routes->post('files-delete/', 'EmployeesFileController::delete', ['as' => 'files-delete']);
 });

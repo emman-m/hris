@@ -26,16 +26,9 @@ class EmployeesFile extends Migration
                 'type' => 'INT',
                 'constraint' => 11,
             ],
-            'is_approved' => [
-                'type' => 'BOOLEAN',
-                'default' => false
-            ],
-            'approving_user' => [
-                'type' => 'INT',
-                'constraint' => 11,
-            ],
-            'approve_datetime' => [
-                'type' => 'DATETIME',
+            'file_name' => [
+                'type' => 'VARCHAR',
+                'constraint' => '500',
             ],
             'file' => [
                 'type' => 'VARCHAR',

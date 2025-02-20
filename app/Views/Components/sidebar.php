@@ -90,6 +90,29 @@ use App\Enums\UserRole;
                     </a>
                 </li>
                 <?php endif; ?>
+                <!-- My Files -->
+                <?php if (session()->get('role') === UserRole::EMPLOYEE->value) : ?>
+                <li class="nav-item <?= session()->get('menu') == 'my-files' ? 'active' : '' ?>">
+                    <a class="nav-link" href="<?= route_to('my-files') ?>">
+                        <span
+                            class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-file-stack">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
+                                <path d="M5 21h14" />
+                                <path d="M5 18h14" />
+                                <path d="M5 15h14" />
+                            </svg>
+                        </span>
+                        <span class="nav-link-title">
+                            My Files
+                        </span>
+                    </a>
+                </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

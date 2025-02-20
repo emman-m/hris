@@ -125,7 +125,7 @@ class EmployeesController extends BaseController
         }, $results);
 
         // Use the global CSV download helper
-        return downloadCSV('User-' . date('Y-m-d H:i:s') . '.csv', $headers, $data);
+        return downloadCSV('Employees-' . date('Y-m-d H:i:s') . '.csv', $headers, $data);
     }
 
     public function print()

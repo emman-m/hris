@@ -30,6 +30,7 @@ Users
                     Users
                 </h2>
             </div>
+            <!-- Create new user button -->
             <div class="col-auto ms-auto">
                 <a href="<?= route_to('create-user'); ?>" class="btn">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"

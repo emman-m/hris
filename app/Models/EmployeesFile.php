@@ -6,19 +6,18 @@ use CodeIgniter\Model;
 
 class EmployeesFile extends Model
 {
-    protected $table            = 'employees_files';
-    protected $primaryKey       = 'id';
+    protected $table = 'employees_files';
+    protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
-    protected $protectFields    = true;
-    protected $allowedFields    = [
+    protected $returnType = 'array';
+    protected $useSoftDeletes = true;
+    protected $protectFields = true;
+    protected $allowedFields = [
+        'id',
         'user_id',
         'created_user',
-        'is_approved',
-        'approving_user',
-        'approve_datetime',
         'file',
+        'file_name',
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -29,25 +28,43 @@ class EmployeesFile extends Model
 
     // Dates
     protected $useTimestamps = true;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    protected $dateFormat = 'datetime';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
+    protected $validationRules = [];
+    protected $validationMessages = [];
+    protected $skipValidation = false;
     protected $cleanValidationRules = true;
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+    protected $beforeInsert = [];
+    protected $afterInsert = [];
+    protected $beforeUpdate = [];
+    protected $afterUpdate = [];
+    protected $beforeFind = [];
+    protected $afterFind = [];
+    protected $beforeDelete = [];
+    protected $afterDelete = [];
+
+    public function search(array $filters = [])
+    {
+        $builder = $this->table($this->table)
+            ->select('
+                employees_files.*,
+                CONCAT(uic.first_name, " ", uic.middle_name, " ", uic.last_name) as uploaded_by')
+            ->join('users_info uic', 'employees_files.created_user = uic.user_id', 'LEFT')
+            ->orderBy('employees_files.updated_at', 'DESC')
+            ->where('employees_files.deleted_at IS NULL');
+
+        // Apply search filter
+        if (!empty($filters['search'])) {
+            $builder->like('file', $filters['search']);
+        }
+
+        return $builder;
+    }
 }
