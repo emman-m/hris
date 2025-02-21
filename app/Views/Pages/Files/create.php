@@ -34,6 +34,14 @@ $title = 'Upload File';
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
+                    <a href="javascript:history.back()" class="d-flex">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left align-middle">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M15 6l-6 6l6 6" />
+                        </svg>
+                    </a>
                     <?= $title ?>
                 </h2>
             </div>
