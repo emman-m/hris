@@ -8,6 +8,7 @@ use App\Libraries\Policy\AuthPolicy;
 use App\Models\EmployeesFile;
 use App\Models\User;
 use App\Validations\Files\StoreValidation;
+use App\Validations\Files\UpdateValidation;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Database;
 use Config\Services;
@@ -43,8 +44,12 @@ class EmployeesFileController extends BaseController
             ? session()->get('user_id')
             : $user_id;
 
-        // Employee info
+        // User info
         $user = $this->user->getUserByuserId($userId);
+
+        if (!$this->auth->isEmployee($user['role'])) {
+            throw new PageNotFoundException('Bad request');
+        }
 
         $pageTitle = !$user_id
             ? 'My Files'
@@ -52,6 +57,7 @@ class EmployeesFileController extends BaseController
 
         // Retrieve filters from the request
         $filters = [
+            'user_id' => $userId,
             'status' => $this->request->getGet('status'),
             'search' => $this->request->getGet('search'),
         ];
@@ -84,6 +90,7 @@ class EmployeesFileController extends BaseController
     {
         // Retrieve filters from the request
         $filters = [
+            'user_id' => $this->request->getGet('user_id'),
             'search' => $this->request->getGet('search'),
         ];
 
@@ -102,7 +109,7 @@ class EmployeesFileController extends BaseController
 
             return [
                 $count,
-                $row['file'],
+                $row['file_name'],
                 $row['uploaded_by'],
                 $row['created_at'],
             ];
@@ -125,14 +132,13 @@ class EmployeesFileController extends BaseController
         $data = $queryBuilder->get()->getResultArray();
 
         // Prepare headers for the table
-        $headers = ['File name', 'Uploaded By', 'Approved By', 'Date Upload'];
+        $headers = ['File name', 'Uploaded By', 'Date Upload'];
 
         // Prepare rows
         $rows = array_map(function ($item) {
             return [
-                $item['file'],
+                $item['file_name'],
                 $item['uploaded_by'],
-                $item['approved_by'],
                 $item['created_at'],
             ];
         }, $data);
@@ -283,5 +289,97 @@ class EmployeesFileController extends BaseController
                 'csrfToken' => csrf_hash(),
             ]);
         }
+    }
+
+    public function edit($file_id)
+    {
+        if (empty($file_id)) {
+            throw new PageNotFoundException('Bad Request');
+        }
+
+        $fileData = $this->employeeFile->where(['id' => $file_id])->first();
+
+        if ($this->auth->isEmployee() && $fileData['user_id'] !== session()->get('user_id')) {
+            throw new PageNotFoundException('Bad Request');
+        }
+
+        return view('Pages/Files/edit', ['id' => $fileData['id'], 'file_name' => $fileData['file_name']]);
+    }
+
+    public function update()
+    {
+        // Get the request object
+        $request = Services::request();
+
+        $post = $request->getPost();
+
+        // Validate Request
+        $validator = new UpdateValidation();
+        $validator->setId($post['id']);
+        if (!$validator->runValidation($request)) {
+            // Validation failed, return to the form with errors
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', $validator->getErrors());
+        }
+
+        // Start a database transaction
+        $db = Database::connect();
+        $db->transStart();
+
+        try {
+            $file = $this->request->getFile('file');
+
+            $data = [
+                'file_name' => $post['file_name'],
+            ];
+            // Check if the file was uploaded successfully
+            if ($file->isValid() && !$file->hasMoved()) {
+
+                // Move the uploaded file
+                if (!$file->move(WRITEPATH . 'uploads')) {
+                    // If moving the file fails, rollback the transaction
+                    throw new Exception('Failed to move the uploaded file.');
+                }
+
+                $data['file'] = $file->getName();
+            }
+            
+            $this->employeeFile->update($post['id'], $data);
+
+            // Commit the transaction
+            $db->transComplete();
+
+            // Check if the transaction was successful
+            if ($db->transStatus() === false) {
+                throw new Exception('Transaction failed');
+            }
+
+            withToast('success', "Success! File has been updated.");
+        } catch (Exception $e) {
+            // Rollback transaction in case of error
+            $db->transRollback();
+            log_message('warning', $e->getMessage());
+
+            withToast('error', 'Error! There was a problem saving.');
+
+        }
+
+        return redirect()->route('files-edit', [$post['id']]);
+    }
+
+    public function fileDownload($id)
+    {
+        $fileInfo = $this->employeeFile->where('id', $id)->first();
+        $filePath = WRITEPATH . 'uploads/' . $fileInfo['file'];
+
+        // Check if file exists
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+
+        // Use the response helper to download the file
+        return $this->response->download($filePath, null)->setFileName($fileInfo['file_name'].'_'.$fileInfo['file']);
     }
 }

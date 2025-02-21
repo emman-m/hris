@@ -38,7 +38,8 @@ if (session()->get('role') === UserRole::EMPLOYEE->value) {
             </div>
             <!-- Upload new file button -->
             <div class="col-auto ms-auto">
-                <a href="<?= $isEmployee ? route_to('files-upload') : route_to('files-upload') . '?user_id=' . $user_id ?>" class="btn">
+                <a href="<?= $isEmployee ? route_to('files-upload') : route_to('files-upload') . '?user_id=' . $user_id ?>"
+                    class="btn">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -76,7 +77,8 @@ if (session()->get('role') === UserRole::EMPLOYEE->value) {
             <div class="col-12">
                 <div class="col-auto ms-auto">
                     <!-- Download CSV -->
-                    <a href="<?= route_to('files-download') . '?' . http_build_query($_GET) ?>" class="btn btn-primary">
+                    <a href="<?= route_to('files-download') . '?user_id=' . $user_id . '&' . http_build_query($_GET) ?>"
+                        class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-download">
@@ -88,7 +90,7 @@ if (session()->get('role') === UserRole::EMPLOYEE->value) {
                         CSV
                     </a>
                     <!-- Add Print Button -->
-                    <button id="printButton" class="btn btn-outline-primary" data-url="<?= route_to('files-print') ?>"
+                    <button id="printButton" class="btn btn-outline-primary" data-id="<?= $user_id ?>" data-url="<?= route_to('files-print') ?>"
                         title="Print">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
@@ -121,9 +123,12 @@ if (session()->get('role') === UserRole::EMPLOYEE->value) {
                                         </td>
                                         <td class="d-flex gap-2">
                                             <!-- files -->
+                                            <a href="<?= route_to('files-file-download', $item['id']) ?>">Download</a>
+                                            |
                                             <a href="<?= route_to('files-edit', $item['id']) ?>">Edit</a>
                                             |
-                                            <a href="javascript:void(0)" class="data-delete" data-id="<?= $item['id']?>" data-url="<?= route_to('files-delete') ?>">Delete</a>
+                                            <a href="javascript:void(0)" class="data-delete" data-id="<?= $item['id'] ?>"
+                                                data-url="<?= route_to('files-delete') ?>">Delete</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

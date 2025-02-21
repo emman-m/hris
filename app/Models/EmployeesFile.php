@@ -60,9 +60,14 @@ class EmployeesFile extends Model
             ->orderBy('employees_files.updated_at', 'DESC')
             ->where('employees_files.deleted_at IS NULL');
 
+        // Apply user id filter
+        if (!empty($filters['user_id'])) {
+            $builder->where('employees_files.user_id', $filters['user_id']);
+        }
+
         // Apply search filter
         if (!empty($filters['search'])) {
-            $builder->like('file', $filters['search']);
+            $builder->like('employees_files.file_name', '%' . $filters['search'] . '%');
         }
 
         return $builder;

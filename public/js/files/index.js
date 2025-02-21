@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('#printButton').on('click', function () {
+        const userId = $(this).data('id');
         const printUrl = $(this).data('url');
 
         // Parse the URL query parameters
@@ -7,6 +8,7 @@ $(document).ready(function () {
         console.log(params)
         // Fetch filters
         const filters = {
+            user_id: userId,
             search: params.get('search') || '',
         };
 

@@ -74,5 +74,9 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     // Files edit index
     $routes->get('files-edit/(:any)', 'EmployeesFileController::edit/$1', ['as' => 'files-edit']);
     // Save new file
-    $routes->post('files-delete/', 'EmployeesFileController::delete', ['as' => 'files-delete']);
+    $routes->post('files-update', 'EmployeesFileController::update', ['as' => 'files-update']);
+    // Save new file
+    $routes->post('files-delete', 'EmployeesFileController::delete', ['as' => 'files-delete']);
+    // Save new file
+    $routes->get('files-file-download/(:any)', 'EmployeesFileController::fileDownload/$1', ['as' => 'files-file-download']);
 });

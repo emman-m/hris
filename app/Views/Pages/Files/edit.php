@@ -11,7 +11,7 @@ if (session()->get('role') === UserRole::EMPLOYEE->value) {
 $errors = session()->get('errors');
 
 // page title
-$title = 'Upload File';
+$title = 'Edit File';
 ?>
 
 <!-- Layout -->
@@ -45,15 +45,15 @@ $title = 'Upload File';
         <div class="row row-deck row-cards">
             <div class="col-12">
 
-                <form action="<?= route_to('files-save') ?>" class="card" method="post" enctype="multipart/form-data">
+                <form action="<?= route_to('files-update') ?>" class="card" method="post" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <div class="card-status-top bg-primary"></div>
                     <div class="card-body">
 
-                        <!-- User id -->
-                        <input type="hidden" name="user_id" , value="<?= $user_id ?>">
+                        <!-- ID -->
+                        <input type="hidden" name="id" value="<?= $id ?>">
                         <!-- Upload form -->
-                        <?= view('Pages/Files/Partials/upload_form', ['errors' => $errors]) ?>
+                        <?= view('Pages/Files/Partials/upload_form', ['errors' => $errors, 'file_name' => $file_name]) ?>
                     </div>
                     <div class="card-footer text-end">
                         <button type="submit" class="btn btn-primary">Save File</button>
