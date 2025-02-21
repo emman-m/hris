@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\ApproveStatus;
+
 /**
  * The goal of this file is to allow developers a location
  * where they can overwrite core procedural functions and
@@ -24,14 +26,15 @@
  * @return true
  */
 if (!function_exists('withToast')) {
-    function withToast($icon, $text, $title = "") {
+    function withToast($icon, $text, $title = "")
+    {
 
         // Prepare the toast data
         $toastData = [
             'class' => $icon === 'error' ? 'danger' : $icon,
-            'icon'  => $icon,
+            'icon' => $icon,
             'title' => $title,
-            'text'  => $text,
+            'text' => $text,
         ];
 
         // Set the toast data as flashdata in the session
@@ -118,5 +121,25 @@ if (!function_exists('downloadCSV')) {
             ->setHeader('Content-Type', 'text/csv')
             ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
             ->setBody($csvData);
+    }
+}
+
+if (!function_exists('approve_status')) {
+    /**
+     * Generate badge for approval status
+     *
+     * @param string $status ApproveStatus enum
+     * @return string
+     */
+    function approve_status(string $status)
+    {
+        $badge = "";
+        $badge = match ($status) {
+            ApproveStatus::APPROVED->value => '<span class="badge bg-teal-lt">' . ApproveStatus::APPROVED->value . '</span>',
+            ApproveStatus::DENIED->value => '<span class="badge bg-red-lt">' . ApproveStatus::DENIED->value . '</span>',
+            default => '<span class="badge bg-yellow-lt">' . ApproveStatus::PENDING->value . '</span>',
+        };
+
+        return $badge;
     }
 }

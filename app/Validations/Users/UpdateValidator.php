@@ -2,7 +2,6 @@
 
 namespace App\Validations\Users;
 
-use App\Enums\EmployeeDepartment;
 use App\Enums\UserRole;
 use App\Validations\Validator;
 

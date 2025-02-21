@@ -136,11 +136,19 @@ Employees
                                             <?= $item['department'] ?>
                                         </td>
                                         <td class="d-flex gap-2">
+                                            <!-- files -->
+                                            <a href="<?= route_to('files', $item['user_id']) ?>">Files</a>
+                                            |
+                                            <!-- Edit information -->
+                                            <a href="<?= route_to('employees-edit', $item['user_id']) ?>">Edit</a>
+                                            |
+                                            <!-- Lock/Unlock editing informations -->
                                             <a href="javascript:void(0)" class="lock-unlock-employee"
                                                 data-id="<?= $item['user_id'] ?>"
                                                 data-url="<?= route_to('employees-lock-info') ?>"
-                                                data-state="<?= $item['is_lock'] ?? 0 ?>"><?= $item['is_lock'] ? 'Unlock' : 'Lock' ?></a>
-                                            <a href="<?= route_to('employees-edit', $item['user_id']) ?>">Edit</a>
+                                                data-state="<?= $item['is_lock'] ?? 0 ?>">
+                                                <?= $item['is_lock'] ? 'Unlock' : 'Lock' ?>
+                                            </a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

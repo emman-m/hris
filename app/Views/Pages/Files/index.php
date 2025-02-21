@@ -1,38 +1,45 @@
 <?php
 
+use App\Enums\ApproveStatus;
 use App\Enums\UserRole;
-use App\Enums\UserStatus;
-session()->set(['menu' => 'users']);
+if (session()->get('role') === UserRole::EMPLOYEE->value) {
+    session()->set(['menu' => 'my-files']);
+} else {
+    session()->set(['menu' => 'employees']);
+}
+
 ?>
 
 <!-- Layout -->
 <?= $this->extend('AuthLayout/main') ?>
 
-<!-- Title -->
-<?= $this->section('title') ?>
-Users
-<?= $this->endSection() ?>
-
 <!-- Custom import -->
 <?= $this->section('footer-script') ?>
-<script src="<?= base_url('js/users/index.js') ?>"></script>
-<script src="<?= base_url('js/users/switch.js') ?>"></script>
+<script src="<?= base_url('js/files/index.js') ?>"></script>
+<script src="<?= base_url('js/files/data-delete.js') ?>"></script>
+<?= $this->endSection() ?>
+
+<!-- Title -->
+<?= $this->section('title') ?>
+<?= $pageTitle ?>
 <?= $this->endSection() ?>
 
 <!-- Body -->
 <?= $this->section('content') ?>
+
 
 <div class="page-header d-print-none">
     <div class="container-xl">
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Users
+                    <?= $pageTitle ?>
                 </h2>
             </div>
-            <!-- Create new user button -->
+            <!-- Upload new file button -->
             <div class="col-auto ms-auto">
-                <a href="<?= route_to('create-user'); ?>" class="btn">
+                <a href="<?= $isEmployee ? route_to('files-upload') : route_to('files-upload') . '?user_id=' . $user_id ?>"
+                    class="btn">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -40,7 +47,7 @@ Users
                         <line x1="12" y1="5" x2="12" y2="19" />
                         <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
-                    Create User
+                    Upload
                 </a>
             </div>
         </div>
@@ -53,35 +60,11 @@ Users
                 <div class="card">
                     <div class="card-body">
                         <form method="get" action="<?= current_url() ?>" class="row g-3">
-                            <!-- User Role -->
-                            <div class="col-md-4">
-                                <select name="role" class="form-select">
-                                    <option value="">All Roles</option>
-                                    <?php foreach (UserRole::cases() as $role): ?>
-                                        <option value="<?= $role->value ?>"
-                                            <?= (service('request')->getGet('role') == $role->value) ? 'selected' : '' ?>>
-                                            <?= $role->value ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <!-- User Status -->
-                            <div class="col-md-4">
-                                <select name="status" class="form-select">
-                                    <option value="">All Status</option>
-                                    <?php foreach (UserStatus::cases() as $role): ?>
-                                        <option value="<?= $role->value ?>"
-                                            <?= (service('request')->getGet('status') == $role->value) ? 'selected' : '' ?>>
-                                            <?= $role->value ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <!-- Name Email key -->
+                            <!-- File Name key -->
                             <div class="col-md-4">
                                 <input type="text" name="search" class="form-control"
                                     value="<?= service('request')->getGet('search') ?>"
-                                    placeholder="Search by name or email">
+                                    placeholder="Search by file name">
                             </div>
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary">Filter</button>
@@ -94,7 +77,8 @@ Users
             <div class="col-12">
                 <div class="col-auto ms-auto">
                     <!-- Download CSV -->
-                    <a href="<?= route_to('users-download') . '?' . http_build_query($_GET) ?>" class="btn btn-primary">
+                    <a href="<?= route_to('files-download') . '?user_id=' . $user_id . '&' . http_build_query($_GET) ?>"
+                        class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-download">
@@ -106,7 +90,7 @@ Users
                         CSV
                     </a>
                     <!-- Add Print Button -->
-                    <button id="printButton" class="btn btn-outline-primary" data-url="<?= route_to('users-print') ?>"
+                    <button id="printButton" class="btn btn-outline-primary" data-id="<?= $user_id ?>" data-url="<?= route_to('files-print') ?>"
                         title="Print">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
@@ -127,31 +111,24 @@ Users
                         <table class="table table-vcenter card-table">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
+                                    <th>File</th>
                                     <th class="w-1"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($data as $item): ?>
                                     <tr>
-                                        <td class="d-flex align-items-center">
-                                            <label class="form-check form-switch d-inline-block m-0">
-                                                <input type="checkbox" class="form-check-input status-switch" data-url="<?= route_to('user-update-status')?>" data-id="<?= $item['user_id'] ?>"
-                                                    <?= $item['status'] === UserStatus::ACTIVE->value ? 'checked' : '' ?> />
-                                            </label>
-
-                                            <?= $item['name'] ?>
-                                        </td>
-                                        <td class="text-secondary">
-                                            <?= $item['email'] ?>
-                                        </td>
-                                        <td class="text-secondary">
-                                            <?= $item['role'] ?>
-                                        </td>
                                         <td>
-                                            <a href="<?= route_to('edit-users', $item['user_id']) ?>">Edit</a>
+                                            <?= $item['file_name'] ?>
+                                        </td>
+                                        <td class="d-flex gap-2">
+                                            <!-- files -->
+                                            <a href="<?= route_to('files-file-download', $item['id']) ?>">Download</a>
+                                            |
+                                            <a href="<?= route_to('files-edit', $item['id']) ?>">Edit</a>
+                                            |
+                                            <a href="javascript:void(0)" class="data-delete" data-id="<?= $item['id'] ?>"
+                                                data-url="<?= route_to('files-delete') ?>">Delete</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -177,5 +154,6 @@ Users
         </div>
     </div>
 </div>
+
 
 <?= $this->endSection() ?>

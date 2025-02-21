@@ -45,6 +45,7 @@ class AuthController extends BaseController
                         $session->set(
                             [
                                 'id' => $user['id'],
+                                'user_id' => $user['user_id'],
                                 'email' => $user['email'],
                                 'name' => $userinfo['first_name'] . ' ' . $userinfo['middle_name'] . ' ' . $userinfo['last_name'],
                                 'role' => $user['role'],
