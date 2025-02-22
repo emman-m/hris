@@ -51,7 +51,9 @@ class EmployeeInfo extends Model
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    protected array $casts = [];
+    protected array $casts = [
+        'is_lock' => 'bool'
+    ];
     protected array $castHandlers = [];
 
     // Dates

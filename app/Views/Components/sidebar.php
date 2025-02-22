@@ -113,7 +113,7 @@ use App\Enums\UserRole;
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item <?= session()->get('menu') == 'my-files' ? 'active' : '' ?>">
+                    <li class="nav-item <?= session()->get('menu') == 'my-informations' ? 'active' : '' ?>">
                         <a class="nav-link" href="<?= route_to('my-informations') ?>">
                             <span
                                 class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
