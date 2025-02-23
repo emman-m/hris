@@ -50,6 +50,7 @@ class AuthController extends BaseController
                                 'name' => $userinfo['first_name'] . ' ' . $userinfo['middle_name'] . ' ' . $userinfo['last_name'],
                                 'role' => $user['role'],
                                 'isLoggedIn' => true,
+                                'initials' => $userinfo['first_name'][0]. $userinfo['last_name'][0]
                             ]
                         );
 

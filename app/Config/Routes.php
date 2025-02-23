@@ -79,4 +79,11 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->post('files-delete', 'EmployeesFileController::delete', ['as' => 'files-delete']);
     // Save new file
     $routes->get('files-file-download/(:any)', 'EmployeesFileController::fileDownload/$1', ['as' => 'files-file-download']);
+
+    /**
+     * EMPLOYEE
+     * Employee informations route
+     */
+    $routes->get('my-informations', 'EmployeesInfoController::index', ['as' => 'my-informations']);
+    $routes->post('my-informations-update', 'EmployeesInfoController::update', ['as' => 'my-informations-update']);
 });

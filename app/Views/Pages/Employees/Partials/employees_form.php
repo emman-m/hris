@@ -4,6 +4,8 @@ use App\Enums\AffiliationType;
 use App\Enums\EducationLevel;
 use App\Enums\EmployeeDepartment;
 use App\Enums\EmployeeStatus;
+
+$is_locked ??= false;
 ?>
 <div class="card-body">
     <!-- Step 1 -->
@@ -15,7 +17,7 @@ use App\Enums\EmployeeStatus;
             <!-- Department -->
             <div class="mb-4 department-container">
                 <label class="form-label">Department</label>
-                <select name="department" class="form-select mt-1 block w-full">
+                <select name="department" class="form-select mt-1 block w-full" <?= $is_locked ? 'disabled' : '' ?>>
                     <option value="" selected disabled>- Please Select -</option>
                     <?php foreach (EmployeeDepartment::cases() as $department): ?>
                         <option value="<?= $department->value ?>" <?= $department->value === old('department') ? 'selected' : '' ?>>
@@ -38,7 +40,7 @@ use App\Enums\EmployeeStatus;
                     <!-- Date of Birth -->
                     <label class="form-label">Date of Birth</label>
                     <input type="date" name="ei_date_of_birth" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_date_of_birth') ?>" autocomplete="off">
+                        value="<?= old('ei_date_of_birth') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_date_of_birth'])): ?>
                         <div class="invalid-feedback d-block">
@@ -52,7 +54,7 @@ use App\Enums\EmployeeStatus;
                     <!-- Place of Birth -->
                     <label class="form-label">Place of Birth</label>
                     <input type="text" name="ei_birth_place" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_birth_place') ?>" autocomplete="off">
+                        value="<?= old('ei_birth_place') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_birth_place'])): ?>
                         <div class="invalid-feedback d-block">
@@ -65,7 +67,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <!-- Gender -->
                     <label class="form-label">Gender</label>
-                    <select name="ei_gender" class="form-select mt-1 block w-full">
+                    <select name="ei_gender" class="form-select mt-1 block w-full" <?= $is_locked ? 'disabled' : '' ?>>
                         <option value="" selected disabled>- Please Select -</option>
                         <option value="Male" <?= old('ei_gender') === 'Male' ? 'selected' : '' ?>>Male</option>
                         <option value="Female" <?= old('ei_gender') === 'Female' ? 'selected' : '' ?>>Female</option>
@@ -82,7 +84,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <!-- Status -->
                     <label class="form-label">Status</label>
-                    <select id="ei_status" name="ei_status" class="form-select mt-1 block w-full">
+                    <select id="ei_status" name="ei_status" class="form-select mt-1 block w-full" <?= $is_locked ? 'disabled' : '' ?>>
                         <option value="" selected disabled>- Please Select -</option>
                         <?php foreach (EmployeeStatus::cases() as $status): ?>
                             <option value="<?= $status->value ?>" <?= $status->value === old('ei_status') ? 'selected' : '' ?>>
@@ -106,7 +108,7 @@ use App\Enums\EmployeeStatus;
                     <!-- Spouse -->
                     <label class="form-label">Spouse Name</label>
                     <input type="text" name="ei_spouse" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_spouse') ?>" autocomplete="off">
+                        value="<?= old('ei_spouse') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_spouse'])): ?>
                         <div class="invalid-feedback d-block">
@@ -123,7 +125,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Permanent Address</label>
                     <input type="text" name="ei_permanent_address" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_permanent_address') ?>" autocomplete="off">
+                        value="<?= old('ei_permanent_address') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_permanent_address'])): ?>
                         <div class="invalid-feedback d-block">
@@ -137,7 +139,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Present Address</label>
                     <input type="text" name="ei_present_address" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_present_address') ?>" autocomplete="off">
+                        value="<?= old('ei_present_address') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_present_address'])): ?>
                         <div class="invalid-feedback d-block">
@@ -155,7 +157,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Father's Name</label>
                     <input type="text" name="ei_fathers_name" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_fathers_name') ?>" autocomplete="off">
+                        value="<?= old('ei_fathers_name') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_fathers_name'])): ?>
                         <div class="invalid-feedback d-block">
@@ -171,7 +173,7 @@ use App\Enums\EmployeeStatus;
                         <div class="mb-4">
                             <label class="form-label">Mother's Name</label>
                             <input type="text" name="ei_mothers_name" class="form-control mt-1 block w-full"
-                                value="<?= old('ei_mothers_name') ?>" autocomplete="off">
+                                value="<?= old('ei_mothers_name') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                             <!-- Error Message -->
                             <?php if (isset($errors['ei_mothers_name'])): ?>
                                 <div class="invalid-feedback d-block">
@@ -185,7 +187,7 @@ use App\Enums\EmployeeStatus;
                         <div class="mb-4">
                             <label class="form-label">Mother's Maiden Name</label>
                             <input type="text" name="ei_mothers_maiden_name" class="form-control mt-1 block w-full"
-                                value="<?= old('ei_mothers_maiden_name') ?>" autocomplete="off">
+                                value="<?= old('ei_mothers_maiden_name') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                             <!-- Error Message -->
                             <?php if (isset($errors['ei_mothers_maiden_name'])): ?>
                                 <div class="invalid-feedback d-block">
@@ -204,7 +206,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Religion</label>
                     <input type="text" name="ei_religion" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_religion') ?>" autocomplete="off">
+                        value="<?= old('ei_religion') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_religion'])): ?>
                         <div class="invalid-feedback d-block">
@@ -218,7 +220,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Tel No.</label>
                     <input type="text" name="ei_tel" class="form-control mt-1 block w-full" value="<?= old('ei_tel') ?>"
-                        autocomplete="off">
+                        autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_tel'])): ?>
                         <div class="invalid-feedback d-block">
@@ -232,7 +234,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Phone No.</label>
                     <input type="text" name="ei_phone" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_phone') ?>" autocomplete="off">
+                        value="<?= old('ei_phone') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_phone'])): ?>
                         <div class="invalid-feedback d-block">
@@ -246,7 +248,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Nationality</label>
                     <input type="text" name="ei_nationality" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_nationality') ?>" autocomplete="off">
+                        value="<?= old('ei_nationality') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_nationality'])): ?>
                         <div class="invalid-feedback d-block">
@@ -264,7 +266,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">SSS No</label>
                     <input type="text" name="ei_sss" class="form-control mt-1 block w-full" value="<?= old('ei_sss') ?>"
-                        autocomplete="off">
+                        autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_sss'])): ?>
                         <div class="invalid-feedback d-block">
@@ -278,7 +280,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">SSS Date of Coverage</label>
                     <input type="date" name="ei_date_of_coverage" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_date_of_coverage') ?>" autocomplete="off">
+                        value="<?= old('ei_date_of_coverage') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_date_of_coverage'])): ?>
                         <div class="invalid-feedback d-block">
@@ -292,7 +294,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Pag-ibig MID No.</label>
                     <input type="text" name="ei_pagibig" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_pagibig') ?>" autocomplete="off">
+                        value="<?= old('ei_pagibig') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_pagibig'])): ?>
                         <div class="invalid-feedback d-block">
@@ -306,7 +308,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">TIN No.</label>
                     <input type="text" name="ei_tin" class="form-control mt-1 block w-full" value="<?= old('ei_tin') ?>"
-                        autocomplete="off">
+                        autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_tin'])): ?>
                         <div class="invalid-feedback d-block">
@@ -321,7 +323,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Philhealth No.</label>
                     <input type="text" name="ei_philhealth" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_philhealth') ?>" autocomplete="off">
+                        value="<?= old('ei_philhealth') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_philhealth'])): ?>
                         <div class="invalid-feedback d-block">
@@ -338,7 +340,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Res Cert No.</label>
                     <input type="text" name="ei_res_cert_no" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_res_cert_no') ?>" autocomplete="off">
+                        value="<?= old('ei_res_cert_no') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_res_cert_no'])): ?>
                         <div class="invalid-feedback d-block">
@@ -352,7 +354,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Issued On</label>
                     <input type="date" name="ei_res_issued_on" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_res_issued_on') ?>" autocomplete="off">
+                        value="<?= old('ei_res_issued_on') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_res_issued_on'])): ?>
                         <div class="invalid-feedback d-block">
@@ -366,7 +368,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Issued At</label>
                     <input type="text" name="ei_res_issued_at" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_res_issued_at') ?>" autocomplete="off">
+                        value="<?= old('ei_res_issued_at') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_res_issued_at'])): ?>
                         <div class="invalid-feedback d-block">
@@ -384,7 +386,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Contact Person in Case of Emergency</label>
                     <input type="text" name="ei_contact_person" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_contact_person') ?>" autocomplete="off">
+                        value="<?= old('ei_contact_person') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_contact_person'])): ?>
                         <div class="invalid-feedback d-block">
@@ -398,7 +400,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Contact No.</label>
                     <input type="text" name="ei_contact_person_no" class="phone form-control mt-1 block w-full"
-                        value="<?= old('ei_contact_person_no') ?>" autocomplete="off">
+                        value="<?= old('ei_contact_person_no') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_contact_person_no'])): ?>
                         <div class="invalid-feedback d-block">
@@ -412,7 +414,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Relationship</label>
                     <input type="text" name="ei_contact_person_relation" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_contact_person_relation') ?>" autocomplete="off">
+                        value="<?= old('ei_contact_person_relation') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_contact_person_relation'])): ?>
                         <div class="invalid-feedback d-block">
@@ -430,7 +432,7 @@ use App\Enums\EmployeeStatus;
                 <div class="mb-4">
                     <label class="form-label">Year Employed in LCCT</label>
                     <input type="date" name="ei_employment_date" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_employment_date') ?>" autocomplete="off">
+                        value="<?= old('ei_employment_date') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_employment_date'])): ?>
                         <div class="invalid-feedback d-block">
@@ -456,7 +458,8 @@ use App\Enums\EmployeeStatus;
                         <!-- School/Address -->
                         <label class="form-label">School/Address</label>
                         <input type="text" name="e_school_address[]" class="form-control mt-1 block w-full"
-                            value="<?= isset($form['e_school_address'][$key]) ? esc($form['e_school_address'][$key]) : '' ?>" />
+                            value="<?= isset($form['e_school_address'][$key]) ? esc($form['e_school_address'][$key]) : '' ?>"
+                            <?= $is_locked ? 'disabled' : '' ?> />
 
                         <!-- Error Message -->
                         <?php if (isset($errors["e_school_address.$key"])): ?>
@@ -469,7 +472,8 @@ use App\Enums\EmployeeStatus;
                         <!-- Year Graduated -->
                         <label class="form-label">Year Graduated</label>
                         <input type="text" name="e_year_graduated[]" class="form-control mt-1 block w-full"
-                            value="<?= isset($form['e_year_graduated'][$key]) ? esc($form['e_year_graduated'][$key]) : '' ?>" />
+                            value="<?= isset($form['e_year_graduated'][$key]) ? esc($form['e_year_graduated'][$key]) : '' ?>"
+                            <?= $is_locked ? 'disabled' : '' ?> />
 
                         <!-- Error Message -->
                         <?php if (isset($errors["e_year_graduated.$key"])): ?>
@@ -488,7 +492,7 @@ use App\Enums\EmployeeStatus;
                             <!-- Degree -->
                             <label class="form-label">Degree</label>
                             <input type="text" name="e_degree[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['e_degree'][$key]) ? esc($form['e_degree'][$key]) : '' ?>" />
+                                value="<?= isset($form['e_degree'][$key]) ? esc($form['e_degree'][$key]) : '' ?>" <?= $is_locked ? 'disabled' : '' ?> />
 
                             <!-- Error Message -->
                             <?php if (isset($errors["e_degree.$key"])): ?>
@@ -501,7 +505,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Major/Minor -->
                             <label class="form-label">Major/Minor</label>
                             <input type="text" name="e_major_minor[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['e_major_minor'][$key]) ? esc($form['e_major_minor'][$key]) : '' ?>" />
+                                value="<?= isset($form['e_major_minor'][$key]) ? esc($form['e_major_minor'][$key]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
 
                             <!-- Error Message -->
                             <?php if (isset($errors["e_major_minor.$key"])): ?>
@@ -537,7 +542,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Name -->
                             <label class="form-label">Name</label>
                             <input type="text" name="d_name[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['d_name'][$index]) ? esc($form['d_name'][$index]) : '' ?>" />
+                                value="<?= isset($form['d_name'][$index]) ? esc($form['d_name'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["d_name.$index"])): ?>
                                 <div class="invalid-feedback d-block">
@@ -550,7 +556,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Date of Birth -->
                             <label class="form-label">Date of Birth</label>
                             <input type="date" name="d_birth[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['d_birth'][$index]) ? esc($form['d_birth'][$index]) : '' ?>" />
+                                value="<?= isset($form['d_birth'][$index]) ? esc($form['d_birth'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["d_birth.$index"]) && $errors["d_birth.$index"]): ?>
                                 <div class="invalid-feedback d-block">
@@ -562,7 +569,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Relationship to Employee -->
                             <label class="form-label">Relationship to Employee</label>
                             <input type="text" name="d_relationship[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['d_relationship'][$index]) ? esc($form['d_relationship'][$index]) : '' ?>" />
+                                value="<?= isset($form['d_relationship'][$index]) ? esc($form['d_relationship'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["d_relationship.$index"]) && $errors["d_relationship.$index"]): ?>
                                 <div class="invalid-feedback d-block">
@@ -570,36 +578,40 @@ use App\Enums\EmployeeStatus;
                                 </div>
                             <?php endif; ?>
                         </div>
-                        <div class="col-md-1 d-flex align-items-center">
-                            <button type="button" class="btn btn-danger remove-beneficiary">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M4 7l16 0" />
-                                    <path d="M10 11l0 6" />
-                                    <path d="M14 11l0 6" />
-                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                </svg>
-                            </button>
-                        </div>
+                        <?php if (!$is_locked): ?>
+                            <div class="col-md-1 d-flex align-items-center">
+                                <button type="button" class="btn btn-danger remove-beneficiary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                    </svg>
+                                </button>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="d-flex justify-content-between">
-                <!-- Add Button -->
-                <button type="button" id="addBeneficiary" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 5l0 14" />
-                        <path d="M5 12l14 0" />
-                    </svg>
-                </button>
-            </div>
+            <?php if (!$is_locked): ?>
+                <div class="d-flex justify-content-between">
+                    <!-- Add Button -->
+                    <button type="button" id="addBeneficiary" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 5l0 14" />
+                            <path d="M5 12l14 0" />
+                        </svg>
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
         <hr>
 
@@ -618,7 +630,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Institution/Company -->
                             <label class="form-label">Institution/Company</label>
                             <input type="text" name="eh_name[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['eh_name'][$index]) ? esc($form['eh_name'][$index]) : '' ?>" />
+                                value="<?= isset($form['eh_name'][$index]) ? esc($form['eh_name'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["eh_name.$index"]) && $errors["eh_name.$index"]): ?>
                                 <div class="invalid-feedback d-block">
@@ -630,7 +643,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Position -->
                             <label class="form-label">Position</label>
                             <input type="text" name="eh_position[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['eh_position'][$index]) ? esc($form['eh_position'][$index]) : '' ?>" />
+                                value="<?= isset($form['eh_position'][$index]) ? esc($form['eh_position'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["eh_position.$index"]) && $errors["eh_position.$index"]): ?>
                                 <div class="invalid-feedback d-block">
@@ -645,7 +659,8 @@ use App\Enums\EmployeeStatus;
                                 <!-- From -->
                                 <input type="text" name="eh_year_from[]" class="form-control block w-full"
                                     placeholder="From"
-                                    value="<?= isset($form['eh_year_from'][$index]) ? esc($form['eh_year_from'][$index]) : '' ?>" />
+                                    value="<?= isset($form['eh_year_from'][$index]) ? esc($form['eh_year_from'][$index]) : '' ?>"
+                                    <?= $is_locked ? 'disabled' : '' ?> />
                                 <!-- Error Message -->
                                 <?php if (isset($errors["eh_year_from.$index"]) && $errors["eh_year_from.$index"]): ?>
                                     <div class="invalid-feedback d-block">
@@ -656,7 +671,8 @@ use App\Enums\EmployeeStatus;
                             <div class="col-md-6 col-sm-12 mb-4">
                                 <!-- To -->
                                 <input type="text" name="eh_year_to[]" class="form-control block w-full" placeholder="To"
-                                    value="<?= isset($form['eh_year_to'][$index]) ? esc($form['eh_year_to'][$index]) : '' ?>" />
+                                    value="<?= isset($form['eh_year_to'][$index]) ? esc($form['eh_year_to'][$index]) : '' ?>"
+                                    <?= $is_locked ? 'disabled' : '' ?> />
                                 <!-- Error Message -->
                                 <?php if (isset($errors["eh_year_to.$index"]) && $errors["eh_year_to.$index"]): ?>
                                     <div class="invalid-feedback d-block">
@@ -665,38 +681,41 @@ use App\Enums\EmployeeStatus;
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="col-md-1 d-flex align-items-center">
-                            <!-- Remove button -->
-                            <button type="button" class="btn btn-danger remove-employment" disabled>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M4 7l16 0" />
-                                    <path d="M10 11l0 6" />
-                                    <path d="M14 11l0 6" />
-                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                </svg>
-                            </button>
-                        </div>
+                        <?php if (!$is_locked): ?>
+                            <div class="col-md-1 d-flex align-items-center">
+                                <!-- Remove button -->
+                                <button type="button" class="btn btn-danger remove-employment" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                    </svg>
+                                </button>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
-
-            <div class="d-flex justify-content-between">
-                <!-- Add button -->
-                <button type="button" id="addEmployment" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 5l0 14" />
-                        <path d="M5 12l14 0" />
-                    </svg>
-                </button>
-            </div>
+            <?php if (!$is_locked): ?>
+                <div class="d-flex justify-content-between">
+                    <!-- Add button -->
+                    <button type="button" id="addEmployment" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 5l0 14" />
+                            <path d="M5 12l14 0" />
+                        </svg>
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
         <hr>
 
@@ -714,7 +733,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Name of Organization -->
                             <label class="form-label">Name of Organization</label>
                             <input type="text" name="a_p_name[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['a_p_name'][$index]) ? esc($form['a_p_name'][$index]) : '' ?>" />
+                                value="<?= isset($form['a_p_name'][$index]) ? esc($form['a_p_name'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["a_p_name.$index"]) && $errors["a_p_name.$index"]): ?>
                                 <div class="invalid-feedback d-block">
@@ -726,7 +746,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Position -->
                             <label class="form-label">Position</label>
                             <input type="text" name="a_p_position[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['a_p_position'][$index]) ? esc($form['a_p_position'][$index]) : '' ?>" />
+                                value="<?= isset($form['a_p_position'][$index]) ? esc($form['a_p_position'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["a_p_position.$index"]) && $errors["a_p_position.$index"]): ?>
                                 <div class="invalid-feedback d-block">
@@ -734,38 +755,41 @@ use App\Enums\EmployeeStatus;
                                 </div>
                             <?php endif; ?>
                         </div>
-                        <div class="col-md-1 d-flex align-items-center">
-                            <!-- Remove button -->
-                            <button type="button" class="btn btn-danger remove-affiliation-pro" disabled>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M4 7l16 0" />
-                                    <path d="M10 11l0 6" />
-                                    <path d="M14 11l0 6" />
-                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                </svg>
-                            </button>
-                        </div>
+                        <?php if (!$is_locked): ?>
+                            <div class="col-md-1 d-flex align-items-center">
+                                <!-- Remove button -->
+                                <button type="button" class="btn btn-danger remove-affiliation-pro" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                    </svg>
+                                </button>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
-
-            <div class="d-flex justify-content-between">
-                <!-- Add button -->
-                <button type="button" id="addAffiliationPro" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 5l0 14" />
-                        <path d="M5 12l14 0" />
-                    </svg>
-                </button>
-            </div>
+            <?php if (!$is_locked): ?>
+                <div class="d-flex justify-content-between">
+                    <!-- Add button -->
+                    <button type="button" id="addAffiliationPro" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 5l0 14" />
+                            <path d="M5 12l14 0" />
+                        </svg>
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
         <hr>
 
@@ -783,7 +807,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Name of Organization -->
                             <label class="form-label">Name of Organization</label>
                             <input type="text" name="a_s_name[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['a_s_name'][$index]) ? esc($form['a_s_name'][$index]) : '' ?>" />
+                                value="<?= isset($form['a_s_name'][$index]) ? esc($form['a_s_name'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["a_s_name.$index"]) && $errors["a_s_name.$index"]): ?>
                                 <div class="invalid-feedback d-block">
@@ -795,7 +820,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Position -->
                             <label class="form-label">Position</label>
                             <input type="text" name="a_s_position[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['a_s_position'][$index]) ? esc($form['a_s_position'][$index]) : '' ?>" />
+                                value="<?= isset($form['a_s_position'][$index]) ? esc($form['a_s_position'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["a_s_position.$index"]) && $errors["a_s_position.$index"]): ?>
                                 <div class="invalid-feedback d-block">
@@ -803,38 +829,42 @@ use App\Enums\EmployeeStatus;
                                 </div>
                             <?php endif; ?>
                         </div>
-                        <div class="col-md-1 d-flex align-items-center">
-                            <!-- Remove button -->
-                            <button type="button" class="btn btn-danger remove-affiliation-socio" disabled>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M4 7l16 0" />
-                                    <path d="M10 11l0 6" />
-                                    <path d="M14 11l0 6" />
-                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                </svg>
-                            </button>
-                        </div>
+                        <?php if (!$is_locked): ?>
+                            <div class="col-md-1 d-flex align-items-center">
+                                <!-- Remove button -->
+                                <button type="button" class="btn btn-danger remove-affiliation-socio" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                    </svg>
+                                </button>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
 
-            <div class="d-flex justify-content-between">
-                <!-- Add button -->
-                <button type="button" id="addAffiliationSocio" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 5l0 14" />
-                        <path d="M5 12l14 0" />
-                    </svg>
-                </button>
-            </div>
+            <?php if (!$is_locked): ?>
+                <div class="d-flex justify-content-between">
+                    <!-- Add button -->
+                    <button type="button" id="addAffiliationSocio" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 5l0 14" />
+                            <path d="M5 12l14 0" />
+                        </svg>
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
     <!-- Step 4 -->
@@ -846,7 +876,7 @@ use App\Enums\EmployeeStatus;
                 <!-- License -->
                 <label class="form-label">License</label>
                 <input type="text" name="l_license" class="form-control mt-1 block w-full"
-                    value="<?= old('l_license') ?>" />
+                    value="<?= old('l_license') ?>" <?= $is_locked ? 'disabled' : '' ?> />
                 <!-- Error Message -->
                 <?php if (isset($errors["l_license"]) && $errors["l_license"]): ?>
                     <div class="invalid-feedback d-block">
@@ -857,7 +887,8 @@ use App\Enums\EmployeeStatus;
             <div class="col-md-4 mb-4">
                 <!-- Year Taken -->
                 <label class="form-label">Year Taken</label>
-                <input type="text" name="l_year" class="form-control mt-1 block w-full" value="<?= old('l_year') ?>" />
+                <input type="text" name="l_year" class="form-control mt-1 block w-full" value="<?= old('l_year') ?>"
+                    <?= $is_locked ? 'disabled' : '' ?> />
                 <!-- Error Message -->
                 <?php if (isset($errors["l_year"]) && $errors["l_year"]): ?>
                     <div class="invalid-feedback d-block">
@@ -868,8 +899,8 @@ use App\Enums\EmployeeStatus;
             <div class="col-md-4 mb-4">
                 <!-- Rating -->
                 <label class="form-label">Rating</label>
-                <input type="text" name="l_rating" class="form-control mt-1 block w-full"
-                    value="<?= old('l_rating') ?>" />
+                <input type="text" name="l_rating" class="form-control mt-1 block w-full" value="<?= old('l_rating') ?>"
+                    <?= $is_locked ? 'disabled' : '' ?> />
                 <!-- Error Message -->
                 <?php if (isset($errors["l_rating"]) && $errors["l_rating"]): ?>
                     <div class="invalid-feedback d-block">
@@ -881,7 +912,7 @@ use App\Enums\EmployeeStatus;
                 <!-- License No. -->
                 <label class="form-label">License No.</label>
                 <input type="text" name="l_license_no" class="form-control mt-1 block w-full"
-                    value="<?= old('l_license_no') ?>" />
+                    value="<?= old('l_license_no') ?>" <?= $is_locked ? 'disabled' : '' ?> />
                 <!-- Error Message -->
                 <?php if (isset($errors["l_license_no"]) && $errors["l_license_no"]): ?>
                     <div class="invalid-feedback d-block">
@@ -906,7 +937,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Position -->
                             <label class="form-label">Position</label>
                             <input type="text" name="pp_position[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['pp_position'][$index]) ? esc($form['pp_position'][$index]) : '' ?>" />
+                                value="<?= isset($form['pp_position'][$index]) ? esc($form['pp_position'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["pp_position.$index"]) && $errors["pp_position.$index"]): ?>
                                 <div class="invalid-feedback d-block">
@@ -920,7 +952,8 @@ use App\Enums\EmployeeStatus;
                                 <!-- Year From -->
                                 <input type="text" name="pp_year_from[]" class="form-control mt-1 block w-full"
                                     placeholder="From"
-                                    value="<?= isset($form['pp_year_from'][$index]) ? esc($form['pp_year_from'][$index]) : '' ?>" />
+                                    value="<?= isset($form['pp_year_from'][$index]) ? esc($form['pp_year_from'][$index]) : '' ?>"
+                                    <?= $is_locked ? 'disabled' : '' ?> />
                                 <!-- Error Message -->
                                 <?php if (isset($errors["pp_year_from.$index"]) && $errors["pp_year_from.$index"]): ?>
                                     <div class="invalid-feedback d-block">
@@ -932,7 +965,8 @@ use App\Enums\EmployeeStatus;
                                 <!-- Year To -->
                                 <input type="text" name="pp_year_to[]" class="form-control mt-1 block w-full"
                                     placeholder="to"
-                                    value="<?= isset($form['pp_year_to'][$index]) ? esc($form['pp_year_to'][$index]) : '' ?>" />
+                                    value="<?= isset($form['pp_year_to'][$index]) ? esc($form['pp_year_to'][$index]) : '' ?>"
+                                    <?= $is_locked ? 'disabled' : '' ?> />
                                 <!-- Error Message -->
                                 <?php if (isset($errors["pp_year_to.$index"]) && $errors["pp_year_to.$index"]): ?>
                                     <div class="invalid-feedback d-block">
@@ -941,38 +975,41 @@ use App\Enums\EmployeeStatus;
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="col-md-1 d-flex align-items-center">
-                            <!-- Remove button -->
-                            <button type="button" class="btn btn-danger remove-past-position" disabled>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M4 7l16 0" />
-                                    <path d="M10 11l0 6" />
-                                    <path d="M14 11l0 6" />
-                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                </svg>
-                            </button>
-                        </div>
+                        <?php if (!$is_locked): ?>
+                            <div class="col-md-1 d-flex align-items-center">
+                                <!-- Remove button -->
+                                <button type="button" class="btn btn-danger remove-past-position" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                    </svg>
+                                </button>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
-
-            <div class="d-flex justify-content-between">
-                <!-- Add button -->
-                <button type="button" id="addPastPosition" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 5l0 14" />
-                        <path d="M5 12l14 0" />
-                    </svg>
-                </button>
-            </div>
+            <?php if (!$is_locked): ?>
+                <div class="d-flex justify-content-between">
+                    <!-- Add button -->
+                    <button type="button" id="addPastPosition" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 5l0 14" />
+                            <path d="M5 12l14 0" />
+                        </svg>
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
         <hr>
 
@@ -991,7 +1028,8 @@ use App\Enums\EmployeeStatus;
                             <!-- Position -->
                             <label class="form-label">Position</label>
                             <input type="text" name="cp_position[]" class="form-control mt-1 block w-full"
-                                value="<?= isset($form['cp_position'][$index]) ? esc($form['cp_position'][$index]) : '' ?>" />
+                                value="<?= isset($form['cp_position'][$index]) ? esc($form['cp_position'][$index]) : '' ?>"
+                                <?= $is_locked ? 'disabled' : '' ?> />
                             <!-- Error Message -->
                             <?php if (isset($errors["cp_position.$index"]) && $errors["cp_position.$index"]): ?>
                                 <div class="invalid-feedback d-block">
@@ -1005,7 +1043,8 @@ use App\Enums\EmployeeStatus;
                                 <!-- Year From -->
                                 <input type="text" name="cp_year_from[]" class="form-control mt-1 block w-full"
                                     placeholder="From"
-                                    value="<?= isset($form['cp_year_from'][$index]) ? esc($form['cp_year_from'][$index]) : '' ?>" />
+                                    value="<?= isset($form['cp_year_from'][$index]) ? esc($form['cp_year_from'][$index]) : '' ?>"
+                                    <?= $is_locked ? 'disabled' : '' ?> />
                                 <!-- Error Message -->
                                 <?php if (isset($errors["cp_year_from.$index"]) && $errors["cp_year_from.$index"]): ?>
                                     <div class="invalid-feedback d-block">
@@ -1017,7 +1056,8 @@ use App\Enums\EmployeeStatus;
                                 <!-- Year To -->
                                 <input type="text" name="cp_year_to[]" class="form-control mt-1 block w-full"
                                     placeholder="to"
-                                    value="<?= isset($form['cp_year_to'][$index]) ? esc($form['cp_year_to'][$index]) : '' ?>" />
+                                    value="<?= isset($form['cp_year_to'][$index]) ? esc($form['cp_year_to'][$index]) : '' ?>"
+                                    <?= $is_locked ? 'disabled' : '' ?> />
                                 <!-- Error Message -->
                                 <?php if (isset($errors["cp_year_to.$index"]) && $errors["cp_year_to.$index"]): ?>
                                     <div class="invalid-feedback d-block">
@@ -1026,38 +1066,41 @@ use App\Enums\EmployeeStatus;
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="col-md-1 d-flex align-items-center">
-                            <!-- Remove button -->
-                            <button type="button" class="btn btn-danger remove-current-position" disabled>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M4 7l16 0" />
-                                    <path d="M10 11l0 6" />
-                                    <path d="M14 11l0 6" />
-                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                </svg>
-                            </button>
-                        </div>
+                        <?php if (!$is_locked): ?>
+                            <div class="col-md-1 d-flex align-items-center">
+                                <!-- Remove button -->
+                                <button type="button" class="btn btn-danger remove-current-position" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                    </svg>
+                                </button>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
-
-            <div class="d-flex justify-content-between">
-                <!-- Add button -->
-                <button type="button" id="addCurrentPosition" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 5l0 14" />
-                        <path d="M5 12l14 0" />
-                    </svg>
-                </button>
-            </div>
+            <?php if (!$is_locked): ?>
+                <div class="d-flex justify-content-between">
+                    <!-- Add button -->
+                    <button type="button" id="addCurrentPosition" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus m-0">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 5l0 14" />
+                            <path d="M5 12l14 0" />
+                        </svg>
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
