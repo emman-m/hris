@@ -7,7 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 // Inside app/Config/Routes.php
-$routes->get('/logout', 'AuthController::logout');
+$routes->get('logout', 'AuthController::logout');
 
 // Un Auth User
 $routes->group('', ['filter' => 'unauth'], function ($routes) {
@@ -84,6 +84,8 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
      * EMPLOYEE
      * Employee informations route
      */
+    // Employee informations index
     $routes->get('my-informations', 'EmployeesInfoController::index', ['as' => 'my-informations']);
+    // Employee informations save
     $routes->post('my-informations-update', 'EmployeesInfoController::update', ['as' => 'my-informations-update']);
 });

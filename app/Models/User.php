@@ -86,7 +86,7 @@ class User extends Model
             users.status,
             users_info.*,
             employees_info.department,
-            employees_info.is_lock,
+            employees_info.is_locked,
         ')
             ->join('users_info', 'users.id = users_info.user_id')
             ->join('employees_info', 'users.id = employees_info.user_id', 'LEFT')

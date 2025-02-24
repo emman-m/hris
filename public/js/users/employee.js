@@ -1,5 +1,5 @@
 $(function () {
-    $('#ei_status').on('change', function() {
+    $('#ei_status').on('change', function () {
         const status = $(this).val();
         spouseVisible(status);
     });
@@ -58,20 +58,56 @@ $(function () {
         showStep(currentStep);
     })();
 
-    // dependencies
-    const dependencies = $('#beneficiariesContainer .beneficiary-row').prop('outerHTML');
     // Beneficiaries Functionality
     (function beneficiariesFunctionality() {
         const maxRows = 100;
         const minRows = 1;
-        
+
         // Add beneficiary row
         $('#addBeneficiary').on('click', function () {
             const totalRows = $('.beneficiary-row').length;
 
             if (totalRows < maxRows) {
                 // Clone the content of #affiliationProContainer
-                
+
+                // dependencies template
+                const dependencies = `
+                    <div class="beneficiary-row row">
+                        <div class="col-md-4 mb-4">
+                            <!-- Name -->
+                            <label class="form-label">Name</label>
+                            <input type="text" name="d_name[]" class="form-control mt-1 block w-full" />
+
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <!-- Date of Birth -->
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" name="d_birth[]" class="form-control mt-1 block w-full"/>
+                            
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <!-- Relationship to Employee -->
+                            <label class="form-label">Relationship to Employee</label>
+                            <input type="text" name="d_relationship[]" class="form-control mt-1 block w-full"/>
+                            
+                        </div>
+                        <div class="col-md-1 d-flex align-items-center">
+                            <button type="button" class="btn btn-danger remove-beneficiary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M4 7l16 0" />
+                                    <path d="M10 11l0 6" />
+                                    <path d="M14 11l0 6" />
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
                 $('#beneficiariesContainer').append(dependencies);
                 updateBeneficiaryButtons();
             }
@@ -101,8 +137,8 @@ $(function () {
 
     // Employment History Functionality
     (function employmentHistoryFunctionality() {
-        const maxRows = 8; // Maximum number of employment entries
-        const minRows = 1; // Minimum number of employment entries
+        const maxRows = 100;
+        const minRows = 1;
 
         // Add employment row
         $('#addEmployment').click(function () {
@@ -110,8 +146,54 @@ $(function () {
 
             if (totalRows < maxRows) {
                 // Clone the content of #affiliationProContainer
-                var newRow = $('#employmentContainer .employment-row').first().clone();
-                
+                var newRow = `
+                    <div class="employment-row row">
+                        <div class="col-md-4 mb-4">
+                            <!-- Institution/Company -->
+                            <label class="form-label">Institution/Company</label>
+                            <input type="text" name="eh_name[]" class="form-control mt-1 block w-full"/>
+                            
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <!-- Position -->
+                            <label class="form-label">Position</label>
+                            <input type="text" name="eh_position[]" class="form-control mt-1 block w-full"/>
+                            <!-- Error Message -->
+                        </div>
+                        <div class="col-md-4 row">
+                            <!-- Inclusive Years -->
+                            <label class="form-label">Inclusive Years</label>
+                            <div class="col-md-6 col-sm-12 mb-4">
+                                <!-- From -->
+                                <input type="text" name="eh_year_from[]" class="form-control block w-full"
+                                    placeholder="From"/>
+                                
+                            </div>
+                            <div class="col-md-6 col-sm-12 mb-4">
+                                <!-- To -->
+                                <input type="text" name="eh_year_to[]" class="form-control block w-full" placeholder="To"/>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-1 d-flex align-items-center">
+                            <!-- Remove button -->
+                            <button type="button" class="btn btn-danger remove-employment" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M4 7l16 0" />
+                                    <path d="M10 11l0 6" />
+                                    <path d="M14 11l0 6" />
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
                 $('#employmentContainer').append(newRow);
                 updateEmploymentButtons();
             }
@@ -141,7 +223,7 @@ $(function () {
 
     // Affiliation in Professional Organization
     (function affiliationProFunctionality() {
-        const maxRows = 3;
+        const maxRows = 100;
         const minRows = 1;
 
         // Add employment row
@@ -150,10 +232,39 @@ $(function () {
 
             if (totalRows < maxRows) {
                 // Clone the content of #affiliationProContainer
-                var newRow = $('#affiliationProContainer .affiliation-pro-row').first().clone();
-
-                // Enable the remove button in the cloned row
-                // newRow.find('.remove-affiliation-pro').removeAttr('disabled');
+                var newRow = `
+                    <div class="affiliation-pro-row row">
+                        <input type="hidden" name="a_p_type[]" value="${affiliationPro}">
+                        <div class="col-md-6 mb-4">
+                            <!-- Name of Organization -->
+                            <label class="form-label">Name of Organization</label>
+                            <input type="text" name="a_p_name[]" class="form-control mt-1 block w-full"/>
+                            
+                        </div>
+                        <div class="col-md-5 mb-4">
+                            <!-- Position -->
+                            <label class="form-label">Position</label>
+                            <input type="text" name="a_p_position[]" class="form-control mt-1 block w-full"/>
+                            
+                        </div>
+                        <div class="col-md-1 d-flex align-items-center">
+                            <!-- Remove button -->
+                            <button type="button" class="btn btn-danger remove-affiliation-pro" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M4 7l16 0" />
+                                    <path d="M10 11l0 6" />
+                                    <path d="M14 11l0 6" />
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
 
                 // Append the cloned row to the container where you want to keep the cloned rows
                 $('#affiliationProContainer').append(newRow);
@@ -183,9 +294,9 @@ $(function () {
         updateAffiliationProButtons();
     })();
 
-    // Affiliation in Professional Organization
+    // Affiliation in Socio Civic Organization
     (function affiliationSocioFunctionality() {
-        const maxRows = 3;
+        const maxRows = 100;
         const minRows = 1;
 
         // Add row
@@ -194,7 +305,39 @@ $(function () {
 
             if (totalRows < maxRows) {
                 // Clone the content of #affiliationProContainer
-                var newRow = $('#affiliationSocioContainer .affiliation-socio-row').first().clone();
+                var newRow = `
+                    <div class="affiliation-socio-row row">
+                        <input type="hidden" name="a_s_type[]" value="${affiliationSocio}">
+                        <div class="col-md-6 mb-4">
+                            <!-- Name of Organization -->
+                            <label class="form-label">Name of Organization</label>
+                            <input type="text" name="a_s_name[]" class="form-control mt-1 block w-full"/>
+                            
+                        </div>
+                        <div class="col-md-5 mb-4">
+                            <!-- Position -->
+                            <label class="form-label">Position</label>
+                            <input type="text" name="a_s_position[]" class="form-control mt-1 block w-full"/>
+                            
+                        </div>
+                        <div class="col-md-1 d-flex align-items-center">
+                            <!-- Remove button -->
+                            <button type="button" class="btn btn-danger remove-affiliation-socio" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M4 7l16 0" />
+                                    <path d="M10 11l0 6" />
+                                    <path d="M14 11l0 6" />
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
 
                 // Append the cloned row to the container where you want to keep the cloned rows
                 $('#affiliationSocioContainer').append(newRow);
@@ -235,7 +378,48 @@ $(function () {
 
             if (totalRows < maxRows) {
                 // Clone the content of #pastPositionContainer
-                var newRow = $('#pastPositionContainer .past-position-row').first().clone();
+                var newRow = `
+                    <div class="past-position-row row">
+                        <input type="hidden" name="pp_is_current[]" value="0">
+                        <div class="col-md-6 mb-4">
+                            <!-- Position -->
+                            <label class="form-label">Position</label>
+                            <input type="text" name="pp_position[]" class="form-control mt-1 block w-full"/>
+                            
+                        </div>
+                        <div class="col-md-5 row mb-4">
+                            <label class="form-label">Inclusive Year</label>
+                            <div class="col-md-6 col-sm-12">
+                                <!-- Year From -->
+                                <input type="text" name="pp_year_from[]" class="form-control mt-1 block w-full"
+                                    placeholder="From" />
+                                
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <!-- Year To -->
+                                <input type="text" name="pp_year_to[]" class="form-control mt-1 block w-full"
+                                    placeholder="to"/>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-1 d-flex align-items-center">
+                            <!-- Remove button -->
+                            <button type="button" class="btn btn-danger remove-past-position" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M4 7l16 0" />
+                                    <path d="M10 11l0 6" />
+                                    <path d="M14 11l0 6" />
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
 
                 // Append the cloned row to the container where you want to keep the cloned rows
                 $('#pastPositionContainer').append(newRow);
@@ -276,7 +460,48 @@ $(function () {
 
             if (totalRows < maxRows) {
                 // Clone the content of #currentPositionContainer
-                var newRow = $('#currentPositionContainer .current-position-row').first().clone();
+                var newRow = `
+                    <div class="current-position-row row">
+                        <input type="hidden" name="cp_is_current[]" value="1">
+                        <div class="col-md-6 mb-4">
+                            <!-- Position -->
+                            <label class="form-label">Position</label>
+                            <input type="text" name="cp_position[]" class="form-control mt-1 block w-full"/>
+                            
+                        </div>
+                        <div class="col-md-5 row mb-4">
+                            <label class="form-label">Inclusive Year</label>
+                            <div class="col-md-6 col-sm-12">
+                                <!-- Year From -->
+                                <input type="text" name="cp_year_from[]" class="form-control mt-1 block w-full"
+                                    placeholder="From"/>
+                                
+                            </div>
+                            <div class="col-md-6 col-sm-12 mb-4">
+                                <!-- Year To -->
+                                <input type="text" name="cp_year_to[]" class="form-control mt-1 block w-full"
+                                    placeholder="To"/>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-1 d-flex align-items-center">
+                            <!-- Remove button -->
+                            <button type="button" class="btn btn-danger remove-current-position" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M4 7l16 0" />
+                                    <path d="M10 11l0 6" />
+                                    <path d="M14 11l0 6" />
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
 
                 // Append the cloned row to the container where you want to keep the cloned rows
                 $('#currentPositionContainer').append(newRow);

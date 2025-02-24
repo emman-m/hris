@@ -428,13 +428,13 @@ class EmployeesController extends BaseController
             $employee = $this->employeeInfo->findByUserId($request['user_id'])->first();
 
             if (!empty($employee)) {
-                $this->employeeInfo->set('is_lock', $state)
+                $this->employeeInfo->set('is_locked', $state)
                     ->where('user_id', $request['user_id'])
                     ->update();
             } else {
                 $this->employeeInfo->insert([
                     'user_id' => $request['user_id'],
-                    'is_lock' => $state,
+                    'is_locked' => $state,
                 ]);
             }
 
