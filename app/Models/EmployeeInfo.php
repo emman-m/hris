@@ -15,7 +15,7 @@ class EmployeeInfo extends Model
     protected $allowedFields    = [
         'id',
         'user_id',
-        'is_lock',
+        'is_locked',
         'department',
         'birth',
         'birth_place',
@@ -52,7 +52,7 @@ class EmployeeInfo extends Model
     protected bool $updateOnlyChanged = true;
 
     protected array $casts = [
-        'is_lock' => 'bool'
+        'is_locked' => 'bool'
     ];
     protected array $castHandlers = [];
 

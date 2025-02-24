@@ -22,7 +22,7 @@ class EmployeeInfo extends Migration
                 'constraint' => 11,
                 'unsigned' => true,
             ],
-            'is_lock' => [
+            'is_locked' => [
                 'type' => 'BOOLEAN',
                 'null' => false,
             ],

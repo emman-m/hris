@@ -92,7 +92,7 @@ class EmployeesInfoController extends BaseController
             // Render the edit template and store in flash data
             EmployeeService::parseEmployeesInfo($context);
         }
-        $isLocked = $employeeInfo['is_lock'] ?? false;
+        $isLocked = $employeeInfo['is_locked'] ?? false;
 
         return view('Pages/Employees/Employee/edit_details', ['is_locked' => $isLocked]);
     }
@@ -109,7 +109,7 @@ class EmployeesInfoController extends BaseController
         // Fetch employee info
         $employeeInfo = $this->employeeInfo->findByUserId($userId)->first() ?? [];
 
-        if (!empty($employeeInfo) && $employeeInfo['is_lock']) {
+        if (!empty($employeeInfo) && $employeeInfo['is_locked']) {
             throw new PageNotFoundException('Page Not Found', 404);
         }
 

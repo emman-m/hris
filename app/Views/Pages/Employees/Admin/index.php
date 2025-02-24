@@ -146,8 +146,8 @@ Employees
                                             <a href="javascript:void(0)" class="lock-unlock-employee"
                                                 data-id="<?= $item['user_id'] ?>"
                                                 data-url="<?= route_to('employees-lock-info') ?>"
-                                                data-state="<?= $item['is_lock'] ?? 0 ?>">
-                                                <?= $item['is_lock'] ? 'Unlock' : 'Lock' ?>
+                                                data-state="<?= $item['is_locked'] ?? 0 ?>">
+                                                <?= $item['is_locked'] ? 'Unlock' : 'Lock' ?>
                                             </a>
                                         </td>
                                     </tr>
