@@ -964,7 +964,7 @@ $is_locked ??= false;
                             <div class="col-md-6 col-sm-12">
                                 <!-- Year To -->
                                 <input type="text" name="pp_year_to[]" class="form-control mt-1 block w-full"
-                                    placeholder="to"
+                                    placeholder="To"
                                     value="<?= isset($form['pp_year_to'][$index]) ? esc($form['pp_year_to'][$index]) : '' ?>"
                                     <?= $is_locked ? 'disabled' : '' ?> />
                                 <!-- Error Message -->
@@ -1055,7 +1055,7 @@ $is_locked ??= false;
                             <div class="col-md-6 col-sm-12 mb-4">
                                 <!-- Year To -->
                                 <input type="text" name="cp_year_to[]" class="form-control mt-1 block w-full"
-                                    placeholder="to"
+                                    placeholder="To"
                                     value="<?= isset($form['cp_year_to'][$index]) ? esc($form['cp_year_to'][$index]) : '' ?>"
                                     <?= $is_locked ? 'disabled' : '' ?> />
                                 <!-- Error Message -->
@@ -1104,3 +1104,7 @@ $is_locked ??= false;
         </div>
     </div>
 </div>
+<script>
+    const affiliationPro = '<?= AffiliationType::PROFESSIONAL->value?>';
+    const affiliationSocio = '<?= AffiliationType::SOCIOCIVIC->value?>';
+</script>
