@@ -314,8 +314,8 @@ class EmployeesFileController extends BaseController
         $post = $request->getPost();
 
         // Validate Request
-        $validator = new UpdateValidation();
-        $validator->setId($post['id']);
+        $validator = new UpdateValidation($post['id']);
+
         if (!$validator->runValidation($request)) {
             // Validation failed, return to the form with errors
             return redirect()
@@ -345,7 +345,7 @@ class EmployeesFileController extends BaseController
 
                 $data['file'] = $file->getName();
             }
-            
+
             $this->employeeFile->update($post['id'], $data);
 
             // Commit the transaction
@@ -380,6 +380,6 @@ class EmployeesFileController extends BaseController
         }
 
         // Use the response helper to download the file
-        return $this->response->download($filePath, null)->setFileName($fileInfo['file_name'].'_'.$fileInfo['file']);
+        return $this->response->download($filePath, null)->setFileName($fileInfo['file_name'] . '_' . $fileInfo['file']);
     }
 }

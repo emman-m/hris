@@ -8,7 +8,7 @@
         </div>
     </a>
     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-        <a href="./settings.html" class="dropdown-item">Account</a>
+        <a href="<?= route_to('my-account')?>" class="dropdown-item">Account</a>
         <a href="<?= base_url('logout') ?>" class="dropdown-item">Logout</a>
     </div>
 </div>

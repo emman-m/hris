@@ -88,4 +88,10 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->get('my-informations', 'EmployeesInfoController::index', ['as' => 'my-informations']);
     // Employee informations save
     $routes->post('my-informations-update', 'EmployeesInfoController::update', ['as' => 'my-informations-update']);
+
+    /**
+     * My Account Route
+     */
+    $routes->get('my-account', 'AccountController::index', ['as' => 'my-account']);
+    $routes->post('my-account-save', 'AccountController::update', ['as' => 'my-account-save']);
 });

@@ -15,11 +15,9 @@ use App\Models\Licensure;
 use App\Models\PositionHistory;
 use App\Models\User;
 use App\Models\UserInfo;
-use App\Validations\EmployeeUserValidator;
 use App\Validations\Users\UpdateValidator;
 use App\Validations\Users\UserValidator;
 use CodeIgniter\Exceptions\PageNotFoundException;
-use CodeIgniter\HTTP\Request;
 use Config\Database;
 use Config\Services;
 use Exception;
@@ -281,19 +279,18 @@ class UserController extends BaseController
         // Get the request object
         $request = Services::request();
 
+        $post = $request->getPost();
+
         // Validation
-        $validator = new UpdateValidator();
+        $validator = new UpdateValidator($post['user_id']);
+
         if (!$validator->runValidation($request)) {
-            log_message('debug', json_encode($validator->getErrors()));
             // Validation failed, return to the form with errors
             return redirect()
                 ->back()
                 ->withInput()
                 ->with('errors', $validator->getErrors());
         }
-
-        $post = $request->getPost();
-        log_message('info', json_encode(['post' => $post]));
 
         // Start a database transaction
         $db = Database::connect();

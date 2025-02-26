@@ -6,14 +6,12 @@ use App\Validations\Validator;
 
 class UpdateValidation extends Validator
 {
-    protected $id;
-
-    public function __construct()
+    public function __construct($id)
     {
         $this->rules = [
             'file_name' => [
                 'label' => 'File Name',
-                'rules' => 'required|edit_unique[employees_files.file_name.'.$this->id.']',
+                'rules' => 'required|edit_unique[employees_files.file_name.'.$id.']',
                 'errors' => [
                     'required' => '{field} is required.',
                     'edit_unique' => '{field} already exists.',
@@ -29,11 +27,5 @@ class UpdateValidation extends Validator
                 ]
             ],
         ];
-    }
-
-    public function setId($id)
-    {
-        log_message('debug', $id);
-        $this->id = $id;
     }
 }

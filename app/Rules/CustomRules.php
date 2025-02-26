@@ -33,7 +33,7 @@ class CustomRules extends Rules
         // Check for existing records
         $query = $db->table($table)
             ->where($field, $value)
-            ->where('id', $current_id)
+            ->where('id !=', $current_id)
             ->get();
 
         // Return true if no matching records found
