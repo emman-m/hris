@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validations\Users;
+namespace App\Validations\Account;
 
 use App\Enums\UserRole;
 use App\Validations\Validator;
@@ -10,28 +10,6 @@ class UpdateValidator extends Validator
     public function __construct($id)
     {
         $this->rules = [
-            'user_id' => [
-                'label' => 'User ID',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} is required.',
-                ]
-            ],
-            'role' => [
-                'label' => 'Role',
-                'rules' => 'required|in_list[' . implode(',', UserRole::list()) . ']',
-                'errors' => [
-                    'required' => '{field} is required.',
-                    'max_length' => '{field} must not exceed to {param} characters long.',
-                ]
-            ],
-            'department' => [
-                'label' => 'Department',
-                'rules' => 'required_if[role,' . UserRole::EMPLOYEE->value . ']',
-                'errors' => [
-                    'required_if' => '{field} is required.',
-                ]
-            ],
             'first_name' => [
                 'label' => 'First Name',
                 'rules' => 'required|max_length[50]',
