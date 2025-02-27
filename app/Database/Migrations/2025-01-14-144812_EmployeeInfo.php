@@ -26,6 +26,10 @@ class EmployeeInfo extends Migration
                 'type' => 'BOOLEAN',
                 'null' => false,
             ],
+            'employee_id' => [
+                'type' => 'VARCHAR',
+                'constraint' => 20
+            ],
             'department' => [
                 'type' => 'ENUM',
                 'constraint' => [

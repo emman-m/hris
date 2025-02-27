@@ -14,13 +14,23 @@ class UserSeeder extends Seeder
         $roles = UserRole::cases();
 
         // default user
-        $data[] = [
-            'status' => 'active',
-            'role' => UserRole::ADMIN->value,
-            'email' => 'admin@hris.com',
-            'password' => password_hash('password', PASSWORD_BCRYPT),
-            'created_at' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+        $data = [
+            [
+                'status' => 'active',
+                'role' => UserRole::ADMIN->value,
+                'email' => 'admin@hris.com',
+                'password' => password_hash('password', PASSWORD_BCRYPT),
+                'created_at' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'status' => 'active',
+                'role' => UserRole::EMPLOYEE->value,
+                'email' => 'employee@hris.com',
+                'password' => password_hash('password', PASSWORD_BCRYPT),
+                'created_at' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
         ];
 
         for ($i = 1; $i <= 40; $i++) {

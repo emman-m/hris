@@ -25,8 +25,8 @@ class UpdateValidator extends Validator
                     'max_length' => '{field} must not exceed to {param} characters long.',
                 ]
             ],
-            'department' => [
-                'label' => 'Department',
+            'employee_id' => [
+                'label' => 'Employee ID',
                 'rules' => 'required_if[role,' . UserRole::EMPLOYEE->value . ']',
                 'errors' => [
                     'required_if' => '{field} is required.',

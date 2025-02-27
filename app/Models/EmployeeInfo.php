@@ -16,6 +16,7 @@ class EmployeeInfo extends Model
         'id',
         'user_id',
         'is_locked',
+        'employee_id',
         'department',
         'birth',
         'birth_place',
