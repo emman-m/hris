@@ -69,7 +69,7 @@ class User extends Model
 
     public function getUserByuserId($id)
     {
-        return $this->select('users.*, users_info.*, employees_info.department')
+        return $this->select('users.*, users_info.*, employees_info.employee_id')
             ->where('users.id', $id)
             ->join('users_info', 'users.id = users_info.user_id', 'LEFT')
             ->join('employees_info', 'users.id = employees_info.user_id', 'LEFT')

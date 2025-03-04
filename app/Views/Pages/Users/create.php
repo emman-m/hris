@@ -65,6 +65,19 @@ $title = 'Create Account';
                                 </div>
                             <?php endif; ?>
                         </div>
+                        <!-- Employee ID -->
+                        <div class="mb-3 employee_id_container" style="display: none;">
+                            <label class="form-label required">Employee ID</label>
+                            <input type="text" name="employee_id" class="form-control" value="<?= old('employee_id') ?>"
+                                autocomplete="off" />
+
+                            <!-- Error Message -->
+                            <?php if (isset($errors['employee_id'])): ?>
+                                <div class="invalid-feedback d-block">
+                                    <?= $errors['employee_id'] ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                         <!-- First name -->
                         <div class="mb-3">
                             <label class="form-label required">First Name</label>
