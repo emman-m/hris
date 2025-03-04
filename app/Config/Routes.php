@@ -94,4 +94,13 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
      */
     $routes->get('my-account', 'AccountController::index', ['as' => 'my-account']);
     $routes->post('my-account-save', 'AccountController::update', ['as' => 'my-account-save']);
+
+    /**
+     * Attendance Route
+     */
+    $routes->get('attendance', 'AttendanceController::index', ['as' => 'attendance']);
+    // Attendance import page
+    $routes->get('attendance-create', 'AttendanceController::create', ['as' => 'attendance-create']);
+    // Attendance import
+    $routes->post('attendance-store', 'AttendanceController::store', ['as' => 'attendance-store']);
 });
