@@ -164,7 +164,7 @@ class EmployeesController extends BaseController
 
         // Render the print template and return as JSON
         $html = view('Templates/print', [
-            'title' => 'Users List',
+            'title' => 'Employees Report',
             'headers' => $headers,
             'rows' => $rows,
             'downloadedBy' => $downloadedBy,

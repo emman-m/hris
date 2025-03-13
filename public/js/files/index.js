@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     $('#printButton').on('click', function () {
         const userId = $(this).data('id');
         const printUrl = $(this).data('url');
