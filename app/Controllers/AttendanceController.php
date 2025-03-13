@@ -39,8 +39,8 @@ class AttendanceController extends BaseController
 
         // Retrieve filters from the request
         $filters = [
-            'role' => $this->request->getGet('role'),
-            'status' => $this->request->getGet('status'),
+            'from' => $this->request->getGet('from'),
+            'to' => $this->request->getGet('to'),
             'search' => $this->request->getGet('search'),
         ];
 
@@ -77,7 +77,6 @@ class AttendanceController extends BaseController
 
     public function store()
     {
-        log_message('debug', 'CSRF Token: ' . csrf_hash());
         // Auth user
         if ($this->auth->isEmployee()) {
             throw new PageNotFoundException('Page Not Found', 404);
@@ -96,7 +95,7 @@ class AttendanceController extends BaseController
 
         $csvData = $this->attendanceService
             ->getContent($request->getFile('file'));
-
+        
         // Start a database transaction
         $db = Database::connect();
         $db->transStart();
