@@ -1,0 +1,41 @@
+/* dark-datepicker.css */
+.ui-datepicker {
+    background: #151f2c!important;
+    color: #fff;
+}
+
+.ui-widget-header {
+    border-color: #3a495c!important;
+    color: #fff;
+}
+
+.ui-datepicker-month, .ui-datepicker-year {
+    background-color: #151f2c!important;
+}
+
+.ui-datepicker {
+    border-color: #3a495c!important;
+}
+
+.ui-state-default {
+    background-color: #151f2c!important;
+    border-color: #3a495c!important;
+}
+
+.ui-state-active {
+    background-color: #3a495c!important;
+    border-color: #3a495c!important;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    background: #182433!important;
+    color: #fff;
+}
+
+.ui-datepicker .ui-datepicker-calendar td a {
+    color: #fff;
+}
+
+.ui-datepicker .ui-datepicker-calendar td a:hover {
+    background: #555!important;
+}

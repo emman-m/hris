@@ -63,6 +63,23 @@ class Attendance extends Model
             ->orderBy('attendances.transaction_date', 'DESC')
             ->where('attendances.deleted_at IS NULL');
 
+        if (!empty($filters['from'])) {
+            $builder->where('attendances.transaction_date >=', $filters['from']);
+        }
+
+        if (!empty($filters['to'])) {
+            $builder->where('attendances.transaction_date <=', $filters['to']);
+        }
+
+        if (!empty($filters['search'])) {
+            $builder->groupStart() // Start grouping the search conditions
+                ->orLike('users_info.first_name', $filters['search'])
+                ->orLike('users_info.middle_name', $filters['search'])
+                ->orLike('users_info.last_name', $filters['search'])
+                ->orLike('attendances.employee_id', $filters['search'])
+                ->groupEnd(); // End grouping the search conditions
+        }
+
         return $builder;
     }
 }

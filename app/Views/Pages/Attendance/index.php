@@ -16,8 +16,16 @@ $pageTitle = 'Attendance';
 <?= $this->endSection() ?>
 
 <!-- Custom import -->
+<?= $this->section('header-script') ?>
+<link rel="stylesheet" href="<?= base_url('jquery/css/jquery-ui.css') ?>">
+<link rel="stylesheet" href="<?= base_url('jquery/css/dark-datepicker.css') ?>" id="dark-theme" disabled>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<?= $this->endSection() ?>
+
 <?= $this->section('footer-script') ?>
+<!-- Print js -->
 <script src="<?= base_url('js/users/index.js') ?>"></script>
+<script src="<?= base_url('js/attendance/index.js') ?>"></script>
 <script src="<?= base_url('js/users/switch.js') ?>"></script>
 <?= $this->endSection() ?>
 
@@ -55,35 +63,20 @@ $pageTitle = 'Attendance';
                 <div class="card">
                     <div class="card-body">
                         <form method="get" action="<?= current_url() ?>" class="row g-3">
-                            <!-- User Role -->
-                            <div class="col-md-4">
-                                <select name="role" class="form-select">
-                                    <option value="">All Roles</option>
-                                    <?php foreach (UserRole::cases() as $role): ?>
-                                            <option value="<?= $role->value ?>"
-                                                <?= (service('request')->getGet('role') == $role->value) ? 'selected' : '' ?>>
-                                                <?= $role->value ?>
-                                            </option>
-                                    <?php endforeach; ?>
-                                </select>
+                            <!-- Date Range -->
+                            <div class="col-md-2">
+                                <input type="text" id="from" name="from" class="form-control block w-full"
+                                    placeholder="Date From" value="<?= service('request')->getGet('from') ?>" />
                             </div>
-                            <!-- User Status -->
-                            <div class="col-md-4">
-                                <select name="status" class="form-select">
-                                    <option value="">All Status</option>
-                                    <?php foreach (UserStatus::cases() as $role): ?>
-                                            <option value="<?= $role->value ?>"
-                                                <?= (service('request')->getGet('status') == $role->value) ? 'selected' : '' ?>>
-                                                <?= $role->value ?>
-                                            </option>
-                                    <?php endforeach; ?>
-                                </select>
+                            <div class="col-md-2">
+                                <input type="text" id="to" name="to" class="form-control block w-full"
+                                    placeholder="Date To" value="<?= service('request')->getGet('from') ?>" />
                             </div>
-                            <!-- Name Email key -->
+                            <!-- Employee/Employee ID key -->
                             <div class="col-md-4">
                                 <input type="text" name="search" class="form-control"
                                     value="<?= service('request')->getGet('search') ?>"
-                                    placeholder="Search by name or email">
+                                    placeholder="Search by Employee Name or ID">
                             </div>
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary">Filter</button>
@@ -129,33 +122,37 @@ $pageTitle = 'Attendance';
                         <table class="table table-vcenter card-table">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th class="w-1"></th>
+                                    <th>Employee</th>
+                                    <th>Employee ID</th>
+                                    <th>Date</th>
+                                    <th>Time In/Out</th>
+                                    <th>Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($data as $item): ?>
-                                        <tr>
-                                            <td class="d-flex align-items-center">
-                                                <?= $item['name'] ?>
-                                            </td>
-                                            <td class="text-secondary">
-                                                <?= $item['employee_id'] ?>
-                                            </td>
-                                            <td class="text-secondary">
-                                                <?= $item['remark'] ?>
-                                            </td>
-                                            <td>
-                                                <a href="#">Edit</a>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td class="d-flex align-items-center">
+                                            <?= $item['name'] ?? 'Not registered' ?>
+                                        </td>
+                                        <td class="text-secondary">
+                                            <?= $item['employee_id'] ?>
+                                        </td>
+                                        <td class="text-secondary">
+                                            <?= $item['transaction_date'] ?>
+                                        </td>
+                                        <td class="text-secondary">
+                                            <?= $item['time_in'] . ' - ' . $item['time_out'] ?>
+                                        </td>
+                                        <td class="text-secondary">
+                                            <?= $item['machine'] . ' - ' . $item['remark'] ?>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                                 <?php if (empty($data)): ?>
-                                        <tr>
-                                            <td colspan="4" style="text-align:center">No data available</td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="4" style="text-align:center">No data available</td>
+                                    </tr>
                                 <?php endif; ?>
                             </tbody>
                         </table>
