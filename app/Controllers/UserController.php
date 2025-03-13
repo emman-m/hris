@@ -234,7 +234,7 @@ class UserController extends BaseController
             if ($post['role'] === UserRole::EMPLOYEE->value) {
                 $this->employeeInfo->insert([
                     'user_id' => $userId,
-                    'department' => $post['department']
+                    'employee_id' => $post['employee_id']
                 ]);
             }
 
@@ -259,7 +259,7 @@ class UserController extends BaseController
         }
 
         $user = $this->user->getUserByuserId($userId);
-        log_message('info', json_encode(['user' => $user]));
+
         if (!$user) {
             withToast('error', 'User not found.');
 
@@ -320,6 +320,25 @@ class UserController extends BaseController
 
             // Update the users_info table
             $this->usersInfo->update($post['user_id'], $usersInfoData);
+
+            if ($post['role'] === UserRole::EMPLOYEE->value) {
+                $employee = $this->employeeInfo->where('user_id', $post['user_id'])->first();
+
+                if (!empty($employee)) { // Update employee_id if exists
+                    $updateData = [
+                        'employee_id' => $post['employee_id']
+                    ];
+                    $this->employeeInfo
+                        ->set($updateData)
+                        ->where('user_id', $post['user_id'])
+                        ->update();
+                } else { // Insert employee_id if not exists
+                    $this->employeeInfo->insert([
+                        'user_id' => $post['user_id'],
+                        'employee_id' => $post['employee_id']
+                    ]);
+                }
+            }
 
             // Commit the transaction
             $db->transComplete();

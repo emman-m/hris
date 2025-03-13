@@ -45,7 +45,7 @@ $title = 'Edit Account';
 
                 <form action="<?= route_to('update-user') ?>" class="card" method="post">
                     <?= csrf_field() ?>
-                    <input type="hidden" name="user_id" value="<?= $user_id?>">
+                    <input type="hidden" name="user_id" value="<?= $user_id ?>">
                     <div class="card-status-top bg-primary"></div>
                     <div class="card-body">
                         <!-- User role -->
@@ -66,29 +66,25 @@ $title = 'Edit Account';
                                 </div>
                             <?php endif; ?>
                         </div>
-                        <!-- department if user is employee -->
-                        <div class="mb-4 department-container" style="display:none">
-                            <label class="form-label">Department</label>
-                            <select name="department" class="form-select mt-1 block w-full">
-                                <option value="" selected disabled>- Please Select -</option>
-                                <?php foreach (EmployeeDepartment::cases() as $EmployeeDepartment): ?>
-                                    <option value="<?= $EmployeeDepartment->value ?>" <?= $EmployeeDepartment->value === old('department') ?? $department ? 'selected' : '' ?>>
-                                        <?= $EmployeeDepartment->value ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
+                        <!-- Employee ID -->
+                        <div class="mb-3 employee_id_container"
+                            style="display: <?= $role === UserRole::EMPLOYEE->value ? 'block' : 'none' ?>;">
+                            <label class="form-label required">Employee ID</label>
+                            <input type="text" name="employee_id" class="form-control"
+                                value="<?= old('employee_id') ?? $employee_id ?>" autocomplete="off" />
+
                             <!-- Error Message -->
-                            <?php if (isset($errors['department'])): ?>
+                            <?php if (isset($errors['employee_id'])): ?>
                                 <div class="invalid-feedback d-block">
-                                    <?= $errors['department'] ?>
+                                    <?= $errors['employee_id'] ?>
                                 </div>
                             <?php endif; ?>
                         </div>
                         <!-- First name -->
                         <div class="mb-3">
                             <label class="form-label required">First Name</label>
-                            <input type="text" name="first_name" class="form-control" value="<?= old('first_name') ?? $first_name ?>"
-                                autocomplete="off" />
+                            <input type="text" name="first_name" class="form-control"
+                                value="<?= old('first_name') ?? $first_name ?>" autocomplete="off" />
 
                             <!-- Error Message -->
                             <?php if (isset($errors['first_name'])): ?>
@@ -100,14 +96,14 @@ $title = 'Edit Account';
                         <!-- Middle name -->
                         <div class="mb-3">
                             <label class="form-label">Middle Name</label>
-                            <input type="text" name="middle_name" class="form-control" value="<?= old('middle_name') ?? $middle_name ?>"
-                                autocomplete="off" />
+                            <input type="text" name="middle_name" class="form-control"
+                                value="<?= old('middle_name') ?? $middle_name ?>" autocomplete="off" />
                         </div>
                         <!-- Last name -->
                         <div class="mb-3">
                             <label class="form-label required">Last Name</label>
-                            <input type="text" name="last_name" class="form-control" value="<?= old('last_name') ?? $last_name ?>"
-                                autocomplete="off" />
+                            <input type="text" name="last_name" class="form-control"
+                                value="<?= old('last_name') ?? $last_name ?>" autocomplete="off" />
 
                             <!-- Error Message -->
                             <?php if (isset($errors['last_name'])): ?>
