@@ -65,6 +65,94 @@ class AttendanceController extends BaseController
         ]);
     }
 
+    public function download()
+    {
+        // Auth user
+        if ($this->auth->isEmployee()) {
+            throw new PageNotFoundException('Page Not Found', 404);
+        }
+
+        // Retrieve filters from the request
+        $filters = [
+            'from' => $this->request->getGet('from'),
+            'to' => $this->request->getGet('to'),
+            'search' => $this->request->getGet('search'),
+        ];
+
+        // Get the query builder from the model
+        $queryBuilder = $this->attendance->search($filters);
+
+        // Retrieve all results
+        $results = $queryBuilder->get()->getResultArray();
+
+        // Prepare headers and data for CSV
+        $headers = ['No.', 'Employee', 'Employee ID', 'Date', 'Time In', 'Time Out', 'Remarks'];
+        // Count number
+        $count = 0;
+        $data = array_map(function ($row) use (&$count) {
+            $count++;
+
+            return [
+                $count,
+                $row['name'],
+                $row['employee_id'],
+                $row['transaction_date'],
+                $row['time_in'],
+                $row['time_out'],
+                $row['remark'],
+            ];
+        }, $results);
+
+        // Use the global CSV download helper
+        return downloadCSV('Attendance-' . date('Y-m-d H:i:s') . '.csv', $headers, $data);
+    }
+
+    public function print()
+    {
+        // Auth user
+        if ($this->auth->isEmployee()) {
+            throw new PageNotFoundException('Page Not Found', 404);
+        }
+
+        // Retrieve filters from the request
+        $filters = $this->request->getPost();
+        // Get the query builder from the model
+        $queryBuilder = $this->attendance->search($filters);
+
+        // Retrieve filtered data
+        $data = $queryBuilder->get()->getResultArray();
+
+        // Prepare headers for the table
+        $headers = ['Employee', 'Employee ID', 'Date', 'Time In', 'Time Out', 'Remarks'];
+
+        // Prepare rows
+        $rows = array_map(fn ($item) => [
+                $item['name'],
+                $item['employee_id'],
+                $item['transaction_date'],
+                $item['time_in'],
+                $item['time_out'],
+                $item['remark'],
+            ], $data);
+
+        // Get the name of the logged-in user
+        $downloadedBy = session()->get('name') ?? 'Anonymous';
+
+        // Render the print template and return as JSON
+        $html = view('Templates/print', [
+            'title' => 'Attendance Report',
+            'headers' => $headers,
+            'rows' => $rows,
+            'downloadedBy' => $downloadedBy,
+        ]);
+
+        // Return the printable content and updated CSRF token
+        return $this->response->setJSON([
+            'html' => $html,
+            'csrfToken' => csrf_hash(),
+        ]);
+    }
+
     public function create()
     {
         // Auth user
@@ -95,7 +183,7 @@ class AttendanceController extends BaseController
 
         $csvData = $this->attendanceService
             ->getContent($request->getFile('file'));
-        
+
         // Start a database transaction
         $db = Database::connect();
         $db->transStart();

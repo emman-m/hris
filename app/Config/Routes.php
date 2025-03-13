@@ -103,4 +103,8 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->get('attendance-create', 'AttendanceController::create', ['as' => 'attendance-create']);
     // Attendance import
     $routes->post('attendance-store', 'AttendanceController::store', ['as' => 'attendance-store']);
+    // Attendance CSV download
+    $routes->get('attendance-download', 'AttendanceController::download', ['as' => 'attendance-download']);
+    // Attendance Print
+    $routes->post('attendance-print', 'AttendanceController::print', ['as' => 'attendance-print']);
 });
