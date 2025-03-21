@@ -122,5 +122,4 @@ class User extends Model
 
         return $builder;
     }
-
 }

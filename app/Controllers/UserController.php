@@ -266,7 +266,7 @@ class UserController extends BaseController
             return redirect()->back();
         }
 
-        return view('Pages/Users/edit', $user);
+        return view('Pages/Announcement/edit', $user);
     }
 
     public function update()
