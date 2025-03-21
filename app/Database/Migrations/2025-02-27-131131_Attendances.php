@@ -29,7 +29,7 @@ class Attendances extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '100',
             ],
-            'date' => [
+            'transaction_date' => [
                 'type' => 'DATE',
             ],
             'time_in' => [
