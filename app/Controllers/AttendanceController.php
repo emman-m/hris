@@ -126,14 +126,14 @@ class AttendanceController extends BaseController
         $headers = ['Employee', 'Employee ID', 'Date', 'Time In', 'Time Out', 'Remarks'];
 
         // Prepare rows
-        $rows = array_map(fn ($item) => [
-                $item['name'],
-                $item['employee_id'],
-                $item['transaction_date'],
-                $item['time_in'],
-                $item['time_out'],
-                $item['remark'],
-            ], $data);
+        $rows = array_map(fn($item) => [
+            $item['name'],
+            $item['employee_id'],
+            $item['transaction_date'],
+            $item['time_in'],
+            $item['time_out'],
+            $item['remark'],
+        ], $data);
 
         // Get the name of the logged-in user
         $downloadedBy = session()->get('name') ?? 'Anonymous';

@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Attendances extends Migration
+class Announcements extends Migration
 {
     public function up()
     {
@@ -17,27 +17,17 @@ class Attendances extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'employee_id' => [
-                'type' => 'VARCHAR',
-                'constraint' => 11,
-            ],
-            'remark' => [
-                'type' => 'VARCHAR',
-                'constraint' => '100',
-            ],
-            'machine' => [
-                'type' => 'VARCHAR',
-                'constraint' => '100',
-            ],
-            'transaction_date' => [
-                'type' => 'DATE',
-            ],
-            'time_in' => [
-                'type' => 'TIME',
-            ],
-            'time_out' => [
-                'type' => 'TIME',
+            'target' => [
+                'type' => 'JSON',
                 'null' => true,
+            ],
+            'title' => [
+                'type' => 'VARCHAR',
+                'constraint' => '255',
+            ],
+            'content' => [
+                'type' => 'VARCHAR',
+                'constraint' => '500',
             ],
             'created_at datetime default current_timestamp',
             'updated_at datetime default current_timestamp on update current_timestamp',
@@ -48,13 +38,13 @@ class Attendances extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->createTable('attendances', true);
+        $this->forge->createTable('announcements', true);
 
         $this->db->enableForeignKeyChecks();
     }
 
     public function down()
     {
-        $this->forge->dropTable('attendances', true);
+        $this->forge->dropTable('announcements', true);
     }
 }

@@ -107,4 +107,24 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->get('attendance-download', 'AttendanceController::download', ['as' => 'attendance-download']);
     // Attendance Print
     $routes->post('attendance-print', 'AttendanceController::print', ['as' => 'attendance-print']);
+
+    /**
+     * Announcement Route
+     */
+    $routes->get('announcements', 'AnnouncementController::index', ['as' => 'announcements']);
+    // Announcement create page
+    $routes->get('announcements-create', 'AnnouncementController::create', ['as' => 'announcements-create']);
+    // Announcement save
+    $routes->post('announcements-create', 'AnnouncementController::store', ['as' => 'announcements-create']);
+    // Announcement edit page
+    $routes->get('announcements/(:any)', 'AnnouncementController::edit/$1', ['as' => 'announcements-edit']);
+    // Announcement update
+    $routes->post('announcements-update', 'AnnouncementController::update', ['as' => 'announcements-update']);
+    // Announcement delete
+    $routes->post('announcements-delete', 'AnnouncementController::delete', ['as' => 'announcements-delete']);
+    // Announcement CSV download
+    $routes->get('announcements-download', 'AnnouncementController::download', ['as' => 'announcements-download']);
+    // Announcement Print
+    $routes->post('announcements-print', 'AnnouncementController::print', ['as' => 'announcements-print']);
+    
 });
