@@ -20,6 +20,17 @@ if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
     exit(1);
 }
 
+/**
+ * ---------------------------------------------------------------
+ * PHP ini_set
+ * ---------------------------------------------------------------
+ */
+ini_set('upload_max_filesize', '50M');
+ini_set('post_max_size', '60M');
+ini_set('max_execution_time', '300');
+ini_set('max_input_time', '300');
+ini_set('memory_limit', '512M');
+
 /*
  *---------------------------------------------------------------
  * SET THE CURRENT DIRECTORY
