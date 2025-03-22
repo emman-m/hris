@@ -7,8 +7,6 @@ $(function () {
         console.log(params)
         // Fetch filters
         const filters = {
-            role: params.get('role') || '',
-            status: params.get('status') || '',
             search: params.get('search') || '',
         };
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ApproveStatus;
+use App\Models\User;
 
 /**
  * The goal of this file is to allow developers a location
