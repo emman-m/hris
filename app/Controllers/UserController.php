@@ -83,7 +83,7 @@ class UserController extends BaseController
             'start' => ($pager->getCurrentPage() - 1) * $pager->getPerPage() + 1,
             'end' => min($pager->getCurrentPage() * $pager->getPerPage(), $pager->getTotal()),
         ];
-        dd($pager);
+
         return view('Pages/Users/index', [
             'data' => $data,
             'pager' => $pager,
