@@ -17,6 +17,11 @@ class Announcements extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'created_id' => [
+                'type' => 'INT',
+                'constraint' => 11,
+                'unsigned' => true,
+            ],
             'target' => [
                 'type' => 'JSON',
                 'null' => true,
@@ -26,8 +31,7 @@ class Announcements extends Migration
                 'constraint' => '255',
             ],
             'content' => [
-                'type' => 'VARCHAR',
-                'constraint' => '500',
+                'type' => 'TEXT',
             ],
             'created_at datetime default current_timestamp',
             'updated_at datetime default current_timestamp on update current_timestamp',
@@ -38,6 +42,7 @@ class Announcements extends Migration
         ]);
 
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('created_id', 'users', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('announcements', true);
 
         $this->db->enableForeignKeyChecks();

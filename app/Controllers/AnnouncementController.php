@@ -91,6 +91,8 @@ class AnnouncementController extends BaseController
         $db->transStart();
 
         try {
+            $post['created_id'] = session()->get('user_id');
+            $post['content'] = esc($post['content']);
             $this->announcement->save($post);
 
             // Commit the transaction
@@ -146,7 +148,8 @@ class AnnouncementController extends BaseController
         $db->transStart();
 
         try {
-            $this->announcement->update($this->request->getPost('id'), $this->request->getPost());
+            $post = $this->request->getPost();
+            $this->announcement->update($this->request->getPost('id'), $post);
 
             // Commit the transaction
             $db->transComplete();
