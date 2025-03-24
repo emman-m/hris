@@ -14,6 +14,7 @@ class Announcement extends Model
     protected $useSoftDeletes = true;
     protected $protectFields = true;
     protected $allowedFields = [
+        'created_id',
         'target',
         'title',
         'content',
@@ -53,14 +54,19 @@ class Announcement extends Model
 
     public function search(array $filters)
     {
-        $builder = $this->table($this->table);
+        $builder = $this->table($this->table)
+            ->select('
+                announcements.*,
+                CONCAT(users_info.first_name, " ", users_info.last_name) as author
+            ')
+            ->join('users_info', 'announcements.created_id = users_info.user_id', 'LEFT');
 
         if (!empty($filters['search'])) {
-            $builder->like('title', $filters['search']);
-            $builder->orLike('content', $filters['search']);
+            $builder->like('announcements.title', $filters['search']);
+            $builder->orLike('announcements.content', $filters['search']);
         }
 
-        return $builder;
+        return $builder->orderBy('announcements.created_at', 'desc');
     }
 
     public function withDeleted(bool $val = true)
