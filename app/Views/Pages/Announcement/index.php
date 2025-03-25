@@ -116,7 +116,7 @@ $pageTitle = 'Announcements';
                                             <?= $item['title'] ?>
                                         </td>
                                         <td class="text-secondary">
-                                            <?= $item['content'] ?>
+                                            <?= clean_content($item['content']) ?>
                                         </td>
                                         <td class="text-secondary">
                                             <?= implode(', ', $item['target']) ?>

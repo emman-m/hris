@@ -72,8 +72,9 @@ class Announcement extends Model
     public function withDeleted(bool $val = true)
     {
         if ($val) {
-            return $this->table($this->table)->where('deleted_at IS NOT NULL OR deleted_at IS NULL');
+            return $this->table($this->table)->where('announcements.deleted_at IS NOT NULL OR deleted_at IS NULL');
         }
-        return $this->table($this->table)->where('deleted_at IS NULL');
+
+        return $this->table($this->table)->where('announcements.deleted_at IS NULL');
     }
 }
