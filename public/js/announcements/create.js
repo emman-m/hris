@@ -35,8 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
         toolbar:
             "undo redo | formatselect fontsizeinput | " +
-            "bold italic backcolor | alignleft aligncenter " +
+            "bold italic underline backcolor | alignleft aligncenter " +
             "alignright alignjustify | bullist numlist outdent indent | " +
+            "link unlink image | " +
             "removeformat",
         content_style:
             "body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }",
