@@ -4,7 +4,7 @@
     <strong class="text-secondary"><?= $data[0]['created_at'] ?></strong>
 
     <div class="markdown mt-4 p-3 bg-gray-500" style="max-height: 181px;overflow-y: auto;">
-        <?= nl2br($data[0]['content']) ?>
+        <?= html_entity_decode($data[0]['content']) ?>
     </div>
 </div>
 

@@ -20,6 +20,8 @@ $title = 'Create Announcement';
 <!-- Custom import -->
 <?= $this->section('footer-script') ?>
 <script src="<?= base_url('tom-select/complete.min.js') ?>"></script>
+<!-- <script src="<?= base_url('tinymce/tinymce.min.js') ?>"></script> -->
+<script src="https://cdn.tiny.cloud/1/qhsoyoafyafernaxvto2epyfdbd0u0zzhj21m9qb6ts5xhwi/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="<?= base_url('js/announcements/create.js') ?>"></script>
 <?= $this->endSection() ?>
 

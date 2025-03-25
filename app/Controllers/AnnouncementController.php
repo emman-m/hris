@@ -40,7 +40,7 @@ class AnnouncementController extends BaseController
         ];
 
         // Get the query builder from the model
-        $queryBuilder = $this->announcement->search($filters);
+        $queryBuilder = $this->announcement->search($filters)->withDeleted(false);
 
         // Apply pagination
         $data = $queryBuilder->paginate();
@@ -236,7 +236,7 @@ class AnnouncementController extends BaseController
             return [
                 $count,
                 $row['title'],
-                $row['content'],
+                clean_content($row['content']),
                 implode(', ', json_decode($row['target'])),
                 $row['created_at'],
             ];
@@ -265,14 +265,12 @@ class AnnouncementController extends BaseController
         $headers = ['Title', 'Content', 'Audience', 'Date'];
 
         // Prepare rows
-        $rows = array_map(function ($row) {
-            return [
-                $row['title'],
-                $row['content'],
-                implode(', ', json_decode($row['target'])),
-                $row['created_at'],
-            ];
-        }, $data);
+        $rows = array_map(fn($row) => [
+            $row['title'],
+            clean_content($row['content']),
+            implode(', ', json_decode($row['target'])),
+            $row['created_at'],
+        ], $data);
 
         // Get the name of the logged-in user
         $downloadedBy = session()->get('name') ?? 'Anonymous';

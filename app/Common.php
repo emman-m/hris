@@ -144,3 +144,10 @@ if (!function_exists('approve_status')) {
         return $badge;
     }
 }
+
+if (!function_exists('clean_content')) {
+    function clean_content($content)
+    {
+        return strip_tags(html_entity_decode($content));
+    }
+}
