@@ -33,7 +33,6 @@ class AnnouncementController extends BaseController
             throw new PageNotFoundException('Page Not Found', 404);
         }
 
-
         // Retrieve filters from the request
         $filters = [
             'search' => $this->request->getGet('search')

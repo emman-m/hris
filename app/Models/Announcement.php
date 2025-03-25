@@ -66,7 +66,9 @@ class Announcement extends Model
             $builder->orLike('announcements.content', $filters['search']);
         }
 
-        return $builder->orderBy('announcements.created_at', 'desc');
+        $builder->orderBy('announcements.created_at', 'desc');
+
+        return $this;
     }
 
     public function withDeleted(bool $val = true)
@@ -76,5 +78,14 @@ class Announcement extends Model
         }
 
         return $this->table($this->table)->where('announcements.deleted_at IS NULL');
+    }
+
+    public function validUser()
+    {
+        $userId = session()->get('user_id');
+
+        return $this->join('employees_info', 'employees_info.user_id = '. $userId, 'LEFT')
+            ->where("JSON_CONTAINS(announcements.target, JSON_QUOTE(employees_info.department))")
+            ->where('employees_info.user_id', $userId);
     }
 }

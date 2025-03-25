@@ -2,16 +2,22 @@
 
 namespace App\Services;
 
+use App\Libraries\Policy\AuthPolicy;
 use App\Models\Announcement;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
 
 class WidgetService
 {
-
-    public static function getAnnouncement(Announcement $announcement, array $filters = [])
+    public static function getAnnouncement(Announcement $announcement, AuthPolicy $auth, array $filters = [])
     {
         // Get the query builder from the model
         $queryBuilder = $announcement->search($filters);
+
+        // Auth user
+        if ($auth->isEmployee()) {
+            $queryBuilder = $queryBuilder->validUser();
+        }
 
         // Apply pagination
         $data = $queryBuilder->paginate(1);
