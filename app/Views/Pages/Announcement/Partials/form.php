@@ -1,6 +1,12 @@
 <?php
 
 use App\Enums\EmployeeDepartment;
+
+// $routeName = service('router')->getCurrentRoute()->getName();
+// echo $routeName;
+$content = html_entity_decode(old('content'));
+
+log_message('info', $content);
 ?>
 
 <!-- Target User -->
@@ -32,10 +38,10 @@ use App\Enums\EmployeeDepartment;
         </div>
     <?php endif; ?>
 </div>
-<!-- First name -->
+<!-- Content -->
 <div class="mb-3">
     <label class="form-label required">Content</label>
-    <textarea name="content" class="form-control" rows="7"><?= old('content') ?></textarea>
+    <textarea name="content" class="form-control" rows="7"><?= $content ?></textarea>
 
     <!-- Error Message -->
     <?php if (isset($errors['content'])): ?>
