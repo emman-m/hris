@@ -14,7 +14,7 @@ class WidgetService
         // Get the query builder from the model
         $queryBuilder = $announcement->search($filters);
 
-        // Auth user
+        // Filter employee announcement
         if ($auth->isEmployee()) {
             $queryBuilder = $queryBuilder->validUser();
         }
