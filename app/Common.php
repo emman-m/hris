@@ -138,7 +138,8 @@ if (!function_exists('approve_status')) {
         $badge = match ($status) {
             ApproveStatus::APPROVED->value => '<span class="badge bg-teal-lt">' . ApproveStatus::APPROVED->value . '</span>',
             ApproveStatus::DENIED->value => '<span class="badge bg-red-lt">' . ApproveStatus::DENIED->value . '</span>',
-            default => '<span class="badge bg-yellow-lt">' . ApproveStatus::PENDING->value . '</span>',
+            ApproveStatus::CANCELLED->value => '<span class="badge bg-yellow-lt">' . ApproveStatus::CANCELLED->value . '</span>',
+            default => '<span class="badge bg-blue-lt">' . ApproveStatus::PENDING->value . '</span>',
         };
 
         return $badge;
@@ -149,5 +150,32 @@ if (!function_exists('clean_content')) {
     function clean_content($content)
     {
         return strip_tags(html_entity_decode($content));
+    }
+}
+if (!function_exists('dateFormat')) {
+    /**
+     * Formats a date according to the specified format.
+     *
+     * @param string $value The date value to format.
+     * @param string $format The date format (default: 'd/m/Y h:i:s A').
+     * @return string
+     */
+    function dateFormat($value, $format = 'd/m/Y h:i:s A')
+    {
+        // Check if the input is empty or an invalid date
+        if (($value === '') || ($value === null) || ($value === '0000-00-00') || ($value === '0000-00-00 00:00:00')) {
+            return ''; // Return an empty string for invalid values
+        }
+
+        // Determine the correct format for DateTime creation
+        $dateFormat = (strlen($value) === 10) ? 'Y-m-d' : 'Y-m-d H:i:s';
+        $date = DateTime::createFromFormat($dateFormat, $value);
+
+        // If date creation fails, return an empty string
+        if ($date === false) {
+            return '';
+        }
+
+        return $date->format($format);
     }
 }
