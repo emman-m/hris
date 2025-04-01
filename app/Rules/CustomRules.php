@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use CodeIgniter\Validation\Rules;
 use Config\Database;
+use DateTime;
 
 class CustomRules extends Rules
 {
@@ -40,5 +41,43 @@ class CustomRules extends Rules
         return $query->getNumRows() === 0;
     }
 
+    public function min_date($inputDate, $days): bool
+    {
+        // Create DateTime object for the input date
+        $date = \DateTime::createFromFormat('Y-m-d\TH:i', $inputDate);
+
+        // Get the current date and time
+        $currentDate = new \DateTime();
+
+        // Add 7 days to the current date
+        $sevenDaysAhead = (clone $currentDate)->modify("+{$days} days");
+
+        // Compare the dates
+        return $date >= $sevenDaysAhead;
+    }
+
+    public function date_behind(string $str, string $fields, array $data): bool
+    {
+        // Extract the start_date from the fields parameter
+        $startDateField = $fields;
+
+        // Check if the start_date exists in the provided data
+        if (!isset($data[$startDateField])) {
+            return false; // Invalid if no start_date
+        }
+
+        // Parse the start_date and end_date
+        $startDate = $data[$startDateField];
+        $endDate = $str;
+
+        log_message('debug', "Start Date: $startDate, End Date: $endDate");
+        
+        // Create DateTime objects
+        $datetime1 = new DateTime($startDate);
+        $datetime2 = new DateTime($endDate);
+
+        // Check if end_date is behind start_date
+        return !($datetime2 < $datetime1); // True if end_date is not behind
+    }
 
 }
