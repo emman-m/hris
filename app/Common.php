@@ -139,7 +139,7 @@ if (!function_exists('approve_status')) {
             ApproveStatus::APPROVED->value => '<span class="badge bg-teal-lt">' . ApproveStatus::APPROVED->value . '</span>',
             ApproveStatus::DENIED->value => '<span class="badge bg-red-lt">' . ApproveStatus::DENIED->value . '</span>',
             ApproveStatus::CANCELLED->value => '<span class="badge bg-yellow-lt">' . ApproveStatus::CANCELLED->value . '</span>',
-            default => '<span class="badge bg-blue-lt">' . ApproveStatus::PENDING->value . '</span>',
+            default => '<span class="badge bg-azure-lt">' . ApproveStatus::PENDING->value . '</span>',
         };
 
         return $badge;

@@ -166,7 +166,7 @@ $pageTitle = 'Leaves';
                                     <th>Leave Type</th>
                                     <th>Approval</th>
                                     <th>Effective Date</th>
-                                    <th class="w-8"></th>
+                                    <th class="w-auto"></th>
                                 </tr>
                             </thead>
                             <tbody>
