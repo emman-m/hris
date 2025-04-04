@@ -5,10 +5,11 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Libraries\Policy\AuthPolicy;
 use App\Models\Announcement;
+use App\Models\EmployeeInfo;
 use App\Services\Announcement as AnnouncementService;
+use App\Services\NotificationService;
 use App\Validations\Announcement\CreateValidator;
 use CodeIgniter\Exceptions\PageNotFoundException;
-use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
 use Config\Services;
 use Exception;
@@ -18,12 +19,14 @@ class AnnouncementController extends BaseController
     protected $announcement;
     protected $auth;
     protected $pager;
+    protected $announcementService;
 
     public function __construct()
     {
         $this->announcement = new Announcement();
         $this->auth = new AuthPolicy();
         $this->pager = Services::pager();
+        $this->announcementService = new AnnouncementService();
     }
 
     public function index()
@@ -101,6 +104,9 @@ class AnnouncementController extends BaseController
             if ($db->transStatus() === false) {
                 throw new Exception('Transaction failed');
             }
+
+            // Send Notif
+            $this->announcementService->sendNotif($post);
 
             withToast('success', 'Success! New Announcement has been created.');
         } catch (\Throwable $e) {

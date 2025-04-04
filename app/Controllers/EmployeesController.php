@@ -16,7 +16,6 @@ use App\Models\User;
 use App\Services\EmployeeService;
 use App\Validations\EmployeeUserValidator;
 use CodeIgniter\Exceptions\PageNotFoundException;
-use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
 use Config\Services;
 use Exception;
@@ -31,6 +30,7 @@ class EmployeesController extends BaseController
     protected $affiliation;
     protected $licensure;
     protected $positionHistory;
+    protected $employeeService;
 
     // Declare the AuthPolicy instance as a protected property
     protected $auth;
@@ -48,6 +48,7 @@ class EmployeesController extends BaseController
 
         // Initialize the AuthPolicy instance
         $this->auth = new AuthPolicy();
+        $this->employeeService = new EmployeeService();
     }
 
     public function index()
@@ -389,6 +390,9 @@ class EmployeesController extends BaseController
                 throw new Exception('Transaction failed');
             }
 
+            // Send Notif
+            $this->employeeService->sendUpdateNotif(['user_id' => $post['user_id']]);
+
             withToast('success', 'Employee has been updated');
         } catch (Exception $e) {
             // If any operation fails, rollback the transaction
@@ -439,6 +443,20 @@ class EmployeesController extends BaseController
             }
 
             $stateMsg = $state ? 'Locked' : 'Unlocked';
+
+            // Send notification
+            // Fetch Employee Info
+            $employeeInfo = $this->user->getUserByuserId($request['user_id']);
+
+            $data = [
+                'user_id' => $request['user_id'],
+                'name' => "{$employeeInfo['first_name']} {$employeeInfo['last_name']}",
+                'email' => $employeeInfo['email'],
+                'action_status' => $stateMsg
+            ];
+
+            $this->employeeService->sendLockUnlockNotif($data);
+
             // Return the response with updated CSRF token
             return $this->response->setJSON([
                 'success' => true,

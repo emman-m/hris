@@ -31,9 +31,9 @@ class EmployeesInfoController extends BaseController
     protected $affiliation;
     protected $licensure;
     protected $positionHistory;
-
     // Declare the AuthPolicy instance as a protected property
     protected $auth;
+    protected $employeeService;
 
     public function __construct()
     {
@@ -45,9 +45,9 @@ class EmployeesInfoController extends BaseController
         $this->affiliation = new Affiliation();
         $this->licensure = new Licensure();
         $this->positionHistory = new PositionHistory();
-
         // Initialize the AuthPolicy instance
         $this->auth = new AuthPolicy();
+        $this->employeeService = new EmployeeService();
     }
 
     public function index()
@@ -270,6 +270,9 @@ class EmployeesInfoController extends BaseController
             if ($db->transStatus() === false) {
                 throw new Exception('Transaction failed');
             }
+
+            // Send Notif
+            $this->employeeService->sendUpdateNotif(['user_id' => $userId]);
 
             withToast('success', 'Informations has been saved');
         } catch (Exception $e) {

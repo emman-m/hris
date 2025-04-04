@@ -179,3 +179,22 @@ if (!function_exists('dateFormat')) {
         return $date->format($format);
     }
 }
+
+if (!function_exists('normalizeArray')) {
+    /**
+     * Normalize an array by removing empty values and trimming strings.
+     *
+     * @param array|string $input The array to normalize.
+     * @return array
+     */
+    function normalizeArray($input)
+    {
+        // Check if input is already an array
+        if (is_array($input)) {
+            return $input; // Return as is if it's an array
+        }
+
+        // If not an array, wrap it in an array
+        return [$input];
+    }
+}

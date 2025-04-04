@@ -91,4 +91,17 @@ class EmployeeInfo extends Model
     {
         return $this->select("id as $alias");
     }
+
+    public function getUserFromDept($department)
+    {
+        $depts = normalizeArray($department);
+
+        $builder = $this->table($this->table)
+            ->select('users.*, users_info.first_name, users_info.last_name')
+            ->whereIn('employees_info.department', $depts)
+            ->join('users', 'employees_info.user_id = users.id', 'LEFT')
+            ->join('users_info', 'users_info.user_id = users.id', 'LEFT');
+
+        return $builder->get()->getResultArray();
+    }
 }

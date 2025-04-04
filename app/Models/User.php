@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use CodeIgniter\Model;
 
@@ -121,5 +122,14 @@ class User extends Model
         }
 
         return $builder;
+    }
+
+    public function getAllAdmin()
+    {
+        return $this->builder($this->table)
+            ->select('CONCAT(users_info.first_name, " ", users_info.middle_name, " ", users_info.last_name) as name, users.*, users.role')
+            ->join('users_info', 'users_info.user_id = users.id', 'LEFT')
+            ->whereIn('users.role', [UserRole::ADMIN->value, UserRole::HR_ADMIN->value, UserRole::HR_STAFF->value])
+            ->get()->getResultArray();
     }
 }

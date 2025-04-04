@@ -117,7 +117,9 @@ class Leave extends Model
             ->select('
                 CONCAT(users_info.first_name, " ", users_info.last_name) as name,
                 CONCAT(admin_user.first_name, " ", admin_user.last_name) as approve_by,
-                leaves.*
+                leaves.*,
+                users.email,
+                users.id as user_id
                 ')
             ->join('users_info', 'leaves.user_id = users_info.user_id', 'LEFT')
             ->join('users_info as admin_user', 'leaves.approve_user = admin_user.user_id', 'LEFT')

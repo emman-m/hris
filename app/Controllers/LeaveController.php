@@ -7,6 +7,7 @@ use App\Enums\ApproveStatus;
 use App\Enums\LeaveType;
 use App\Libraries\Policy\AuthPolicy;
 use App\Models\Leave;
+use App\Services\LeaveService;
 use App\Services\OfficialBusinessService;
 use App\Services\VacationLeaveService;
 use App\Validations\Leaves\CreateOBValidator;
@@ -22,12 +23,14 @@ class LeaveController extends BaseController
 {
     protected $auth;
     protected $leave;
+    protected $leaveService;
 
     public function __construct()
     {
         // Initialize the AuthPolicy instance
         $this->auth = new AuthPolicy();
         $this->leave = new Leave();
+        $this->leaveService = new LeaveService();
     }
 
     public function index()
@@ -279,6 +282,9 @@ class LeaveController extends BaseController
                 throw new Exception('Transaction failed');
             }
 
+            // Send notification
+            $this->leaveService->sendCreateNotif($post);
+
             withToast('success', 'Success! Vacation leave created.');
         } catch (\Throwable $e) {
             // Rollback transaction in case of error
@@ -426,6 +432,9 @@ class LeaveController extends BaseController
             if ($db->transStatus() === false) {
                 throw new Exception('Transaction failed');
             }
+
+            // Send notification
+            $this->leaveService->sendCreateNotif($post);
 
             withToast('success', 'Success! Vacation leave created.');
         } catch (\Throwable $e) {
@@ -575,6 +584,9 @@ class LeaveController extends BaseController
             if ($db->transStatus() === false) {
                 throw new Exception('Transaction failed');
             }
+
+            // Send notification
+            $this->leaveService->sendCreateNotif($post);
 
             withToast('success', 'Success! Vacation leave created.');
         } catch (\Throwable $e) {
@@ -733,7 +745,6 @@ class LeaveController extends BaseController
             'approve_user' => session()->get('user_id'),
             'approve_date' => date('Y-m-d H:i:s'),
         ];
-        // dd($data);
 
         return $this->update_status($data);
     }
@@ -772,6 +783,9 @@ class LeaveController extends BaseController
             if ($db->transStatus() === false) {
                 throw new Exception('Transaction failed');
             }
+
+            // Send notification
+            $this->leaveService->sendApproveNotif($data);
 
             withToast('success', 'Success! Leave updated.');
 
