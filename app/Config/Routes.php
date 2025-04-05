@@ -184,4 +184,9 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
 
     // Show leave details
     $routes->get('leaves/(:any)', 'LeaveController::show/$1', ['as' => 'leaves-show']);
+
+    // Notification Route
+    $routes->post('get-notification', 'NotificationController::index', ['as' => 'get-notification']);
+    // Show notification details
+    $routes->get('notification/(:any)', 'NotificationController::show/$1', ['as' => 'notification-show']);
 });

@@ -47,4 +47,12 @@ class Notification extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getAll($userId)
+    {
+        return $this->where('user_id', $userId)
+            ->orderBy('is_read', 'ASC')
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
+    }
 }

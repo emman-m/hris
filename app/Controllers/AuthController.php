@@ -60,7 +60,7 @@ class AuthController extends BaseController
                         // Incorrect password
                         session()->setFlashdata('error', 'Invalid login credentials');
                     }
-                } else if ($user['status'] === UserStatus::INACTIVE->value) {
+                } else if ($user && ($user['status'] === UserStatus::INACTIVE->value)) {
                     session()->setFlashdata('error', 'Account disabled. If you believe this is an error, please contact support.');
                 } else {
                     // User not found with that email
