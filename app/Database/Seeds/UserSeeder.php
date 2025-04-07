@@ -25,6 +25,22 @@ class UserSeeder extends Seeder
             ],
             [
                 'status' => 'active',
+                'role' => UserRole::HR_ADMIN->value,
+                'email' => 'hradmin@hris.com',
+                'password' => password_hash('password', PASSWORD_BCRYPT),
+                'created_at' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'status' => 'active',
+                'role' => UserRole::HR_STAFF->value,
+                'email' => 'hrstaff@hris.com',
+                'password' => password_hash('password', PASSWORD_BCRYPT),
+                'created_at' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'status' => 'active',
                 'role' => UserRole::EMPLOYEE->value,
                 'email' => 'employee@hris.com',
                 'password' => password_hash('password', PASSWORD_BCRYPT),
@@ -34,10 +50,9 @@ class UserSeeder extends Seeder
         ];
 
         for ($i = 1; $i <= 40; $i++) {
-            $role = $roles[array_rand($roles)]->value;
             $data[] = [
                 'status' => 'active',
-                'role' => $role,
+                'role' => UserRole::EMPLOYEE->value,
                 'email' => $faker->unique()->email,
                 'password' => password_hash('password', PASSWORD_BCRYPT),
                 'created_at' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s'),

@@ -39,6 +39,14 @@ $(function () {
                     dataType: 'json',
                     beforeSend: function () {
                         ele.prop('disabled', true);
+                        Swal.fire({
+                            title: "Loading...",
+                            html: "Please wait while we process your request.",
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
                     },
                     success: function (response) {
                         // Refresh token
@@ -47,6 +55,9 @@ $(function () {
                             ele.prop('disabled', false);
                             ele.html(state === 0 ? 'Lock' : 'Unlock');
                             ele.attr('data-state', state);
+
+                            // Close loading popup
+                            Swal.close();
 
                             const Toast = Swal.mixin({
                                 toast: true,
@@ -73,6 +84,8 @@ $(function () {
                     error: function (err) {
                         ele.prop('disabled', false);
                         console.error(err);
+                        // Close loading
+                        Swal.close();
                     }
                 })
             } else {

@@ -2,8 +2,22 @@
 
 namespace App\Services;
 
+use App\Libraries\Policy\AuthPolicy;
+use App\Models\User;
+
 class EmployeeService
 {
+    protected $notification;
+    protected $auth;
+    protected $user;
+
+    public function __construct()
+    {
+        $this->notification = new NotificationService();
+        $this->auth = new AuthPolicy();
+        $this->user = new User();
+    }
+
     public static function parseEmployeesInfo(array $context)
     {
         // dd($context);
@@ -111,5 +125,69 @@ class EmployeeService
         $session->setFlashdata('form', $form);
 
         return;
+    }
+
+    public function sendUpdateNotif($data)
+    {
+        $emailData = [];
+        $employeeInfo = $this->user->getUserByuserId($data['user_id']);
+        log_message('debug', 'It run sendUpdateNotif');
+        // if employee updated, notif all the admin
+        if ($this->auth->isEmployee()) {
+
+            $admins = $this->user->getAllAdmin();
+            $users = array_column($admins, 'id');
+            $data['message'] = "{$employeeInfo['first_name']} {$employeeInfo['last_name']} has updated their information";
+
+            // for email
+            foreach ($admins as $row) {
+                $emailData[] = [
+                    'email' => $row['email'],
+                    'subject' => 'Personal Information Updated',
+                    'context' => [
+                        'name' => $row['name'],
+                        'message' => "{$employeeInfo['first_name']} {$employeeInfo['last_name']} has updated their information",
+                    ]
+                ];
+            }
+        // if the admin has updated, notif the employee
+        } else {
+            $emailData[] = [
+                'email' => $employeeInfo['email'],
+                'subject' => 'Personal Information Updated',
+                'context' => [
+                    'name' => "{$employeeInfo['first_name']} {$employeeInfo['last_name']}",
+                    'message' => "Admin has updated your personal information."
+                ]
+            ];
+            $users = $data['user_id'];
+
+            $data['message'] = "Admin has Updated your Personal information.";
+
+        }
+        log_message('debug', json_encode(['notif_log' => $emailData]));
+        // Save Notification
+        $this->notification->sendNotification($users, $data['message']);
+
+        // Send email
+        $this->notification->sendEmail($emailData);
+    }
+
+    public function sendLockUnlockNotif($data)
+    {
+        // Save Notification
+        $this->notification->sendNotification($data['user_id'], "Admin has {$data['action_status']} your Personal information.");
+
+        // Send email
+        $emailData[] = [
+            'email' => $data['email'],
+            'subject' => "Admin has {$data['action_status']} your Personal information.",
+            'context' => [
+                'name' => $data['name'],
+                'message' => "Admin has {$data['action_status']} your Personal information. You cannot update or modify anything to your personal information."
+            ]
+        ];
+
+        $this->notification->sendEmail($emailData);
     }
 }

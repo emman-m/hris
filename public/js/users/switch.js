@@ -31,8 +31,17 @@ $(function () {
                     dataType: 'json',
                     beforeSend: function () {
                         $('.status-switch').prop('disabled', true);
+                        Swal.fire({
+                            title: "Loading...",
+                            html: "Please wait while we process your request.",
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
                     },
                     success: function (response) {
+                        Swal.close();
                         // Refresh token
                         csrfTokenValue = response.csrfToken;
                         if (response.success) {
@@ -62,6 +71,7 @@ $(function () {
                     error: function (err) {
                         $('.status-switch').prop('disabled', false);
                         console.error(err);
+                        Swal.close(); // Close the loading dialog
                     }
                 })
             } else {

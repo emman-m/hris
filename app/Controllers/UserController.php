@@ -15,6 +15,7 @@ use App\Models\Licensure;
 use App\Models\PositionHistory;
 use App\Models\User;
 use App\Models\UserInfo;
+use App\Services\UserService;
 use App\Validations\Users\UpdateValidator;
 use App\Validations\Users\UserValidator;
 use CodeIgniter\Exceptions\PageNotFoundException;
@@ -37,6 +38,7 @@ class UserController extends BaseController
     protected $pager;
     // Declare the AuthPolicy instance as a protected property
     protected $auth;
+    protected $userService;
 
     public function __construct()
     {
@@ -54,6 +56,7 @@ class UserController extends BaseController
 
         // Initialize the AuthPolicy instance
         $this->auth = new AuthPolicy();
+        $this->userService = new UserService();
     }
 
     public function index()
@@ -239,6 +242,20 @@ class UserController extends BaseController
             }
 
             $db->transComplete();
+            // Check if the transaction was successful
+            if ($db->transStatus() === false) {
+                throw new Exception('Transaction failed');
+            }
+
+            // Send Notif
+            $data = [
+                'user_id' => $userId,
+                'email' => $post['email'],
+                'first_name' => $post['first_name'],
+                'last_name' => $post['last_name']
+            ];
+
+            $this->userService->sendStoreNotif($data);
 
             withToast('success', 'Success! New ' . $post['role'] . ' has been added.');
         } catch (Exception $e) {
@@ -348,6 +365,16 @@ class UserController extends BaseController
                 throw new Exception('Transaction failed');
             }
 
+            // Send Notif
+            $data = [
+                'user_id' => $post['user_id'],
+                'email' => $post['email'],
+                'first_name' => $post['first_name'],
+                'last_name' => $post['last_name']
+            ];
+
+            $this->userService->sendUpdateNotif($data);
+
             withToast('success', 'Success! ' . $post['role'] . ' has been updated.');
 
             return redirect()->route('users');
@@ -389,6 +416,17 @@ class UserController extends BaseController
 
             // Update the user status
             $this->user->update($request['user_id'], ['status' => $status]);
+
+            // Send Notif
+            $data = [
+                'user_id' => $request['user_id'],
+                'email' => $user['email'],
+                'first_name' => $user['first_name'],
+                'last_name' => $user['last_name'],
+                'status' => $status
+            ];
+
+            $this->userService->sendUpdateStatusNotif($data);
 
             // Return the response with updated CSRF token
             return $this->response->setJSON([

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Libraries;
+namespace App\Services;
 
 use Config\Services;
 
@@ -18,6 +18,17 @@ class SendMail
     public function setTo($sentTo)
     {
         $this->email->setTo($sentTo);
+
+        return $this;
+    }
+
+    public function setBcc($sentCc)
+    {
+        // $emails = $this->normalizeRecipient($sentCc);
+
+        $this->email->BCCBatchMode = true;
+
+        $this->email->setBCC($sentCc);
 
         return $this;
     }
@@ -46,5 +57,14 @@ class SendMail
         log_message('error', $this->email->printDebugger(['headers']));
 
         return false;
+    }
+
+    protected function normalizeRecipient($recipient)
+    {
+        if (is_array($recipient)) {
+            return implode(', ', $recipient);
+        }
+
+        return $recipient;
     }
 }

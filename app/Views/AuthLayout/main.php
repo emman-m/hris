@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-payments.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/tabler-vendors.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('tabler/dist/css/demo.min.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('css/main.css'); ?>">
     <script src="<?= base_url('jquery/dist/jquery.min.js') ?>"></script>
     <script src="<?= base_url('sweetalert2/dist/sweetalert2.all.min.js') ?>"></script>
     <link rel="stylesheet" href="<?= base_url('sweetalert2/theme-borderless/borderless.min.css'); ?>">
@@ -43,6 +44,60 @@
         let csrfTokenValue = '<?= csrf_hash() ?>';
     </script>
     <?= $this->renderSection('footer-script') ?>
+
+    <!-- Notification -->
+    <script>
+        $(function () {
+
+            // Fetch Notification
+            let processing = false;
+            let notifCount = 0;
+            setInterval(() => {
+                fetchNotif();
+            }, 3000);
+
+            function fetchNotif() {
+                if (!processing) {
+                    // Set request data
+                    var request = {};
+                    request[csrfTokenName] = csrfTokenValue;
+
+                    $.ajax({
+                        url: '<?= route_to('get-notification') ?>',
+                        type: 'post',
+                        data: request,
+                        dataType: 'json',
+                        beforeSend: function () {
+                            processing = true;
+                        },
+                        success: function (data) {
+                            // Refresh token
+                            csrfTokenValue = data.csrfToken;
+                            $(`input[name="${csrfTokenName}"]`).val(csrfTokenValue);
+
+                            if (data.success) {
+                                if (data.count > notifCount) {
+                                    $('#notifBox').html(data.html);
+                                    notifCount = data.count;
+                                }
+                                console.log(data.has_new);
+
+                                if (data.has_new) {
+                                    $('#badgeIcon').html(`<span class="badge bg-red"></span>`);
+                                }
+                            }
+                            processing = false;
+                        },
+                        error: function (err) {
+                            console.log(err.responseText);
+                        }
+                    })
+                }
+            }
+
+            // fetchNotif();
+        });
+    </script>
 </body>
 
 </html>
