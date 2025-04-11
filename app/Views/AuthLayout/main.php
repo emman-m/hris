@@ -52,9 +52,9 @@
             // Fetch Notification
             let processing = false;
             let notifCount = 0;
-            // setInterval(() => {
+            setInterval(() => {
                 fetchNotif();
-            // }, 3000);
+            }, 3000);
 
             function fetchNotif() {
                 if (!processing) {
