@@ -49,6 +49,10 @@ class SendMail
 
     public function send()
     {
+        if (getenv('MOCK_EMAIL')) {
+            return true;
+        }
+
         $this->email->setFrom('magnomagz@gmail.com', $this->setFrom);
         if ($this->email->send()) {
             return true;

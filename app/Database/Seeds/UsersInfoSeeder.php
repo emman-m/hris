@@ -17,9 +17,9 @@ class UsersInfoSeeder extends Seeder
             foreach ($users as $user) {
                 $data[] = [
                     'user_id' => $user['id'],
-                    'first_name' => $faker->firstName,
-                    'middle_name' => $faker->randomElement([$faker->firstName, null]),
-                    'last_name' => $faker->lastName,
+                    'first_name' => $faker->firstName(),
+                    'middle_name' => $faker->randomElement([$faker->firstName(), null]),
+                    'last_name' => $faker->lastName(),
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                     'deleted_at' => null,

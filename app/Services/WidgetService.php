@@ -2,20 +2,38 @@
 
 namespace App\Services;
 
+use App\Enums\ApproveStatus;
+use App\Enums\UserRole;
 use App\Libraries\Policy\AuthPolicy;
 use App\Models\Announcement;
-use CodeIgniter\Exceptions\PageNotFoundException;
-use Config\Services;
+use App\Models\Attendance;
+use App\Models\Leave;
+use App\Models\User;
 
 class WidgetService
 {
-    public static function getAnnouncement(Announcement $announcement, AuthPolicy $auth, array $filters = [])
+    protected $announcement;
+    protected $auth;
+    protected $user;
+    protected $leave;
+    protected $attendance;
+
+    public function __construct()
+    {
+        $this->announcement = new Announcement();
+        $this->auth = new AuthPolicy();
+        $this->user = new User();
+        $this->leave = new Leave();
+        $this->attendance = new Attendance();
+    }
+
+    public function getAnnouncement(array $filters = [])
     {
         // Get the query builder from the model
-        $queryBuilder = $announcement->search($filters);
+        $queryBuilder = $this->announcement->search($filters);
 
         // Filter employee announcement
-        if ($auth->isEmployee()) {
+        if ($this->auth->isEmployee()) {
             $queryBuilder = $queryBuilder->validUser();
         }
 
@@ -34,6 +52,104 @@ class WidgetService
             'data' => $data,
             'pager' => $pager,
             'paginationInfo' => $paginationInfo,
+        ];
+    }
+
+    public function getNewEmployeeCount($dateData = null)
+    {
+        $date = $dateData === null ? date('Y-m') : $dateData;
+
+        $builder = $this->user
+            ->where('role', UserRole::EMPLOYEE->value)
+            ->like('created_at', $date);
+
+        return $builder->countAllResults();
+    }
+
+    public function getLeaveCount($dateData = null)
+    {
+        $date = $dateData === null ? date('Y-m') : $dateData;
+
+        $pendingLeave = $this->leave
+            ->where('status', ApproveStatus::PENDING->value)
+            ->like('created_at', $date)
+            ->countAllResults();
+
+        $totalLeave = $this->leave
+            ->like('created_at', $date)
+            ->countAllResults();
+
+        return [
+            'total' => $totalLeave,
+            'pending' => $pendingLeave,
+        ];
+    }
+
+    public function getAnnouncementCount($dateData = null)
+    {
+        $date = $dateData === null ? date('Y-m') : $dateData;
+
+        return $this->announcement
+            ->like('created_at', $date)
+            ->countAllResults();
+    }
+
+    public function getAttendanceLatestDate()
+    {
+        $builder = $this->user->select('MAX(created_at) as latest_date')->first();
+
+        return $builder['latest_date'];
+    }
+
+    public function getTardinessRate($endDate = null, $days = 15)
+    {
+        $endDate = $endDate ?? date('Y-m-d');
+        $startDate = date('Y-m-d', strtotime("-$days days", strtotime($endDate)));
+        
+        $rates = [];
+        $tardyEmployees = [];
+        $currentDate = $startDate;
+        
+        while ($currentDate <= $endDate) {
+            // Get all attendance records for the date
+            $attendances = $this->attendance
+                ->where('transaction_date', $currentDate)
+                ->orderBy('time_in', 'ASC')
+                ->findAll();
+            
+            // Group by employee_id and get earliest time_in
+            $employeeTimes = [];
+            foreach ($attendances as $attendance) {
+                $employeeId = $attendance['employee_id'];
+                if (!isset($employeeTimes[$employeeId]) || 
+                    strtotime($attendance['time_in']) < strtotime($employeeTimes[$employeeId])) {
+                    $employeeTimes[$employeeId] = $attendance['time_in'];
+                }
+            }
+            
+            // Count tardy employees (time_in > 06:30:00)
+            $tardyCount = 0;
+            foreach ($employeeTimes as $employeeId => $timeIn) {
+                if (strtotime($timeIn) > strtotime('06:30:00')) {
+                    $tardyCount++;
+                    // Track unique tardy employees
+                    if (!in_array($employeeId, $tardyEmployees)) {
+                        $tardyEmployees[] = $employeeId;
+                    }
+                }
+            }
+            
+            $totalEmployees = count($employeeTimes);
+            $rate = $totalEmployees > 0 ? ($tardyCount / $totalEmployees) * 100 : 0;
+            
+            $rates[$currentDate] = round($rate, 2);
+            $currentDate = date('Y-m-d', strtotime('+1 day', strtotime($currentDate)));
+        }
+        
+        return [
+            'rates' => $rates,
+            'total_tardy_employees' => count($tardyEmployees),
+            'tardy_employee_ids' => $tardyEmployees
         ];
     }
 }
