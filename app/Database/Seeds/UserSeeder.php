@@ -11,7 +11,6 @@ class UserSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
-        $roles = UserRole::cases();
 
         // default user
         $data = [
@@ -49,13 +48,13 @@ class UserSeeder extends Seeder
             ],
         ];
 
-        for ($i = 1; $i <= 40; $i++) {
+        for ($i = 1; $i <= 138; $i++) {
             $data[] = [
                 'status' => 'active',
                 'role' => UserRole::EMPLOYEE->value,
-                'email' => $faker->unique()->email,
+                'email' => $faker->unique()->email(),
                 'password' => password_hash('password', PASSWORD_BCRYPT),
-                'created_at' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s'),
+                'created_at' => $faker->dateTimeBetween('-15 day', 'now')->format('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
         }

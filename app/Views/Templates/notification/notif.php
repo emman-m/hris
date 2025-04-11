@@ -1,4 +1,4 @@
-<?php if ($data): ?>
+<?php if (!empty($data)): ?>
     <?php foreach ($data as $item): ?>
         <a href="<?= route_to('notification-show', $item['id']) ?>" class="no-decoration">
             <div class="list-group-item">

@@ -52,9 +52,9 @@
             // Fetch Notification
             let processing = false;
             let notifCount = 0;
-            setInterval(() => {
+            // setInterval(() => {
                 fetchNotif();
-            }, 3000);
+            // }, 3000);
 
             function fetchNotif() {
                 if (!processing) {
@@ -80,7 +80,10 @@
                                     $('#notifBox').html(data.html);
                                     notifCount = data.count;
                                 }
-                                console.log(data.has_new);
+
+                                if (notifCount === 0) {
+                                    $('#notifBox').html(data.html);
+                                }
 
                                 if (data.has_new) {
                                     $('#badgeIcon').html(`<span class="badge bg-red"></span>`);
