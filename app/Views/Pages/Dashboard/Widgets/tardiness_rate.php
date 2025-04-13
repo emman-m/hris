@@ -2,7 +2,7 @@
     <div class="d-flex align-items-center">
         <div class="subheader">Tardiness Rate</div>
         <div class="ms-auto lh-1">
-            <span class="text-muted">Last 15 days</span>
+            <span class="text-muted">Lastest last 15 days</span>
             
         </div>
     </div>

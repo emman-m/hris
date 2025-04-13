@@ -96,37 +96,46 @@ class WidgetService
 
     public function getAttendanceLatestDate()
     {
-        $builder = $this->user->select('MAX(created_at) as latest_date')->first();
+        $response = $this->attendance
+            ->select('transaction_date')
+            ->orderBy('transaction_date', 'DESC')
+            ->first();
 
-        return $builder['latest_date'];
+        return $response['transaction_date'] ?? null;
     }
 
     public function getTardinessRate($endDate = null, $days = 15)
     {
-        $endDate = $endDate ?? date('Y-m-d');
+        // latest date data
+        $endDate = ($endDate === null)
+            ? $this->getAttendanceLatestDate()
+            : $endDate ?? date('Y-m-d');
+
         $startDate = date('Y-m-d', strtotime("-$days days", strtotime($endDate)));
-        
+
         $rates = [];
         $tardyEmployees = [];
         $currentDate = $startDate;
-        
+
         while ($currentDate <= $endDate) {
             // Get all attendance records for the date
             $attendances = $this->attendance
                 ->where('transaction_date', $currentDate)
                 ->orderBy('time_in', 'ASC')
                 ->findAll();
-            
+
             // Group by employee_id and get earliest time_in
             $employeeTimes = [];
             foreach ($attendances as $attendance) {
                 $employeeId = $attendance['employee_id'];
-                if (!isset($employeeTimes[$employeeId]) || 
-                    strtotime($attendance['time_in']) < strtotime($employeeTimes[$employeeId])) {
+                if (
+                    !isset($employeeTimes[$employeeId]) ||
+                    strtotime($attendance['time_in']) < strtotime($employeeTimes[$employeeId])
+                ) {
                     $employeeTimes[$employeeId] = $attendance['time_in'];
                 }
             }
-            
+
             // Count tardy employees (time_in > 06:30:00)
             $tardyCount = 0;
             foreach ($employeeTimes as $employeeId => $timeIn) {
@@ -138,14 +147,14 @@ class WidgetService
                     }
                 }
             }
-            
+
             $totalEmployees = count($employeeTimes);
             $rate = $totalEmployees > 0 ? ($tardyCount / $totalEmployees) * 100 : 0;
-            
+
             $rates[$currentDate] = round($rate, 2);
             $currentDate = date('Y-m-d', strtotime('+1 day', strtotime($currentDate)));
         }
-        
+
         return [
             'rates' => $rates,
             'total_tardy_employees' => count($tardyEmployees),
