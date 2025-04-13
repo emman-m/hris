@@ -14,11 +14,13 @@
     <title><?= $this->renderSection('title') ?></title>
 </head>
 
-<body data-bs-theme="dark" class="d-flex flex-column">
-    
+<body>
+
     <?= $this->renderSection('content') ?>
 
     <script src="<?= base_url('tabler/dist/js/tabler.min.js'); ?>"></script>
+    <script src="<?= base_url('tabler/dist/js/demo-theme.min.js'); ?>"></script>
+    <script src="<?= base_url('tabler/dist/js/demo.min.js'); ?>"></script>
 </body>
 
 </html>
