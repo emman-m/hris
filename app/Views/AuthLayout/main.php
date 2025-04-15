@@ -77,12 +77,12 @@
 
                             if (data.success) {
                                 if (data.count > notifCount) {
-                                    $('#notifBox').html(data.html);
+                                    $('.notif-box').html(data.html);
                                     notifCount = data.count;
                                 }
 
                                 if (notifCount === 0) {
-                                    $('#notifBox').html(data.html);
+                                    $('.notif-box').html(data.html);
                                 }
 
                                 if (data.has_new) {

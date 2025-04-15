@@ -176,7 +176,7 @@ $pageTitle = 'Dashboard';
                             </svg>
                         </div>
                     </div>
-                    <div class="card-body d-flex flex-column justify-content-between" style="height: 10rem">
+                    <div class="card-body d-flex flex-column justify-content-between" style="min-height: 10rem">
                         <?php if ($announcement['data']): ?>
                             <?= view('Pages/Dashboard/Widgets/announcement', $announcement) ?>
                         <?php else: ?>
