@@ -15,7 +15,7 @@
         <div class="card-header">
             <h3 class="card-title">Updates</h3>
         </div>
-        <div id="notifBox" class="list-group list-group-flush list-group-hoverable">
+        <div class="notif-box list-group list-group-flush list-group-hoverable">
             <!-- Notifcation item goes here -->
             <div class="list-group-item">
                 <div class="row align-items-center">
