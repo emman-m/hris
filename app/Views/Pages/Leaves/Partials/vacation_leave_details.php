@@ -188,9 +188,9 @@ use App\Enums\VLeaveType;
     </div>
 
     <div class="form-section">
-        <label>Approved by:</label>
         <div class="row">
             <div class="col text-center">
+                <label class="text-start mb-2">Approved by:</label>
                 <?php if ($leave['approve_by']): ?>
                     <p class="name">
                         <?= $leave['approve_by'] ?>
@@ -213,7 +213,14 @@ use App\Enums\VLeaveType;
                 <div class="signature-line"></div>
                 <p class="mb-0">Human Resource</p>
             </div>
-            <div class="col">
+            <div class="col text-center">
+                <label class="text-start mb-2">Noted by:</label>
+                    <p class="name">
+                        <!-- President name here -->
+                        John Kennedy Baptist
+                    </p>
+                <div class="signature-line"></div>
+                <p class="mb-0">President</p>
             </div>
         </div>
     </div>
