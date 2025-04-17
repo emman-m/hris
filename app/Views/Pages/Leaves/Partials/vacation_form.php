@@ -1,8 +1,25 @@
 <?php
 
+use App\Enums\UserRole;
 use App\Enums\VLeaveType;
 
+$isCreate ??= false
 ?>
+<div class="row">
+    <?php if (session()->get('role') !== UserRole::EMPLOYEE->value && $isCreate): ?>
+        <div class="col mb-3">
+            <div class="form-label required">Employee ID</div>
+            <input type="text" name="employee_id" class="form-control" value="<?= old('employee_id') ?>"
+                placeholder="E10-00001" />
+            <!-- Error Message -->
+            <?php if (isset($errors['employee_id'])): ?>
+                <div class="invalid-feedback d-block">
+                    <?= $errors['employee_id'] ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+</div>
 <div class="row">
     <!-- Number of days -->
     <div class="col-sm-12 col-md-4 mb-3">
@@ -29,7 +46,7 @@ use App\Enums\VLeaveType;
     <!-- End Date -->
     <div class="col-sm-12 col-md-4 mb-3">
         <div class="form-label required">End Date</div>
-        <input type="datetime-local" name="end_date" class="form-control" value="<?= old('end_date') ?>" >
+        <input type="datetime-local" name="end_date" class="form-control" value="<?= old('end_date') ?>">
         <!-- Error Message -->
         <?php if (isset($errors['end_date'])): ?>
             <div class="invalid-feedback d-block">

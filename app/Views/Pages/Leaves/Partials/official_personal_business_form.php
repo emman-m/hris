@@ -1,8 +1,25 @@
 <?php
 
 use App\Enums\EmployeeDepartment;
+use App\Enums\UserRole;
 
+$isCreate ??= false
 ?>
+<div class="row">
+    <?php if (session()->get('role') !== UserRole::EMPLOYEE->value && $isCreate): ?>
+        <div class="col mb-3">
+            <div class="form-label required">Employee ID</div>
+            <input type="text" name="employee_id" class="form-control" value="<?= old('employee_id') ?>"
+                placeholder="E10-00001" />
+            <!-- Error Message -->
+            <?php if (isset($errors['employee_id'])): ?>
+                <div class="invalid-feedback d-block">
+                    <?= $errors['employee_id'] ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+</div>
 <!-- Department -->
 <div class="mb-3">
     <label class="form-label required">Department</label>

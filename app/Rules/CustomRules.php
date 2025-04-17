@@ -80,4 +80,14 @@ class CustomRules extends Rules
         return !($datetime2 < $datetime1); // True if end_date is not behind
     }
 
+    public function is_existing(string $value, string $params, array $data): bool
+    {
+        [$table, $column] = explode('.', $params);
+
+        $db = Database::connect();
+        $query = $db->table($table)->where($column, $value)->get();
+
+        return $query->getNumRows() > 0;
+    }
+
 }

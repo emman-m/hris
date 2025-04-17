@@ -6,13 +6,13 @@ use CodeIgniter\Model;
 
 class EmployeeInfo extends Model
 {
-    protected $table            = 'employees_info';
-    protected $primaryKey       = 'id';
+    protected $table = 'employees_info';
+    protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
-    protected $protectFields    = true;
-    protected $allowedFields    = [
+    protected $returnType = 'array';
+    protected $useSoftDeletes = true;
+    protected $protectFields = true;
+    protected $allowedFields = [
         'id',
         'user_id',
         'is_locked',
@@ -59,27 +59,27 @@ class EmployeeInfo extends Model
 
     // Dates
     protected $useTimestamps = true;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    protected $dateFormat = 'datetime';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
+    protected $validationRules = [];
+    protected $validationMessages = [];
+    protected $skipValidation = false;
     protected $cleanValidationRules = true;
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+    protected $beforeInsert = [];
+    protected $afterInsert = [];
+    protected $beforeUpdate = [];
+    protected $afterUpdate = [];
+    protected $beforeFind = [];
+    protected $afterFind = [];
+    protected $beforeDelete = [];
+    protected $afterDelete = [];
 
     public function findByUserId($userId)
     {
@@ -103,5 +103,11 @@ class EmployeeInfo extends Model
             ->join('users_info', 'users_info.user_id = users.id', 'LEFT');
 
         return $builder->get()->getResultArray();
+    }
+
+    public function getEmployeeInfoByEmployeeId($employeeId)
+    {
+        return $this->where('employees_info.employee_id', $employeeId)
+            ->first();
     }
 }
