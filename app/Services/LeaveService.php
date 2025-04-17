@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\LeaveType;
 use App\Models\Leave;
 use App\Models\User;
 
@@ -27,7 +28,7 @@ class LeaveService
         $users = array_column($admins, 'id');
 
         // Save Notification
-        $this->notification->sendNotification($users, "{$employeeInfo['first_name']} {$employeeInfo['last_name']} Submitted a {$data['type']}.");
+        $this->notification->sendNotification($users, "{$employeeInfo['first_name']} {$employeeInfo['last_name']} Submitted an {$this->getLeaveType($data['type'])}.");
         $emailData = [];
         foreach ($admins as $admin) {
             $emailData[] = [
@@ -35,7 +36,7 @@ class LeaveService
                 'subject' => "{$employeeInfo['first_name']} {$employeeInfo['last_name']} Submitted a Leave.",
                 'context' => [
                     'name' => $admin['name'],
-                    'message' => "{$employeeInfo['first_name']} {$employeeInfo['last_name']} Submitted a {$data['type']}.",
+                    'message' => "{$employeeInfo['first_name']} {$employeeInfo['last_name']} Submitted an {$this->getLeaveType($data['type'])}.",
                 ]
             ];
         }
@@ -50,7 +51,7 @@ class LeaveService
 
         // Save Notification
         $this->notification->sendNotification($leave['user_id'], "{$leave['approve_by']} has {$data['status']} your leave application.");
-        
+
         // Send email
         $emailData[] = [
             'email' => $leave['email'],
@@ -62,5 +63,12 @@ class LeaveService
         ];
 
         $this->notification->sendEmail($emailData);
+    }
+
+    protected function getLeaveType($type)
+    {
+        return $type === LeaveType::VACATION_LEAVE->value
+            ? 'Application for Leave'
+            : "$type Leave";
     }
 }
