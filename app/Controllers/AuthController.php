@@ -21,8 +21,8 @@ class AuthController extends BaseController
         if ($this->request->getMethod() == 'POST') {
             // Validate form
             $rules = [
-                'email' => 'required|valid_email',
-                'password' => 'required|min_length[8]'
+                'email' => 'required',
+                'password' => 'required'
             ];
 
             if (!$this->validate($rules)) {
