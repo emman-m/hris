@@ -59,8 +59,8 @@ $pageTitle = 'Dashboard';
                                     </span>
                                 </div>
                                 <div class="col">
-                                    <div class="font-weight-medium">Employee</div>
-                                    <div class="text-secondary"><?= $newEmployeeCount ?> New Employee this month</div>
+                                    <div class="font-weight-medium"><?= $employeeCount['total'] ?> Employee</div>
+                                    <div class="text-secondary"><?= $employeeCount['new'] ?> New Employee this month</div>
                                 </div>
                             </div>
                         </div>

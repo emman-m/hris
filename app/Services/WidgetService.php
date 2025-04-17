@@ -55,6 +55,14 @@ class WidgetService
         ];
     }
 
+    public function getEmployeeData($dateData = null)
+    {
+        return [
+            'total' => $this->getEmployeeCount(),
+            'new' => $this->getNewEmployeeCount($dateData),
+        ];
+    }
+
     public function getNewEmployeeCount($dateData = null)
     {
         $date = $dateData === null ? date('Y-m') : $dateData;
@@ -62,6 +70,14 @@ class WidgetService
         $builder = $this->user
             ->where('role', UserRole::EMPLOYEE->value)
             ->like('created_at', $date);
+
+        return $builder->countAllResults();
+    }
+
+    public function getEmployeeCount()
+    {
+        $builder = $this->user
+            ->where('role', UserRole::EMPLOYEE->value);
 
         return $builder->countAllResults();
     }
