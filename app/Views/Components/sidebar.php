@@ -178,7 +178,7 @@ use App\Enums\UserRole;
                                 </svg>
                             </span>
                             <span class="nav-link-title">
-                                My Informations
+                                My Information
                             </span>
                         </a>
                     </li>
