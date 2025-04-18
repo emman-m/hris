@@ -45,6 +45,34 @@ if (!function_exists('withToast')) {
     }
 }
 
+/**
+ * Adds a Sweet alert message to the session as Flashdata using SweetAlert2.
+ *
+ * @param string $icon    The type of icon (e.g., 'success', 'error', 'warning', 'info').
+ * @param string $text    The text content of the toast.
+ * @param string $title   The title of the toast.
+ *
+ * @return true
+ */
+if (!function_exists('withSwal')) {
+    function withSwal($icon, $text, $title = "")
+    {
+
+        // Prepare the toast data
+        $toastData = [
+            'class' => $icon === 'error' ? 'danger' : $icon,
+            'icon' => $icon,
+            'title' => $title,
+            'text' => $text,
+        ];
+
+        // Set the toast data as flashdata in the session
+        session()->setFlashdata('swal', $toastData);
+
+        return true;
+    }
+}
+
 if (!function_exists('chunk')) {
     /**
      * Processes large datasets in chunks.

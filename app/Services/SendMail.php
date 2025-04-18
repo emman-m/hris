@@ -49,7 +49,7 @@ class SendMail
 
     public function send()
     {
-        if (getenv('MOCK_EMAIL')) {
+        if (getenv('email.mockEmail') === true) {
             return true;
         }
 

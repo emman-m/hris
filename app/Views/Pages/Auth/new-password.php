@@ -1,7 +1,13 @@
+<?php
+
+// Set errors variable
+$errors = session()->get('errors');
+?>
+
 <?= $this->extend('GuessLayout/main') ?>
 
 <?= $this->section('title') ?>
-Login
+New Password
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -15,7 +21,7 @@ Login
         </div>
         <div class="card card-md">
             <div class="card-body">
-                <h2 class="h2 text-center mb-4">Login to your account</h2>
+                <h2 class="h2 text-center mb-4">Change Password</h2>
 
                 <!-- Validation messages -->
                 <?php if (session()->getFlashdata('error')): ?>
@@ -24,18 +30,14 @@ Login
                     </div>
                 <?php endif; ?>
 
-                <form action="<?= base_url('login') ?>" method="post" autocomplete="off" novalidate="">
+                <form action="<?= base_url('new-password') ?>" method="post" autocomplete="off" novalidate="">
                     <?= csrf_field() ?>
-                    <div class="mb-3">
-                        <label class="form-label">Email address</label>
-                        <input type="email" class="form-control" name="email" placeholder="your@email.com"
-                            value="<?= esc(set_value('email')) ?>" autocomplete="off">
-                    </div>
+                    <input type="hidden" name="email" value="<?= esc($email) ?>">
+                    <input type="hidden" name="code" value="<?= esc($code) ?>">
                     <div class="mb-2">
-                        <label class="form-label">Password</label>
+                        <label class="form-label">New Password</label>
                         <div class="input-group input-group-flat">
-                            <input type="password" name="password" class="form-control toggle-password"
-                                placeholder="password123">
+                            <input type="password" name="password" class="form-control toggle-password">
                             <span class="input-group-text">
                                 <a href="javascript:void(0)" class="link-secondary" id="togglePassword"
                                     data-bs-toggle="tooltip" aria-label="Show/Hide" data-bs-original-title="Show/Hide">
@@ -53,10 +55,29 @@ Login
                                 </a>
                             </span>
                         </div>
+                        <!-- Error Message -->
+                        <?php if (isset($errors['password'])): ?>
+                            <div class="invalid-feedback d-block">
+                                <?= $errors['password'] ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                    <a href="<?= route_to('forgot-password')?>">I forgot password</a>
+
+                    <div class="mb-2">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="input-group input-group-flat">
+                            <input type="password" name="confirm_password" class="form-control toggle-password">
+                            <!-- Error Message -->
+                            <?php if (isset($errors['confirm_password'])): ?>
+                                <div class="invalid-feedback d-block">
+                                    <?= $errors['confirm_password'] ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
                     <div class="form-footer">
-                        <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                        <button type="submit" class="btn btn-primary w-100">Change Password</button>
                     </div>
                 </form>
             </div>
