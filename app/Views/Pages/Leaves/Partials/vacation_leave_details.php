@@ -217,10 +217,11 @@ use App\Enums\VLeaveType;
                 <label class="text-start mb-2">Noted by:</label>
                     <p class="name">
                         <!-- President name here -->
-                        John Kennedy Baptist
+                        Sr. Joan Brigida
+                        Corazon S. Infante
                     </p>
                 <div class="signature-line"></div>
-                <p class="mb-0">President</p>
+                <p class="mb-0">President/OSA</p>
             </div>
         </div>
     </div>
