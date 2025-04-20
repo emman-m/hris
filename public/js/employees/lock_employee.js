@@ -5,13 +5,6 @@ $(function () {
         let url = $(this).data('url');
         let state = ele.attr('data-state') == 1 ? 0 : 1;
 
-        console.log({
-            ele: ele,
-            userId: userId,
-            url: url,
-            state: state
-        });
-
         Swal.fire({
             title: "Are you sure?",
             text: state === 1

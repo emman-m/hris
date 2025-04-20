@@ -392,7 +392,6 @@ class LeaveController extends BaseController
         $validator = new CreateOBValidator();
         if (!$validator->runValidation($request)) {
             // Validation failed, return to the form with errors
-            log_message('error', 'Validation failed: ' . json_encode($validator->getErrors()));
             return redirect()
                 ->back()
                 ->withInput()
@@ -545,7 +544,6 @@ class LeaveController extends BaseController
         $validator = new CreateOBValidator();
         if (!$validator->runValidation($request)) {
             // Validation failed, return to the form with errors
-            log_message('error', 'Validation failed: ' . json_encode($validator->getErrors()));
             return redirect()
                 ->back()
                 ->withInput()

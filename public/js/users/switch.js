@@ -16,7 +16,7 @@ $(function () {
                 const user_id = $(this).data('id');
 
                 const status = state ? 1 : 0;
-                console.log(status);
+
                 var data = {
                     status: status,
                     user_id: user_id

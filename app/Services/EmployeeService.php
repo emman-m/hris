@@ -131,7 +131,7 @@ class EmployeeService
     {
         $emailData = [];
         $employeeInfo = $this->user->getUserByuserId($data['user_id']);
-        log_message('debug', 'It run sendUpdateNotif');
+
         // if employee updated, notif all the admin
         if ($this->auth->isEmployee()) {
 
@@ -150,7 +150,7 @@ class EmployeeService
                     ]
                 ];
             }
-        // if the admin has updated, notif the employee
+            // if the admin has updated, notif the employee
         } else {
             $emailData[] = [
                 'email' => $employeeInfo['email'],

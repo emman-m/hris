@@ -5,7 +5,7 @@ $(function () {
 
         // Parse the URL query parameters
         const params = new URLSearchParams(window.location.search);
-        console.log(params)
+
         // Fetch filters
         const filters = {
             user_id: userId,

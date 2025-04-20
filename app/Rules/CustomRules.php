@@ -69,8 +69,6 @@ class CustomRules extends Rules
         // Parse the start_date and end_date
         $startDate = $data[$startDateField];
         $endDate = $str;
-
-        log_message('debug', "Start Date: $startDate, End Date: $endDate");
         
         // Create DateTime objects
         $datetime1 = new DateTime($startDate);
