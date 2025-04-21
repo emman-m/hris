@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Database\Seeds;
+namespace App\Database\Seeds\Test;
 
 use App\Enums\UserRole;
 use CodeIgniter\Database\Seeder;
@@ -14,14 +14,6 @@ class UserSeeder extends Seeder
 
         // default user
         $data = [
-            [
-                'status' => 'active',
-                'role' => UserRole::ADMIN->value,
-                'email' => 'admin@hris.com',
-                'password' => password_hash('password', PASSWORD_BCRYPT),
-                'created_at' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ],
             [
                 'status' => 'active',
                 'role' => UserRole::HR_ADMIN->value,
