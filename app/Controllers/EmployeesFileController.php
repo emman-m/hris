@@ -7,6 +7,7 @@ use App\Enums\UserRole;
 use App\Libraries\Policy\AuthPolicy;
 use App\Models\EmployeesFile;
 use App\Models\User;
+use App\Services\EmployeeFileService;
 use App\Validations\Files\StoreValidation;
 use App\Validations\Files\UpdateValidation;
 use CodeIgniter\Exceptions\PageNotFoundException;
@@ -18,6 +19,7 @@ class EmployeesFileController extends BaseController
 {
     protected $employeeFile;
     protected $user;
+    protected $employeeFileService;
     // Declare the AuthPolicy instance as a protected property
     protected $auth;
 
@@ -25,6 +27,7 @@ class EmployeesFileController extends BaseController
     {
         $this->employeeFile = new EmployeesFile();
         $this->user = new User();
+        $this->employeeFileService = new EmployeeFileService();
 
         // Initialize the AuthPolicy instance
         $this->auth = new AuthPolicy();
@@ -223,12 +226,15 @@ class EmployeesFileController extends BaseController
                 $uploadedFileName = null;
             }
 
-            $this->employeeFile->insert([
+            // Insert data
+            $insertData = [
                 'user_id' => $post['user_id'],
                 'file_name' => $fileName,
                 'file' => $uploadedFileName,
                 'created_user' => session()->get('user_id')
-            ]);
+            ];
+
+            $this->employeeFile->insert($insertData);
 
             // Commit the transaction
             $db->transComplete();
@@ -237,6 +243,9 @@ class EmployeesFileController extends BaseController
             if ($db->transStatus() === false) {
                 throw new Exception('Transaction failed');
             }
+
+            // Send notification
+            $this->employeeFileService->sendCreateNotif($insertData);
 
             withToast('success', "Success! $fileName has been uploaded.");
         } catch (Exception $e) {
@@ -269,8 +278,25 @@ class EmployeesFileController extends BaseController
             ]);
         }
 
+        // Start a database transaction
+        $db = Database::connect();
+        $db->transStart();
+
         try {
             $this->employeeFile->delete(['id' => $request['id']]);
+
+            // Commit the transaction
+            $db->transComplete();
+
+            // Check if the transaction was successful
+            if ($db->transStatus() === false) {
+                throw new Exception('Transaction failed');
+            }
+
+            $fileInfo = $this->employeeFile->where('id', 6)->first();
+
+            // Send notification
+            $this->employeeFileService->sendDeleteNotif($request, $fileInfo);
 
             // Return the response with updated CSRF token
             return $this->response->setJSON([
@@ -280,6 +306,7 @@ class EmployeesFileController extends BaseController
             ]);
 
         } catch (Exception $e) {
+            $db->transRollback();
             // Log the error
             log_message('error', 'Failed to delete the file: ' . $e->getMessage());
 

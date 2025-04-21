@@ -69,8 +69,6 @@ class CustomRules extends Rules
         // Parse the start_date and end_date
         $startDate = $data[$startDateField];
         $endDate = $str;
-
-        log_message('debug', "Start Date: $startDate, End Date: $endDate");
         
         // Create DateTime objects
         $datetime1 = new DateTime($startDate);
@@ -78,6 +76,16 @@ class CustomRules extends Rules
 
         // Check if end_date is behind start_date
         return !($datetime2 < $datetime1); // True if end_date is not behind
+    }
+
+    public function is_existing(string $value, string $params, array $data): bool
+    {
+        [$table, $column] = explode('.', $params);
+
+        $db = Database::connect();
+        $query = $db->table($table)->where($column, $value)->get();
+
+        return $query->getNumRows() > 0;
     }
 
 }

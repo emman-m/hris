@@ -26,7 +26,7 @@ class HomeController extends BaseController
         $data['announcement'] = $this->widgetService->getAnnouncement();
 
         // New Employee This month
-        $data['newEmployeeCount'] = $this->widgetService->getNewEmployeeCount();
+        $data['employeeCount'] = $this->widgetService->getEmployeeData();
 
         // Leave Count this month
         $data['leaveCount'] = $this->widgetService->getLeaveCount();

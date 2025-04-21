@@ -47,7 +47,7 @@ $title = 'Create Personal Business Leave';
                     <div class="card-status-top bg-primary"></div>
                     <div class="card-body">
                         <!-- Form -->
-                        <?= view('Pages/Leaves/Partials/official_personal_business_form', ['errors' => $errors]) ?>
+                        <?= view('Pages/Leaves/Partials/official_personal_business_form', ['errors' => $errors, 'isCreate' => true]) ?>
                     </div>
                     <div class="card-footer text-end">
                         <button type="submit" class="btn btn-primary">Submit</button>

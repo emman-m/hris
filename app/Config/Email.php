@@ -118,4 +118,12 @@ class Email extends BaseConfig
      * Enable notify message from server
      */
     public bool $DSN = false;
+
+    /**
+     * It will not send an email if this is set to true
+     * This is useful for testing purposes
+     * and will not affect the actual sending of emails.
+     * @var bool
+     */
+    public bool $mockEmail = false;
 }

@@ -41,20 +41,18 @@ $pageTitle = 'Leaves';
                 </h2>
             </div>
             <!-- Create new user button -->
-            <?php if (session()->get('role') === UserRole::EMPLOYEE->value): ?>
-                <div class="col-auto ms-auto">
-                    <a href="<?= route_to('leaves-create'); ?>" class="btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                        Create Leave
-                    </a>
-                </div>
-            <?php endif; ?>
+            <div class="col-auto ms-auto">
+                <a href="<?= route_to('leaves-create'); ?>" class="btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Create Leave
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -194,9 +192,10 @@ $pageTitle = 'Leaves';
                                         <td>
                                             <a href="<?= route_to('leaves-show', $item['id']) ?>">Details</a>
                                             <!-- if Approval status is pending -->
-                                            <?php if ($item['status'] === ApproveStatus::PENDING->value && $isEmployee): ?>
-                                                |
-                                                <?php if ($isEmployee): ?>
+                                            <?php if ($item['status'] === ApproveStatus::PENDING->value): ?>
+
+                                                <?php if ($isEmployee || $item['created_user_id'] === session()->get('user_id')): ?>
+                                                    |
                                                     <?php if ($item['type'] === LeaveType::VACATION_LEAVE->value): ?>
                                                         <a href="<?= route_to('leaves-vacation-leave-edit', $item['id']) ?>">Edit</a>
                                                     <?php elseif ($item['type'] === LeaveType::OFFICIAL_BUSINESS->value): ?>
@@ -205,9 +204,12 @@ $pageTitle = 'Leaves';
                                                         <a href="<?= route_to('leaves-personal-business-edit', $item['id']) ?>">Edit</a>
                                                     <?php endif; ?>
                                                 <?php endif; ?>
-                                                |
-                                                <a href="javascript:void(0)" class="data-delete" data-id="<?= $item['id'] ?>"
-                                                    data-url="<?= route_to('leaves-delete') ?>">Delete</a>
+                                                
+                                                <?php if ($isEmployee || $item['created_user_id'] === session()->get('user_id')): ?>
+                                                    |
+                                                    <a href="javascript:void(0)" class="data-delete" data-id="<?= $item['id'] ?>"
+                                                        data-url="<?= route_to('leaves-delete') ?>">Delete</a>
+                                                <?php endif; ?>
                                             <?php endif; ?>
                                         </td>
                                     </tr>

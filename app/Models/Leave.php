@@ -28,7 +28,8 @@ class Leave extends Model
         'time_out',
         'approve_user',
         'approve_date',
-        'approval_proof'
+        'approval_proof',
+        'created_user_id',
     ];
 
     protected bool $allowEmptyInserts = false;

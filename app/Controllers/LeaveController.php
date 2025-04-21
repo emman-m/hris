@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Enums\ApproveStatus;
 use App\Enums\LeaveType;
 use App\Libraries\Policy\AuthPolicy;
+use App\Models\EmployeeInfo;
 use App\Models\Leave;
 use App\Services\LeaveService;
 use App\Services\OfficialBusinessService;
@@ -24,6 +25,7 @@ class LeaveController extends BaseController
     protected $auth;
     protected $leave;
     protected $leaveService;
+    protected $employeeInfo;
 
     public function __construct()
     {
@@ -31,6 +33,7 @@ class LeaveController extends BaseController
         $this->auth = new AuthPolicy();
         $this->leave = new Leave();
         $this->leaveService = new LeaveService();
+        $this->employeeInfo = new EmployeeInfo();
     }
 
     public function index()
@@ -231,11 +234,6 @@ class LeaveController extends BaseController
 
     public function store_vacation()
     {
-        // Auth user
-        if (!$this->auth->isEmployee()) {
-            throw new PageNotFoundException('Page Not Found', 404);
-        }
-
         // Get the request object
         $request = Services::request();
 
@@ -268,7 +266,15 @@ class LeaveController extends BaseController
                 $post['approval_proof'] = $file->getName();
             }
 
-            $post['user_id'] = session()->get('user_id');
+            // Admin submitted the form
+            if (!$this->auth->isEmployee()) {
+                $user = $this->employeeInfo->getEmployeeInfoByEmployeeId($post['employee_id']);
+                $post['user_id'] = $user['user_id'];
+            } else {
+                $post['user_id'] = session()->get('user_id');
+            }
+
+            $post['created_user_id'] = session()->get('user_id');
             $post['type'] = LeaveType::VACATION_LEAVE->value;
             $post['status'] = ApproveStatus::PENDING->value;
 
@@ -380,18 +386,12 @@ class LeaveController extends BaseController
 
     public function store_official_business()
     {
-        // Auth user
-        if (!$this->auth->isEmployee()) {
-            throw new PageNotFoundException('Page Not Found', 404);
-        }
-
         // Get the request object
         $request = Services::request();
 
         $validator = new CreateOBValidator();
         if (!$validator->runValidation($request)) {
             // Validation failed, return to the form with errors
-            log_message('error', 'Validation failed: ' . json_encode($validator->getErrors()));
             return redirect()
                 ->back()
                 ->withInput()
@@ -417,8 +417,15 @@ class LeaveController extends BaseController
 
                 $post['approval_proof'] = $file->getName();
             }
+            // Admin submitted the form
+            if (!$this->auth->isEmployee()) {
+                $user = $this->employeeInfo->getEmployeeInfoByEmployeeId($post['employee_id']);
+                $post['user_id'] = $user['user_id'];
+            } else {
+                $post['user_id'] = session()->get('user_id');
+            }
 
-            $post['user_id'] = session()->get('user_id');
+            $post['created_user_id'] = session()->get('user_id');
             $post['type'] = LeaveType::OFFICIAL_BUSINESS->value;
             $post['status'] = ApproveStatus::PENDING->value;
             // $post['start_date'] .= ' 00:00:00';
@@ -531,19 +538,12 @@ class LeaveController extends BaseController
 
     public function store_personal_business()
     {
-
-        // Auth user
-        if (!$this->auth->isEmployee()) {
-            throw new PageNotFoundException('Page Not Found', 404);
-        }
-
         // Get the request object
         $request = Services::request();
 
         $validator = new CreateOBValidator();
         if (!$validator->runValidation($request)) {
             // Validation failed, return to the form with errors
-            log_message('error', 'Validation failed: ' . json_encode($validator->getErrors()));
             return redirect()
                 ->back()
                 ->withInput()
@@ -570,7 +570,15 @@ class LeaveController extends BaseController
                 $post['approval_proof'] = $file->getName();
             }
 
-            $post['user_id'] = session()->get('user_id');
+            // Admin submitted the form
+            if (!$this->auth->isEmployee()) {
+                $user = $this->employeeInfo->getEmployeeInfoByEmployeeId($post['employee_id']);
+                $post['user_id'] = $user['user_id'];
+            } else {
+                $post['user_id'] = session()->get('user_id');
+            }
+
+            $post['created_user_id'] = session()->get('user_id');
             $post['type'] = LeaveType::PERSONAL_BUSINESS->value;
             $post['status'] = ApproveStatus::PENDING->value;
             // $post['start_date'] .= ' 00:00:00';

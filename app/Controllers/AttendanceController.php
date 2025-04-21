@@ -184,15 +184,19 @@ class AttendanceController extends BaseController
         $csvData = $this->attendanceService
             ->getContent($request->getFile('file'));
 
+        if (empty($csvData)) {
+            withToast('warning', 'No data inserted');
+            log_message('debug', 'No data inserted');
+            return redirect()->route('attendance');
+        }
+
         // Start a database transaction
         $db = Database::connect();
         $db->transStart();
 
         try {
             // Insert the attendance data into the database
-            foreach ($csvData as $data) {
-                $this->attendance->insert($data);
-            }
+            $this->attendance->upsertBatch($csvData);
 
             // Commit the transaction
             $db->transComplete();

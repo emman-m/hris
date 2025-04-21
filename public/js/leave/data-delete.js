@@ -6,12 +6,6 @@ $(function() {
         let id = $(this).data('id');
         let url = $(this).data('url');
 
-        console.log({
-            ele: ele,
-            id: id,
-            url: url,
-        });
-
         Swal.fire({
             title: "Are you sure?",
             text: "You might not recover this.",

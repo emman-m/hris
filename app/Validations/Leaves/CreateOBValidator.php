@@ -10,6 +10,14 @@ class CreateOBValidator extends Validator
     public function __construct()
     {
         $this->rules = [
+            'employee_id' => [
+                'label' => 'Employee ID',
+                'rules' => 'required|is_existing[employees_info.employee_id]',
+                'errors' => [
+                    'required' => '{field} is required.',
+                    'is_existing' => '{field} does not exist or not yet registered.',
+                ]
+            ],
             'department' => [
                 'label' => 'Department',
                 'rules' => 'required|in_list'. str_replace('"', '', json_encode(EmployeeDepartment::list())),

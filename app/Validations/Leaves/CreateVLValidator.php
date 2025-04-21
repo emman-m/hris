@@ -9,6 +9,14 @@ class CreateVLValidator extends Validator
     public function __construct()
     {
         $this->rules = [
+            'employee_id' => [
+                'label' => 'Employee ID',
+                'rules' => 'required|is_existing[employees_info.employee_id]',
+                'errors' => [
+                    'required' => '{field} is required.',
+                    'is_existing' => '{field} does not exist or not yet registered.',
+                ]
+            ],
             'vl_type' => [
                 'label' => 'Leave Type',
                 'rules' => 'required',

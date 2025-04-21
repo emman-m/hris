@@ -14,6 +14,10 @@ $routes->group('', ['filter' => 'unauth'], function ($routes) {
     $routes->get('/', 'AuthController::login');
     $routes->get('/login', 'AuthController::login');
     $routes->post('/login', 'AuthController::login');
+    $routes->get('forgot-password', 'AuthController::forgot_password', ['as' => 'forgot-password']);
+    $routes->post('forgot-password', 'AuthController::forgot_password_store', ['as' => 'forgot-password']);
+    $routes->get('new-password', 'AuthController::new_password', ['as' => 'new-password']);
+    $routes->post('new-password', 'AuthController::new_password_store', ['as' => 'new-password']);
 });
 
 // Auth User
