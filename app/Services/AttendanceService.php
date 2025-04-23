@@ -2,17 +2,14 @@
 
 namespace App\Services;
 
-use App\Libraries\Policy\AuthPolicy;
 use DateTime;
 
-class AttendanceService
+class AttendanceService extends Service
 {
-    protected $auth;
     protected $attendance;
 
     public function __construct()
     {
-        $this->auth = new AuthPolicy();
         $this->attendance = model('Attendance');
     }
 

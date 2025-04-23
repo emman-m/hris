@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Notification;
-
 class NotificationService
 {
     protected $notification;
@@ -11,7 +9,7 @@ class NotificationService
 
     public function __construct()
     {
-        $this->notification = new Notification();
+        $this->notification = model('Notification');
         $this->sendMail = new SendMail();
     }
 

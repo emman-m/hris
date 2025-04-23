@@ -3,20 +3,16 @@
 namespace App\Services;
 
 use App\Enums\UserRole;
-use App\Models\EmployeesFile;
-use App\Models\User;
 
-class EmployeeFileService
+class EmployeeFileService extends Service
 {
     protected $user;
-    protected $notification;
     protected $file;
 
     public function __construct()
     {
-        $this->user = new User();
-        $this->notification = new NotificationService();
-        $this->file = new EmployeesFile();
+        $this->user = model('User');
+        $this->file = model('EmployeesFile');
     }
 
     public function sendCreateNotif($post)

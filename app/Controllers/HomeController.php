@@ -9,14 +9,10 @@ use App\Services\WidgetService;
 
 class HomeController extends BaseController
 {
-    protected $announcement;
-    protected $auth;
     protected $widgetService;
 
     public function __construct()
     {
-        $this->announcement = new Announcement();
-        $this->auth = new AuthPolicy();
         $this->widgetService = new WidgetService();
     }
 

@@ -2,15 +2,8 @@
 
 namespace App\Services;
 
-class AuthService
+class AuthService extends Service
 {
-    protected $notification;
-
-    public function __construct()
-    {
-        $this->notification = new NotificationService();
-    }
-
     public function sendCodeToEmail($data)
     {
         $emailData[] = [

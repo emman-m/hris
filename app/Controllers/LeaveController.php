@@ -22,18 +22,15 @@ use Exception;
 
 class LeaveController extends BaseController
 {
-    protected $auth;
     protected $leave;
-    protected $leaveService;
     protected $employeeInfo;
+    protected $leaveService;
 
     public function __construct()
     {
-        // Initialize the AuthPolicy instance
-        $this->auth = new AuthPolicy();
-        $this->leave = new Leave();
+        $this->leave = model('Leave');
+        $this->employeeInfo = model('EmployeeInfo');
         $this->leaveService = new LeaveService();
-        $this->employeeInfo = new EmployeeInfo();
     }
 
     public function index()

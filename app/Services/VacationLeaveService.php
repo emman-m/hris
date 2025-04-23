@@ -2,15 +2,7 @@
 
 namespace App\Services;
 
-class VacationLeaveService
+class VacationLeaveService extends Service
 {
-    public static function parseData(array $context)
-    {
-        $session = service('session');
-        $session->setFlashdata('_ci_old_input', [
-            'post' => $context
-        ]);
-
-        return;
-    }
+    //
 }

@@ -36,26 +36,20 @@ class UserController extends BaseController
     protected $licensure;
     protected $positionHistory;
     protected $pager;
-    // Declare the AuthPolicy instance as a protected property
-    protected $auth;
     protected $userService;
 
     public function __construct()
     {
-        $this->user = new User();
-        $this->usersInfo = new UserInfo();
-        $this->employeeInfo = new EmployeeInfo;
-        $this->education = new Education();
-        $this->dependent = new Dependent();
-        $this->employmentHistory = new EmploymentHistory();
-        $this->affiliation = new Affiliation();
-        $this->licensure = new Licensure();
-        $this->positionHistory = new PositionHistory();
-
+        $this->user = model('User');
+        $this->usersInfo = model('UserInfo');
+        $this->employeeInfo = model('EmployeeInfo');
+        $this->education = model('Education');
+        $this->dependent = model('Dependent');
+        $this->employmentHistory = model('EmploymentHistory');
+        $this->affiliation = model('Affiliation');
+        $this->licensure = model('Licensure');
+        $this->positionHistory = model('PositionHistory');
         $this->pager = Services::pager();
-
-        // Initialize the AuthPolicy instance
-        $this->auth = new AuthPolicy();
         $this->userService = new UserService();
     }
 

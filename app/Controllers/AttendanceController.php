@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Libraries\Policy\AuthPolicy;
-use App\Models\Attendance;
 use App\Services\AttendanceService;
 use App\Validations\Attendance\UploadValidation;
 use CodeIgniter\Exceptions\PageNotFoundException;
@@ -16,18 +15,13 @@ class AttendanceController extends BaseController
 {
     protected $attendance;
     protected $attendanceService;
-    // Declare the AuthPolicy instance as a protected property
-    protected $auth;
 
     public function __construct()
     {
-        $this->attendance = new Attendance();
+        $this->attendance = model('Attendance');
         $this->attendanceService = new AttendanceService();
 
         $this->pager = Services::pager();
-
-        // Initialize the AuthPolicy instance
-        $this->auth = new AuthPolicy();
     }
 
     public function index()
