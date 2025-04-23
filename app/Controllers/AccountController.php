@@ -4,12 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Libraries\Policy\AuthPolicy;
-use App\Models\EmployeeInfo;
-use App\Models\User;
-use App\Models\UserInfo;
 use App\Services\AccountService;
 use App\Validations\Account\UpdateValidator;
-use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
 use Config\Services;
 use Exception;
@@ -19,17 +15,12 @@ class AccountController extends BaseController
     protected $user;
     protected $usersInfo;
     protected $employeeInfo;
-    // Declare the AuthPolicy instance as a protected property
-    protected $auth;
 
     public function __construct()
     {
-        $this->user = new User();
-        $this->usersInfo = new UserInfo();
-        $this->employeeInfo = new EmployeeInfo();
-
-        // Initialize the AuthPolicy instance
-        $this->auth = new AuthPolicy();
+        $this->user = model('User');
+        $this->usersInfo = model('UserInfo');
+        $this->employeeInfo = model('EmployeeInfo');
     }
     public function index()
     {
@@ -45,7 +36,7 @@ class AccountController extends BaseController
         // Account Service
         $accountService = new AccountService();
         // Parse Account Info
-        $accountService->parseAccountInfo($userInfo);
+        $accountService->parseData($userInfo);
 
         return view('Pages/Account/edit', ['is_locked' => $employeeInfo['is_locked'] ?? false]);
     }
@@ -115,7 +106,6 @@ class AccountController extends BaseController
 
             withToast('success', 'Success! Your Account Information has been updated.');
 
-            return redirect()->route('my-account');
         } catch (Exception $e) {
             // Rollback transaction in case of error
             $db->transRollback();
@@ -123,7 +113,8 @@ class AccountController extends BaseController
 
             withToast('error', 'Error! There was a problem saving changes.');
 
-            return redirect()->route('my-account');
         }
+
+        return redirect()->back();
     }
 }

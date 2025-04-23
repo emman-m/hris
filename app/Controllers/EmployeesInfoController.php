@@ -4,19 +4,9 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Enums\UserRole;
-use App\Libraries\Policy\AuthPolicy;
-use App\Models\Affiliation;
-use App\Models\Dependent;
-use App\Models\Education;
-use App\Models\EmployeeInfo;
-use App\Models\EmploymentHistory;
-use App\Models\Licensure;
-use App\Models\PositionHistory;
-use App\Models\User;
 use App\Services\EmployeeService;
 use App\Validations\EmployeeUserValidator;
 use CodeIgniter\Exceptions\PageNotFoundException;
-use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
 use Config\Services;
 use Exception;
@@ -31,22 +21,18 @@ class EmployeesInfoController extends BaseController
     protected $affiliation;
     protected $licensure;
     protected $positionHistory;
-    // Declare the AuthPolicy instance as a protected property
-    protected $auth;
     protected $employeeService;
 
     public function __construct()
     {
-        $this->user = new User();
-        $this->employeeInfo = new EmployeeInfo();
-        $this->education = new Education();
-        $this->dependent = new Dependent();
-        $this->employmentHistory = new EmploymentHistory();
-        $this->affiliation = new Affiliation();
-        $this->licensure = new Licensure();
-        $this->positionHistory = new PositionHistory();
-        // Initialize the AuthPolicy instance
-        $this->auth = new AuthPolicy();
+        $this->user = model('User');
+        $this->employeeInfo = model('EmployeeInfo');
+        $this->education = model('Education');
+        $this->dependent = model('Dependent');
+        $this->employmentHistory = model('EmploymentHistory');
+        $this->affiliation = model('Affiliation');
+        $this->licensure = model('Licensure');
+        $this->positionHistory = model('PositionHistory');
         $this->employeeService = new EmployeeService();
     }
 

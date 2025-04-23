@@ -2,25 +2,17 @@
 
 namespace App\Services;
 
-use App\Libraries\Policy\AuthPolicy;
-use App\Models\User;
-
-class EmployeeService
+class EmployeeService extends Service
 {
-    protected $notification;
-    protected $auth;
     protected $user;
 
     public function __construct()
     {
-        $this->notification = new NotificationService();
-        $this->auth = new AuthPolicy();
-        $this->user = new User();
+        $this->user = model('User');
     }
 
     public static function parseEmployeesInfo(array $context)
     {
-        // dd($context);
         $session = service('session');
         $session->setFlashdata('_ci_old_input', [
             'post' => [

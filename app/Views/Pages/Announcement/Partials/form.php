@@ -2,8 +2,6 @@
 
 use App\Enums\EmployeeDepartment;
 
-// $routeName = service('router')->getCurrentRoute()->getName();
-// echo $routeName;
 $content = html_entity_decode(old('content'));
 ?>
 

@@ -2,15 +2,8 @@
 
 namespace App\Services;
 
-class UserService
+class UserService extends Service
 {
-    protected $notification;
-
-    public function __construct()
-    {
-        $this->notification = new NotificationService();
-    }
-
     public function sendStoreNotif($data)
     {
         // Save Notification

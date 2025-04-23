@@ -20,17 +20,12 @@ class EmployeesFileController extends BaseController
     protected $employeeFile;
     protected $user;
     protected $employeeFileService;
-    // Declare the AuthPolicy instance as a protected property
-    protected $auth;
 
     public function __construct()
     {
-        $this->employeeFile = new EmployeesFile();
-        $this->user = new User();
+        $this->employeeFile = model('EmployeesFile');
+        $this->user = model('User');
         $this->employeeFileService = new EmployeeFileService();
-
-        // Initialize the AuthPolicy instance
-        $this->auth = new AuthPolicy();
     }
     public function index($user_id = null)
     {

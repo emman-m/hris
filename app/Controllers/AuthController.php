@@ -22,8 +22,8 @@ class AuthController extends BaseController
 
     public function __construct()
     {
-        $this->user = new User();
-        $this->userInfo = new UserInfo();
+        $this->user = model('User');
+        $this->userInfo = model('UserInfo');
         $this->authService = new AuthService();
     }
 

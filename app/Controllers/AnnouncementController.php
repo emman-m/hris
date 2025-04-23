@@ -4,10 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Libraries\Policy\AuthPolicy;
-use App\Models\Announcement;
-use App\Models\EmployeeInfo;
 use App\Services\Announcement as AnnouncementService;
-use App\Services\NotificationService;
 use App\Validations\Announcement\CreateValidator;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Database;
@@ -17,14 +14,12 @@ use Exception;
 class AnnouncementController extends BaseController
 {
     protected $announcement;
-    protected $auth;
     protected $pager;
     protected $announcementService;
 
     public function __construct()
     {
-        $this->announcement = new Announcement();
-        $this->auth = new AuthPolicy();
+        $this->announcement = model('Announcement');
         $this->pager = Services::pager();
         $this->announcementService = new AnnouncementService();
     }

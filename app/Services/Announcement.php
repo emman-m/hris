@@ -2,27 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\EmployeeInfo;
-
-class Announcement
+class Announcement extends Service
 {
     protected $employeeInfo;
-    protected $notification;
 
     public function __construct()
     {
-        $this->employeeInfo = new EmployeeInfo();
-        $this->notification = new NotificationService();
-    }
-
-    public static function parseData(array $context)
-    {
-        $session = service('session');
-        $session->setFlashdata('_ci_old_input', [
-            'post' => $context
-        ]);
-
-        return;
+        $this->employeeInfo = model('EmployeeInfo');
     }
 
     public function sendNotif($post)

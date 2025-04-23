@@ -3,21 +3,17 @@
 namespace App\Services;
 
 use App\Enums\LeaveType;
-use App\Models\Leave;
-use App\Models\User;
 
-class LeaveService
+class LeaveService extends Service
 {
 
     protected $user;
-    protected $notification;
     protected $leave;
 
     public function __construct()
     {
-        $this->user = new User();
-        $this->notification = new NotificationService();
-        $this->leave = new Leave();
+        $this->user = model('User');
+        $this->leave = model('Leave');
     }
 
     public function sendCreateNotif($data)

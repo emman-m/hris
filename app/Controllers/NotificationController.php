@@ -12,7 +12,7 @@ class NotificationController extends BaseController
 
     public function __construct()
     {
-        $this->notification = new Notification();
+        $this->notification = model('Notification');
     }
 
     public function index()

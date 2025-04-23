@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Libraries\Policy\AuthPolicy;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -43,6 +44,9 @@ abstract class BaseController extends Controller
      */
     // protected $session;
 
+    // Declare the AuthPolicy instance as a protected property
+    protected $auth;
+
     /**
      * @return void
      */
@@ -54,5 +58,8 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
+
+        // Initialize the AuthPolicy instance
+        $this->auth = new AuthPolicy();
     }
 }
