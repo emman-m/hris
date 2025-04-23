@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Libraries\Policy\AuthPolicy;
-use Config\Database;
 use DateTime;
 
 class AttendanceService
@@ -30,12 +29,8 @@ class AttendanceService
             return redirect()->back();
         }
 
-        $db = Database::connect();
-
         $attendanceData = [];
         $rowNumber = 0;
-
-        $duplicate = 0;
 
         // Read the CSV file line by line
         while (($row = fgetcsv($handle, 1000, ',')) !== false) {
@@ -64,7 +59,7 @@ class AttendanceService
             $formattedDate = $this->formatDate($row[3]);
 
             // search for an existing record
-            $searchResponse = $db->table('attendances')
+            $searchResponse = $this->attendance
                 ->where('employee_id', $row[2])
                 ->where('transaction_date', $formattedDate)
                 ->where('time_in', substr($row[4], 0, 8))
@@ -97,7 +92,7 @@ class AttendanceService
     {
         // Format the date
         $date = DateTime::createFromFormat('m/d/Y', $rawDate);
-        $formattedDate = $date ? $date->format('Y-m-d') : null;
+        $formattedDate = $date?->format('Y-m-d');
 
         return $formattedDate;
     }
