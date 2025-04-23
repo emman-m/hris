@@ -22,6 +22,10 @@
     <?php if (session()->has('toast')): ?>
         <?= view('Components/alert', session()->get('toast')) ?>
     <?php endif; ?>
+    <!-- Swal -->
+    <?php if (session()->has('swal')): ?>
+        <?= view('Components/swal', session()->get('swal')) ?>
+    <?php endif; ?>
 
     <div class="page">
         <!-- Navbar -->

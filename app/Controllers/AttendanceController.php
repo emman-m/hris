@@ -185,8 +185,8 @@ class AttendanceController extends BaseController
             ->getContent($request->getFile('file'));
 
         if (empty($csvData)) {
-            withToast('warning', 'No data inserted');
-            log_message('debug', 'No data inserted');
+            withSwal('warning', 'Attendance file has an existing data.', 'No data saved');
+
             return redirect()->route('attendance');
         }
 

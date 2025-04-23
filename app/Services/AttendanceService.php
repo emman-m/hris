@@ -3,16 +3,18 @@
 namespace App\Services;
 
 use App\Libraries\Policy\AuthPolicy;
-use CodeIgniter\Exceptions\PageNotFoundException;
+use Config\Database;
 use DateTime;
 
 class AttendanceService
 {
     protected $auth;
+    protected $attendance;
 
     public function __construct()
     {
         $this->auth = new AuthPolicy();
+        $this->attendance = model('Attendance');
     }
 
     public function getContent($file)
@@ -28,8 +30,12 @@ class AttendanceService
             return redirect()->back();
         }
 
+        $db = Database::connect();
+
         $attendanceData = [];
         $rowNumber = 0;
+
+        $duplicate = 0;
 
         // Read the CSV file line by line
         while (($row = fgetcsv($handle, 1000, ',')) !== false) {
@@ -55,15 +61,31 @@ class AttendanceService
                 continue;
             }
 
+            $formattedDate = $this->formatDate($row[3]);
+
+            // search for an existing record
+            $searchResponse = $db->table('attendances')
+                ->where('employee_id', $row[2])
+                ->where('transaction_date', $formattedDate)
+                ->where('time_in', substr($row[4], 0, 8))
+                ->get()
+                ->getRow();
+
             // Map CSV data to database columns
-            $attendanceData[] = [
-                'employee_id' => $row[2], // Column C
-                'remark' => $row[6], // Column G
-                'machine' => $row[1], // Column B
-                'transaction_date' => $this->formatDate($row[3]), // Column D
-                'time_in' => $row[4], // Column E
-                'time_out' => $row[5], // Column F
-            ];
+            if (!$searchResponse) {
+                $attendanceData[] = [
+                    'employee_id' => $row[2], // Column C
+                    'remark' => $row[6], // Column G
+                    'machine' => $row[1], // Column B
+                    'transaction_date' => $formattedDate, // Column D
+                    'time_in' => $row[4], // Column E
+                    'time_out' => $row[5], // Column F
+                ];
+            } else {
+                fclose($handle);
+
+                return [];
+            }
         }
 
         // Close the file handle
