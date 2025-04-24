@@ -3,6 +3,7 @@
 namespace App\Validations\Leaves;
 
 use App\Enums\EmployeeDepartment;
+use App\Enums\UserRole;
 use App\Validations\Validator;
 
 class CreateOBValidator extends Validator
@@ -10,14 +11,6 @@ class CreateOBValidator extends Validator
     public function __construct()
     {
         $this->rules = [
-            'employee_id' => [
-                'label' => 'Employee ID',
-                'rules' => 'required|is_existing[employees_info.employee_id]',
-                'errors' => [
-                    'required' => '{field} is required.',
-                    'is_existing' => '{field} does not exist or not yet registered.',
-                ]
-            ],
             'department' => [
                 'label' => 'Department',
                 'rules' => 'required|in_list'. str_replace('"', '', json_encode(EmployeeDepartment::list())),
@@ -79,5 +72,18 @@ class CreateOBValidator extends Validator
                 ]
             ],
         ];
+
+        if (session()->get('role') !== UserRole::EMPLOYEE->value) {
+            $this->rules[] = [
+                'employee_id' => [
+                    'label' => 'Employee ID',
+                    'rules' => 'required|is_existing[employees_info.employee_id]',
+                    'errors' => [
+                        'required' => '{field} is required.',
+                        'is_existing' => '{field} does not exist or not yet registered.',
+                    ]
+                ],
+            ];
+        }
     }
 }
