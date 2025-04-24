@@ -74,7 +74,7 @@ class CreateOBValidator extends Validator
         ];
 
         if (session()->get('role') !== UserRole::EMPLOYEE->value) {
-            $this->rules[] = [
+            $this->rules = array_merge($this->rules, [
                 'employee_id' => [
                     'label' => 'Employee ID',
                     'rules' => 'required|is_existing[employees_info.employee_id]',
@@ -83,7 +83,7 @@ class CreateOBValidator extends Validator
                         'is_existing' => '{field} does not exist or not yet registered.',
                     ]
                 ],
-            ];
+            ]);
         }
     }
 }
