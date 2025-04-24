@@ -10,8 +10,8 @@ use App\Enums\UserRole;
         </button>
         <div class="navbar-brand navbar-brand-autodark">
             <a href=".">
-                <svg xmlns="http://www.w3.org/2000/svg" width="110" height="50" viewBox="0 0 200 50">
-                    <text x="10" y="35" font-family="Arial, sans-serif" font-size="40" fill="white">HRIS</text>
+                <svg xmlns="http://www.w3.org/2000/svg" width="150" height="50" viewBox="0 0 200 50">
+                    <text x="10" y="35" font-family="Arial, sans-serif" font-size="30" fill="white">LCCT HRMS</text>
                 </svg>
             </a>
         </div>
