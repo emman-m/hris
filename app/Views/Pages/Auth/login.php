@@ -8,14 +8,12 @@ Login
 <div class="page page-center">
     <div class="container container-tight py-4">
         <div class="text-center mb-4">
-            <a href="." class="navbar-brand navbar-brand-autodark">
-                <img src="<?= base_url('assets/img/logo.png') ?>" width="80" alt="Tabler logo">
-                <span class="h1" style="text-wrap: auto">La Consolacion College - HRIS</span>
-            </a>
+            <img src="<?= base_url('assets/img/logo.png') ?>" width="80" alt="Tabler logo"><br>
+            <span class="h1" style="text-wrap: auto">La Consolacion College Tanauan - HRMS</span>
         </div>
         <div class="card card-md">
             <div class="card-body">
-                <h2 class="h2 text-center mb-4">Login to your account</h2>
+                <h2 class="h2 text-center mb-4">Login</h2>
 
                 <!-- Validation messages -->
                 <?php if (session()->getFlashdata('error')): ?>
@@ -54,7 +52,7 @@ Login
                             </span>
                         </div>
                     </div>
-                    <a href="<?= route_to('forgot-password')?>">I forgot password</a>
+                    <a href="<?= route_to('forgot-password') ?>">I forgot password</a>
                     <div class="form-footer">
                         <button type="submit" class="btn btn-primary w-100">Sign in</button>
                     </div>
