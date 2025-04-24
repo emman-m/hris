@@ -5,10 +5,12 @@ namespace App\Services;
 class Announcement extends Service
 {
     protected $employeeInfo;
+    protected $notification;
 
     public function __construct()
     {
         $this->employeeInfo = model('EmployeeInfo');
+        $this->notification = new NotificationService();
     }
 
     public function sendNotif($post)

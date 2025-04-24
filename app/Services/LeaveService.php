@@ -9,11 +9,13 @@ class LeaveService extends Service
 
     protected $user;
     protected $leave;
+    protected $notification;
 
     public function __construct()
     {
         $this->user = model('User');
         $this->leave = model('Leave');
+        $this->notification = new NotificationService();
     }
 
     public function sendCreateNotif($data)

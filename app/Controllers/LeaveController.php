@@ -5,9 +5,6 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Enums\ApproveStatus;
 use App\Enums\LeaveType;
-use App\Libraries\Policy\AuthPolicy;
-use App\Models\EmployeeInfo;
-use App\Models\Leave;
 use App\Services\LeaveService;
 use App\Services\OfficialBusinessService;
 use App\Services\VacationLeaveService;
@@ -15,6 +12,7 @@ use App\Validations\Leaves\CreateOBValidator;
 use App\Validations\Leaves\CreateVLValidator;
 use App\Validations\Leaves\UpdateOBValidator;
 use App\Validations\Leaves\UpdateVLValidator;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Database;
 use Config\Services;
@@ -289,7 +287,7 @@ class LeaveController extends BaseController
             $this->leaveService->sendCreateNotif($post);
 
             withToast('success', 'Success! Vacation leave created.');
-        } catch (\Throwable $e) {
+        } catch (DatabaseException $e) {
             // Rollback transaction in case of error
             $db->transRollback();
             log_message('warning', $e->getMessage());

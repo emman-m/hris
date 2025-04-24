@@ -8,11 +8,13 @@ class EmployeeFileService extends Service
 {
     protected $user;
     protected $file;
+    protected $notification;
 
     public function __construct()
     {
         $this->user = model('User');
         $this->file = model('EmployeesFile');
+        $this->notification = new NotificationService();
     }
 
     public function sendCreateNotif($post)
