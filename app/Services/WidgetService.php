@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\ApproveStatus;
 use App\Enums\UserRole;
+use App\Libraries\Policy\AuthPolicy;
 
 class WidgetService extends Service
 {
@@ -11,6 +12,7 @@ class WidgetService extends Service
     protected $user;
     protected $leave;
     protected $attendance;
+    protected $auth;
 
     public function __construct()
     {
@@ -18,6 +20,7 @@ class WidgetService extends Service
         $this->user = model('User');
         $this->leave = model('Leave');
         $this->attendance = model('Attendance');
+        $this->auth = new AuthPolicy();
     }
 
     public function getAnnouncement(array $filters = [])
