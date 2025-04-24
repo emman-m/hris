@@ -53,6 +53,6 @@ class NotificationController extends BaseController
 
         $this->notification->update($id, ['is_read' => 1]);
 
-        return view('Pages/notification/show', $notification);
+        return view('Pages/Notification/show', $notification);
     }
 }
