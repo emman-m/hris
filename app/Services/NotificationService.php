@@ -41,5 +41,6 @@ class NotificationService
                 ->send();
         }
 
+        return true;
     }
 }
