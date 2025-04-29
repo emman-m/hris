@@ -4,6 +4,13 @@ namespace App\Services;
 
 class UserService extends Service
 {
+    protected $notification;
+
+    public function __construct()
+    {
+        $this->notification = new NotificationService();
+    }
+
     public function sendStoreNotif($data)
     {
         // Save Notification
@@ -19,7 +26,7 @@ class UserService extends Service
             ]
         ];
 
-        $this->notification->sendEmail($emailData);
+        return $this->notification->sendEmail($emailData);
     }
 
     public function sendUpdateNotif($data)

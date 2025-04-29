@@ -2,6 +2,7 @@
 
 namespace App\Validations\Leaves;
 
+use App\Enums\UserRole;
 use App\Validations\Validator;
 
 class CreateVLValidator extends Validator
@@ -9,14 +10,6 @@ class CreateVLValidator extends Validator
     public function __construct()
     {
         $this->rules = [
-            'employee_id' => [
-                'label' => 'Employee ID',
-                'rules' => 'required|is_existing[employees_info.employee_id]',
-                'errors' => [
-                    'required' => '{field} is required.',
-                    'is_existing' => '{field} does not exist or not yet registered.',
-                ]
-            ],
             'vl_type' => [
                 'label' => 'Leave Type',
                 'rules' => 'required',
@@ -63,5 +56,18 @@ class CreateVLValidator extends Validator
                 ]
             ],
         ];
+
+        if (session()->get('role') !== UserRole::EMPLOYEE->value) {
+            $this->rules = array_merge($this->rules, [
+                'employee_id' => [
+                    'label' => 'Employee ID',
+                    'rules' => 'required|is_existing[employees_info.employee_id]',
+                    'errors' => [
+                        'required' => '{field} is required.',
+                        'is_existing' => '{field} does not exist or not yet registered.',
+                    ]
+                ],
+            ]);
+        }
     }
 }

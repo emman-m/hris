@@ -58,7 +58,7 @@ class SendMail
             return true;
         }
 
-        log_message('error', $this->email->printDebugger(['headers']));
+        log_message('error', json_encode(['Email Error:' => $this->email->printDebugger(['headers'])]));
 
         return false;
     }

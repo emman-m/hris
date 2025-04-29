@@ -4,6 +4,13 @@ namespace App\Services;
 
 class AuthService extends Service
 {
+    protected $notification;
+
+    public function __construct()
+    {
+        $this->notification = new NotificationService();
+    }
+
     public function sendCodeToEmail($data)
     {
         $emailData[] = [
@@ -12,7 +19,7 @@ class AuthService extends Service
             'template' => 'forgot_password',
             'context' => [
                 'name' => "{$data['first_name']} {$data['last_name']}",
-                'link' => base_url('new-password?email='.$data['email'].'&code=' . $data['code']),
+                'link' => base_url('new-password?email=' . $data['email'] . '&code=' . $data['code']),
             ]
         ];
 

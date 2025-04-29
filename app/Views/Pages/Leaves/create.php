@@ -41,7 +41,7 @@ $title = 'Create Leave';
             <div class="col-12 gap-4">
                 <!-- Vacation leave -->
                 <a href="<?= route_to('leaves-create-vacation-leave') ?>" class="btn btn-light h1 h-100 w-100">
-                    <?= LeaveType::VACATION_LEAVE->value ?>
+                    <?= LeaveType::APPLICATION_FOR_LEAVE->value ?>
                 </a>
                 <!-- OFFICIAL_BUSINESS -->
                 <a href="<?= route_to('leaves-create-official-business') ?>" class="btn btn-light h1 h-100 w-100">

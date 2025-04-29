@@ -186,6 +186,7 @@ $pageTitle = 'Dashboard';
 
                 </div>
             </div>
+            <?php if (session()->get('role') !== UserRole::EMPLOYEE->value): ?>
             <!-- Tardness Rate -->
             <div class="col-lg-6">
                 <div class="row row-cards">
@@ -201,6 +202,7 @@ $pageTitle = 'Dashboard';
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
             <!-- <div class="col-12">
                 <div class="card">
                     <div class="card-body" style="height: 10rem"></div>

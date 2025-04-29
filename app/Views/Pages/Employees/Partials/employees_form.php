@@ -4,6 +4,7 @@ use App\Enums\AffiliationType;
 use App\Enums\EducationLevel;
 use App\Enums\EmployeeDepartment;
 use App\Enums\EmployeeStatus;
+use App\Enums\Religion;
 
 $is_locked ??= false;
 ?>
@@ -205,8 +206,14 @@ $is_locked ??= false;
                 <!-- Religion -->
                 <div class="mb-4">
                     <label class="form-label">Religion</label>
-                    <input type="text" name="ei_religion" class="form-control mt-1 block w-full"
-                        value="<?= old('ei_religion') ?>" autocomplete="off" <?= $is_locked ? 'disabled' : '' ?>>
+                    <select id="ei_religion" name="ei_religion" class="form-select mt-1 block w-full" <?= $is_locked ? 'disabled' : '' ?>>
+                        <option value="" selected disabled>- Please Select -</option>
+                        <?php foreach (Religion::cases() as $status): ?>
+                            <option value="<?= $status->value ?>" <?= $status->value === old('ei_religion') ? 'selected' : '' ?>>
+                                <?= $status->value ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                     <!-- Error Message -->
                     <?php if (isset($errors['ei_religion'])): ?>
                         <div class="invalid-feedback d-block">

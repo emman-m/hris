@@ -2,13 +2,19 @@
 
 namespace App\Services;
 
+use App\Libraries\Policy\AuthPolicy;
+
 class EmployeeService extends Service
 {
     protected $user;
+    protected $notification;
+    protected $auth;
 
     public function __construct()
     {
         $this->user = model('User');
+        $this->notification = new NotificationService();
+        $this->auth = new AuthPolicy();
     }
 
     public static function parseEmployeesInfo(array $context)
