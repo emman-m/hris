@@ -39,6 +39,7 @@ $pageTitle = 'Attendance';
                 </h2>
             </div>
             <!-- Create new user button -->
+            <?php if (session()->get('role') !== UserRole::EMPLOYEE->value): ?>
             <div class="col-auto ms-auto">
                 <a href="<?= route_to('attendance-create'); ?>" class="btn">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
@@ -51,6 +52,7 @@ $pageTitle = 'Attendance';
                     Import Attendance
                 </a>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

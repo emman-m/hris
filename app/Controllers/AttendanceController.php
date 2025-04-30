@@ -26,11 +26,6 @@ class AttendanceController extends BaseController
 
     public function index()
     {
-        // Auth user
-        if ($this->auth->isEmployee()) {
-            throw new PageNotFoundException('Page Not Found', 404);
-        }
-
         // Retrieve filters from the request
         $filters = [
             'from' => $this->request->getGet('from'),
