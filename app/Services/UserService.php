@@ -44,7 +44,7 @@ class UserService extends Service
             ]
         ];
 
-        $this->notification->sendEmail($emailData);
+        return $this->notification->sendEmail($emailData);
     }
 
     public function sendUpdateStatusNotif($data)

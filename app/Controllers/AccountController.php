@@ -74,8 +74,11 @@ class AccountController extends BaseController
                 $userData['password'] = password_hash($post['password'], PASSWORD_BCRYPT);
             }
 
-            // Update the users table
-            $user = $this->user->update($userId, $userData);
+            // Restrict employee for saving
+            if (!$this->auth->isEmployee()) {
+                // Update the users table
+                $this->user->update($userId, $userData);
+            }
 
             // Prepare users_info data
             $usersInfoData = [
@@ -85,7 +88,7 @@ class AccountController extends BaseController
             ];
 
             // Update the users_info table
-            $info = $this->usersInfo->update($userId, $usersInfoData);
+            $this->usersInfo->update($userId, $usersInfoData);
 
             // Commit the transaction
             $db->transComplete();

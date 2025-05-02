@@ -48,6 +48,12 @@ $title = 'My Account';
                     <?= csrf_field() ?>
                     <div class="card-status-top bg-primary"></div>
                     <div class="card-body">
+                        <!-- Employee ID -->
+                        <div class="mb-3">
+                            <label class="form-label">Employee ID</label>
+                            <input type="text" name="employee_id" class="form-control" value="<?= old('employee_id') ?>"
+                                autocomplete="off" readonly />
+                        </div>
                         <!-- First name -->
                         <div class="mb-3">
                             <label class="form-label">First Name</label>
@@ -85,14 +91,7 @@ $title = 'My Account';
                         <div class="mb-3">
                             <label class="form-label">Email</label>
                             <input type="text" name="email" class="form-control" value="<?= old('email') ?>"
-                                autocomplete="off" <?= $is_locked ? 'disabled' : '' ?> />
-
-                            <!-- Error Message -->
-                            <?php if (isset($errors['email'])): ?>
-                                <div class=" invalid-feedback d-block">
-                                    <?= $errors['email'] ?>
-                                </div>
-                            <?php endif; ?>
+                                autocomplete="off" <?= session()->get('role') === UserRole::EMPLOYEE->value ? 'readonly' : ''?> />
                         </div>
                         <!-- Password -->
                         <div class="mb-3">
