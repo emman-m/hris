@@ -14,12 +14,12 @@ class UserService extends Service
     public function sendStoreNotif($data)
     {
         // Save Notification
-        $this->notification->sendNotification($data['user_id'], 'Welcome to LCC Tanauan HRIS Portal.');
+        $this->notification->sendNotification($data['user_id'], 'Welcome to LCC Tanauan HRMS Portal.');
 
         // Send email
         $emailData[] = [
             'email' => $data['email'],
-            'subject' => "Welcome to LCC Tanauan HRIS Portal",
+            'subject' => "Welcome to LCC Tanauan HRMS Portal",
             'template' => 'welcome',
             'context' => [
                 'name' => "{$data['first_name']} {$data['last_name']}"

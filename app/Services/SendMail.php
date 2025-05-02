@@ -8,7 +8,7 @@ class SendMail
 {
     protected $email;
 
-    protected $setFrom = 'LCC Tanauan HRIS';
+    protected $setFrom = 'LCC Tanauan HRMS';
 
     public function __construct()
     {

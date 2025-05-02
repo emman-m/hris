@@ -16,7 +16,7 @@ Forgot Password
         <div class="text-center mb-4">
             <a href="." class="navbar-brand navbar-brand-autodark">
                 <img src="<?= base_url('assets/img/logo.png') ?>" width="80" alt="Tabler logo">
-                <span class="h1" style="text-wrap: auto">La Consolacion College - HRIS</span>
+                <span class="h1" style="text-wrap: auto">La Consolacion College Tanauan - HRMS</span>
             </a>
         </div>
         <div class="card card-md">
