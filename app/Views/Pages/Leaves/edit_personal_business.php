@@ -7,7 +7,7 @@ session()->set(['menu' => 'leaves']);
 $errors = session()->get('errors');
 
 // page title
-$title = 'Create Vacation Leave';
+$title = 'Application for leave';
 ?>
 
 <!-- Layout -->
