@@ -63,21 +63,19 @@ class AttendanceService extends Service
                 ->get()
                 ->getRow();
 
-            // Map CSV data to database columns
-            if (!$searchResponse) {
-                $attendanceData[] = [
-                    'employee_id' => $row[2], // Column C
-                    'remark' => $row[6], // Column G
-                    'machine' => $row[1], // Column B
-                    'transaction_date' => $formattedDate, // Column D
-                    'time_in' => $row[4], // Column E
-                    'time_out' => $row[5], // Column F
-                ];
-            } else {
-                fclose($handle);
-
-                return [];
+            if ($searchResponse) {
+                continue;
             }
+
+            // Map CSV data to database columns
+            $attendanceData[] = [
+                'employee_id' => $row[2], // Column C
+                'remark' => $row[6], // Column G
+                'machine' => $row[1], // Column B
+                'transaction_date' => $formattedDate, // Column D
+                'time_in' => $row[4], // Column E
+                'time_out' => $row[5], // Column F
+            ];
         }
 
         // Close the file handle
