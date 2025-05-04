@@ -90,8 +90,8 @@ if (session()->get('role') === UserRole::EMPLOYEE->value) {
                         CSV
                     </a>
                     <!-- Add Print Button -->
-                    <button id="printButton" class="btn btn-outline-primary" data-id="<?= $user_id ?>" data-url="<?= route_to('files-print') ?>"
-                        title="Print">
+                    <button id="printButton" class="btn btn-outline-primary" data-id="<?= $user_id ?>"
+                        data-url="<?= route_to('files-print') ?>" title="Print">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-printer">
@@ -123,6 +123,8 @@ if (session()->get('role') === UserRole::EMPLOYEE->value) {
                                         </td>
                                         <td class="d-flex gap-2">
                                             <!-- files -->
+                                            <a href="<?= route_to('files-show', $item['file']) ?>" target="_blank">Open</a>
+                                            |
                                             <a href="<?= route_to('files-file-download', $item['id']) ?>">Download</a>
                                             |
                                             <a href="<?= route_to('files-edit', $item['id']) ?>">Edit</a>
