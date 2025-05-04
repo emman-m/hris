@@ -40,18 +40,18 @@ $pageTitle = 'Attendance';
             </div>
             <!-- Create new user button -->
             <?php if (session()->get('role') !== UserRole::EMPLOYEE->value): ?>
-            <div class="col-auto ms-auto">
-                <a href="<?= route_to('attendance-create'); ?>" class="btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    Import Attendance
-                </a>
-            </div>
+                <div class="col-auto ms-auto">
+                    <a href="<?= route_to('attendance-create'); ?>" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        Import Attendance
+                    </a>
+                </div>
             <?php endif; ?>
         </div>
     </div>
@@ -73,11 +73,13 @@ $pageTitle = 'Attendance';
                                     placeholder="Date To" value="<?= service('request')->getGet('from') ?>" />
                             </div>
                             <!-- Employee/Employee ID key -->
-                            <div class="col-md-4">
-                                <input type="text" name="search" class="form-control"
-                                    value="<?= service('request')->getGet('search') ?>"
-                                    placeholder="Search by Employee Name or ID">
-                            </div>
+                            <?php if (session()->get('role') !== UserRole::EMPLOYEE->value): ?>
+                                <div class="col-md-4">
+                                    <input type="text" name="search" class="form-control"
+                                        value="<?= service('request')->getGet('search') ?>"
+                                        placeholder="Search by Employee Name or ID">
+                                </div>
+                            <?php endif; ?>
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary">Filter</button>
                             </div>
@@ -89,7 +91,8 @@ $pageTitle = 'Attendance';
             <div class="col-12">
                 <div class="col-auto ms-auto">
                     <!-- Download CSV -->
-                    <a href="<?= route_to('attendance-download') . '?' . http_build_query($_GET) ?>" class="btn btn-primary">
+                    <a href="<?= route_to('attendance-download') . '?' . http_build_query($_GET) ?>"
+                        class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-download">
@@ -101,8 +104,8 @@ $pageTitle = 'Attendance';
                         CSV
                     </a>
                     <!-- Add Print Button -->
-                    <button id="printButton" class="btn btn-outline-primary" data-url="<?= route_to('attendance-print') ?>"
-                        title="Print">
+                    <button id="printButton" class="btn btn-outline-primary"
+                        data-url="<?= route_to('attendance-print') ?>" title="Print">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-printer">
