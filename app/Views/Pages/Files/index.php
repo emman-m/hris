@@ -64,7 +64,7 @@ if (session()->get('role') === UserRole::EMPLOYEE->value) {
                             <div class="col-md-4">
                                 <input type="text" name="search" class="form-control"
                                     value="<?= service('request')->getGet('search') ?>"
-                                    placeholder="Search by file name">
+                                    placeholder="Search by Certificate Name">
                             </div>
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary">Filter</button>
@@ -111,7 +111,7 @@ if (session()->get('role') === UserRole::EMPLOYEE->value) {
                         <table class="table table-vcenter card-table">
                             <thead>
                                 <tr>
-                                    <th>File</th>
+                                    <th>Certificate Name</th>
                                     <th class="w-1"></th>
                                 </tr>
                             </thead>

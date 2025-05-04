@@ -3,7 +3,7 @@
 ?>
 <!-- File name -->
 <div class="mb-3">
-    <label class="form-label required">File name</label>
+    <label class="form-label required">Certificate Name</label>
     <input type="text" name="file_name" class="form-control" value="<?= $file_name ?? old('file_name') ?>" autocomplete="off" />
 
     <!-- Error Message -->
