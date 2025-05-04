@@ -151,7 +151,7 @@ class WidgetService extends Service
             // Count tardy employees (time_in > 06:30:00)
             $tardyCount = 0;
             foreach ($employeeTimes as $employeeId => $timeIn) {
-                if (strtotime($timeIn) > strtotime('06:30:00')) {
+                if (strtotime($timeIn) > strtotime('07:00:00')) {
                     $tardyCount++;
                     // Track unique tardy employees
                     if (!in_array($employeeId, $tardyEmployees)) {
