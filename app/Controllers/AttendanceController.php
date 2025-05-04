@@ -152,6 +152,20 @@ class AttendanceController extends BaseController
         return view('Pages/Attendance/create');
     }
 
+    public function download_template()
+    {
+        $filePath = FCPATH . 'Attendance/template.csv';
+
+        // Check if file exists
+        if (!file_exists($filePath)) {
+            withToast('error', 'Error! Template file not found.');
+            return redirect()->back();
+        }
+
+        // Use the response helper to download the file
+        return $this->response->download($filePath, null)->setFileName('Attendance-Template.csv');
+    }
+
     public function store()
     {
         // Auth user
