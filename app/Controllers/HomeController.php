@@ -34,6 +34,7 @@ class HomeController extends BaseController
         $data['latestAttendance'] = $this->widgetService->getAttendanceLatestDate();
 
         $data['tardinessRate'] = $this->widgetService->getTardinessRate();
+        $data['turnOverRate'] = $this->widgetService->getTurnoverRate();
 
         return view('Pages/Dashboard/dashboard', $data);
     }
