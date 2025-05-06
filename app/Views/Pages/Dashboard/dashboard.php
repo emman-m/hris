@@ -159,8 +159,31 @@ $pageTitle = 'Dashboard';
                     </div>
                 </div>
             <?php endif; ?>
-            <!-- Announcement -->
+            <?php if (session()->get('role') !== UserRole::EMPLOYEE->value): ?>
+            <!-- Tardness Rate -->
             <div class="col-lg-6">
+                <div class="row row-cards">
+                    <div class="col-12">
+                        <div class="card">
+                            <?= view('Pages/Dashboard/Widgets/tardiness_rate', ['tardiness' => $tardinessRate]) ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Turn over Rate -->
+            <div class="col-lg-6">
+                <div class="row row-cards">
+                    <div class="col-12">
+                        <div class="card">
+                            <?= view('Pages/Dashboard/Widgets/turnover_rate', ['turnover' => $turnOverRate]) ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+            
+            <!-- Announcement -->
+            <div class="col-12">
                 <div class="card">
                     <div class="card-stamp card-stamp-md">
                         <div class="card-stamp-icon bg-primary" style="transform: scaleX(-1) rotate(-10deg);">
@@ -183,26 +206,9 @@ $pageTitle = 'Dashboard';
                             <div class="h1 m-auto">No announcement</div>
                         <?php endif; ?>
                     </div>
-
+            
                 </div>
             </div>
-            <?php if (session()->get('role') !== UserRole::EMPLOYEE->value): ?>
-            <!-- Tardness Rate -->
-            <div class="col-lg-6">
-                <div class="row row-cards">
-                    <div class="col-12">
-                        <div class="card">
-                            <?= view('Pages/Dashboard/Widgets/tardiness_rate', ['tardiness' => $tardinessRate]) ?>
-                        </div>
-                    </div>
-                    <div class="col-12" style="visibility: hidden;">
-                        <div class="card">
-                            <div class="card-body" style="height: 10rem"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
             <!-- <div class="col-12">
                 <div class="card">
                     <div class="card-body" style="height: 10rem"></div>

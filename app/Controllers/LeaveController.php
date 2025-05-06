@@ -286,13 +286,13 @@ class LeaveController extends BaseController
             // Send notification
             $this->leaveService->sendCreateNotif($post);
 
-            withToast('success', 'Success! Vacation leave created.');
+            withToast('success', 'Success! Application for leave created.');
         } catch (DatabaseException $e) {
             // Rollback transaction in case of error
             $db->transRollback();
             log_message('warning', $e->getMessage());
 
-            withToast('error', 'Error! Failed to create vacation leave.');
+            withToast('error', 'Error! Failed to create application for leave.');
         }
 
         return redirect()->route('leaves');
@@ -360,7 +360,7 @@ class LeaveController extends BaseController
                 throw new Exception('Transaction failed');
             }
 
-            withToast('success', 'Success! Vacation leave updated.');
+            withToast('success', 'Success! Application for leave updated.');
 
             return redirect()->route('leaves');
         } catch (\Throwable $e) {
@@ -368,7 +368,7 @@ class LeaveController extends BaseController
             $db->transRollback();
             log_message('warning', $e->getMessage());
 
-            withToast('error', 'Error! Failed to update vacation leave.');
+            withToast('error', 'Error! Failed to update application for leave.');
 
             return redirect()->route('leaves-vacation-leave-edit', [$this->request->getPost('id')]);
         }
@@ -438,13 +438,13 @@ class LeaveController extends BaseController
             // Send notification
             $this->leaveService->sendCreateNotif($post);
 
-            withToast('success', 'Success! Vacation leave created.');
+            withToast('success', 'Success! Application for leave created.');
         } catch (\Throwable $e) {
             // Rollback transaction in case of error
             $db->transRollback();
             log_message('warning', $e->getMessage());
 
-            withToast('error', 'Error! Failed to create vacation leave.');
+            withToast('error', 'Error! Failed to create application for leave.');
         }
 
         return redirect()->route('leaves');
@@ -512,7 +512,7 @@ class LeaveController extends BaseController
                 throw new Exception('Transaction failed');
             }
 
-            withToast('success', 'Success! Vacation leave updated.');
+            withToast('success', 'Success! Application for leave updated.');
 
             return redirect()->route('leaves');
         } catch (\Throwable $e) {
@@ -520,7 +520,7 @@ class LeaveController extends BaseController
             $db->transRollback();
             log_message('warning', $e->getMessage());
 
-            withToast('error', 'Error! Failed to update vacation leave.');
+            withToast('error', 'Error! Failed to update application for leave.');
 
             return redirect()->route('leaves-vacation-leave-edit', [$this->request->getPost('id')]);
         }
@@ -591,13 +591,13 @@ class LeaveController extends BaseController
             // Send notification
             $this->leaveService->sendCreateNotif($post);
 
-            withToast('success', 'Success! Vacation leave created.');
+            withToast('success', 'Success! Application for leave created.');
         } catch (\Throwable $e) {
             // Rollback transaction in case of error
             $db->transRollback();
             log_message('warning', $e->getMessage());
 
-            withToast('error', 'Error! Failed to create vacation leave.');
+            withToast('error', 'Error! Failed to create application for leave.');
         }
 
         return redirect()->route('leaves');
@@ -666,7 +666,7 @@ class LeaveController extends BaseController
                 throw new Exception('Transaction failed');
             }
 
-            withToast('success', 'Success! Vacation leave updated.');
+            withToast('success', 'Success! Application for leave updated.');
 
             return redirect()->route('leaves');
         } catch (\Throwable $e) {
@@ -674,7 +674,7 @@ class LeaveController extends BaseController
             $db->transRollback();
             log_message('warning', $e->getMessage());
 
-            withToast('error', 'Error! Failed to update vacation leave.');
+            withToast('error', 'Error! Failed to update application for leave.');
 
             return redirect()->route('leaves-vacation-leave-edit', [$this->request->getPost('id')]);
         }

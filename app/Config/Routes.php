@@ -83,6 +83,8 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->post('files-delete', 'EmployeesFileController::delete', ['as' => 'files-delete']);
     // Save new file
     $routes->get('files-file-download/(:any)', 'EmployeesFileController::fileDownload/$1', ['as' => 'files-file-download']);
+    // Show file
+    $routes->get('files-show/(:any)', 'EmployeesFileController::show/$1', ['as' => 'files-show']);
 
     /**
      * EMPLOYEE
@@ -111,6 +113,8 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->get('attendance-download', 'AttendanceController::download', ['as' => 'attendance-download']);
     // Attendance Print
     $routes->post('attendance-print', 'AttendanceController::print', ['as' => 'attendance-print']);
+    // Donwload template
+    $routes->get('attendance-download-template', 'AttendanceController::download_template', ['as' => 'attendance-download-template']);
 
     /**
      * Announcement Route

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to LCC Tanauan HRIS Portal</title>
+    <title>Welcome to LCC Tanauan HRMS Portal</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,18 +51,18 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Welcome to LCC Tanauan HRIS Portal</h1>
+            <h1>Welcome to LCC Tanauan HRMS Portal</h1>
         </div>
         <div class="content">
             <h2>Hello, <?= $name; ?>!</h2>
-            <p>We are excited to have you on board. Welcome to the LCC Tanauan HRIS Portal. Here, you can manage your personal information, view your payslips, apply for leaves, and much more.</p>
+            <p>We are excited to have you on board. Welcome to the LCC Tanauan HRMS Portal. Here, you can manage your personal information, view your payslips, apply for leaves, and much more.</p>
             <p>If you have any questions or need assistance, feel free to reach out to our support team.</p>
             <p>Thank you for joining us!</p>
             <p>Best regards,</p>
-            <p>LCC Tanauan HRIS Team</p>
+            <p>LCC Tanauan HRMS Team</p>
         </div>
         <div class="footer">
-            <p>&copy; 2025 LCC Tanauan HRIS Portal. All rights reserved.</p>
+            <p>&copy; 2025 LCC Tanauan HRMS Portal. All rights reserved.</p>
         </div>
     </div>
 </body>

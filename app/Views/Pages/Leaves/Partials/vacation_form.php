@@ -35,7 +35,7 @@ $isCreate ??= false
     <!-- Start Date -->
     <div class="col-sm-12 col-md-4 mb-3">
         <div class="form-label required">Start Date</div>
-        <input type="datetime-local" name="start_date" class="form-control" value="<?= old('start_date') ?>" />
+        <input type="date" name="start_date" class="form-control" value="<?= old('start_date') ?>" />
         <!-- Error Message -->
         <?php if (isset($errors['start_date'])): ?>
             <div class="invalid-feedback d-block">
@@ -46,7 +46,7 @@ $isCreate ??= false
     <!-- End Date -->
     <div class="col-sm-12 col-md-4 mb-3">
         <div class="form-label required">End Date</div>
-        <input type="datetime-local" name="end_date" class="form-control" value="<?= old('end_date') ?>">
+        <input type="date" name="end_date" class="form-control" value="<?= old('end_date') ?>">
         <!-- Error Message -->
         <?php if (isset($errors['end_date'])): ?>
             <div class="invalid-feedback d-block">

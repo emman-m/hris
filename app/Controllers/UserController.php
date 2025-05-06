@@ -5,16 +5,6 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
-use App\Libraries\Policy\AuthPolicy;
-use App\Models\Affiliation;
-use App\Models\Dependent;
-use App\Models\Education;
-use App\Models\EmployeeInfo;
-use App\Models\EmploymentHistory;
-use App\Models\Licensure;
-use App\Models\PositionHistory;
-use App\Models\User;
-use App\Models\UserInfo;
 use App\Services\UserService;
 use App\Validations\Users\UpdateValidator;
 use App\Validations\Users\UserValidator;
@@ -35,6 +25,7 @@ class UserController extends BaseController
     protected $affiliation;
     protected $licensure;
     protected $positionHistory;
+    protected $turnOverReport;
     protected $pager;
     protected $userService;
 
@@ -49,6 +40,7 @@ class UserController extends BaseController
         $this->affiliation = model('Affiliation');
         $this->licensure = model('Licensure');
         $this->positionHistory = model('PositionHistory');
+        $this->turnOverReport = model('TurnoverReport');
         $this->pager = Services::pager();
         $this->userService = new UserService();
     }
@@ -407,6 +399,17 @@ class UserController extends BaseController
 
         try {
             $user = $this->user->getUserByuserId($request['user_id']);
+
+            if ($status === UserStatus::ACTIVE->value) {
+                $this->turnOverReport
+                    ->where('user_id', $request['user_id'])
+                    ->like('created_at', date('Y-m-d'))
+                    ->delete();
+            } else {
+                $this->turnOverReport->insert([
+                    'user_id' => $request['user_id'],
+                ]);
+            }
 
             // Update the user status
             $this->user->update($request['user_id'], ['status' => $status]);

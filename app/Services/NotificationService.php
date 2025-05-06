@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use CodeIgniter\Database\Exceptions\DatabaseException;
+
 class NotificationService
 {
     protected $notification;
@@ -29,7 +31,7 @@ class NotificationService
         }
 
         // Save the notification to the database
-        $this->notification->insertBatch($data);
+        return $this->notification->insertBatch($data);
     }
 
     public function sendEmail(array $info)

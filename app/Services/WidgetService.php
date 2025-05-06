@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\ApproveStatus;
 use App\Enums\UserRole;
 use App\Libraries\Policy\AuthPolicy;
+use App\Models\TurnoverReport;
 
 class WidgetService extends Service
 {
@@ -13,6 +14,7 @@ class WidgetService extends Service
     protected $leave;
     protected $attendance;
     protected $auth;
+    protected $turnoverReport;
 
     public function __construct()
     {
@@ -21,6 +23,7 @@ class WidgetService extends Service
         $this->leave = model('Leave');
         $this->attendance = model('Attendance');
         $this->auth = new AuthPolicy();
+        $this->turnoverReport = model(TurnoverReport::class);
     }
 
     public function getAnnouncement(array $filters = [])
@@ -151,7 +154,7 @@ class WidgetService extends Service
             // Count tardy employees (time_in > 06:30:00)
             $tardyCount = 0;
             foreach ($employeeTimes as $employeeId => $timeIn) {
-                if (strtotime($timeIn) > strtotime('06:30:00')) {
+                if (strtotime($timeIn) > strtotime('07:00:00')) {
                     $tardyCount++;
                     // Track unique tardy employees
                     if (!in_array($employeeId, $tardyEmployees)) {
@@ -171,6 +174,47 @@ class WidgetService extends Service
             'rates' => $rates,
             'total_tardy_employees' => count($tardyEmployees),
             'tardy_employee_ids' => $tardyEmployees
+        ];
+    }
+
+    public function getTurnoverRate($endDate = null, $days = 15)
+    {
+        $endDate = ($endDate === null)
+            ? date('Y-m-d')
+            : $endDate ?? date('Y-m-d');
+
+        $startDate = date('Y-m-d', strtotime("-$days days", strtotime($endDate)));
+
+        $rates = [];
+        $uniqueEmployees = [];
+
+        $currentDate = $startDate;
+
+        while ($currentDate <= $endDate) {
+            // Query turnover reports for the current date
+            $reports = $this->turnoverReport
+                ->select('user_id')
+                ->where('DATE(created_at)', $currentDate)
+                ->findAll();
+
+            $dailyEmployeeIds = array_unique(array_column($reports, 'user_id'));
+
+            // Track unique employees across all days
+            foreach ($dailyEmployeeIds as $userId) {
+                if (!in_array($userId, $uniqueEmployees)) {
+                    $uniqueEmployees[] = $userId;
+                }
+            }
+
+            $rates[$currentDate] = count($dailyEmployeeIds);
+
+            $currentDate = date('Y-m-d', strtotime('+1 day', strtotime($currentDate)));
+        }
+
+        return [
+            'rates' => $rates,
+            'total_employees' => count($uniqueEmployees),
+            'employee_ids' => $uniqueEmployees,
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Models\User;
 use App\Models\UserInfo;
@@ -18,12 +19,14 @@ class AuthController extends BaseController
 {
     protected $user;
     protected $userInfo;
+    protected $employeeInfo;
     protected $authService;
 
     public function __construct()
     {
         $this->user = model('User');
         $this->userInfo = model('UserInfo');
+        $this->employeeInfo = model('EmployeeInfo');
         $this->authService = new AuthService();
     }
 
@@ -64,6 +67,12 @@ class AuthController extends BaseController
                                 'initials' => $userinfo['first_name'][0] . $userinfo['last_name'][0]
                             ]
                         );
+
+                        if ($user['role'] === UserRole::EMPLOYEE->value) {
+                            $employeeInfo = $this->employeeInfo->where('user_id', $user['user_id'])->first();
+
+                            $session->set('employee_id', $employeeInfo['employee_id']);
+                        }
 
                         // Redirect to dashboard
                         return redirect()->route('dashboard');

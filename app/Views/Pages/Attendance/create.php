@@ -46,6 +46,10 @@ $title = 'Import Attendance';
                     <?= csrf_field() ?>
                     <div class="card-status-top bg-primary"></div>
                     <div class="card-body">
+                        <div class="mb-3">
+                            <a href="<?= route_to('attendance-download-template')?>" class="btn btn-light">Download Template</a>
+                        </div>
+                        <hr>
                         <!-- CSV File -->
                         <div class="mb-3">
                             <div class="form-label required">File</div>

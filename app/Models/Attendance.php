@@ -80,6 +80,12 @@ class Attendance extends Model
                 ->groupEnd(); // End grouping the search conditions
         }
 
+        // if employee
+        $employeeId = session()->get('employee_id') ?? null;
+        if (!empty($employeeId)) {
+            $builder->where('attendances.employee_id', $employeeId);
+        }
+
         return $builder;
     }
 }

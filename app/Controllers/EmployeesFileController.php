@@ -11,6 +11,7 @@ use App\Services\EmployeeFileService;
 use App\Validations\Files\StoreValidation;
 use App\Validations\Files\UpdateValidation;
 use CodeIgniter\Exceptions\PageNotFoundException;
+use CodeIgniter\Files\File;
 use Config\Database;
 use Config\Services;
 use Exception;
@@ -403,5 +404,33 @@ class EmployeesFileController extends BaseController
 
         // Use the response helper to download the file
         return $this->response->download($filePath, null)->setFileName($fileInfo['file_name'] . '_' . $fileInfo['file']);
+    }
+
+    public function show($filename)
+    {
+        $path = WRITEPATH . 'uploads/' . $filename;
+
+        if (!file_exists($path)) {
+            throw new PageNotFoundException("File not found.");
+        }
+
+        $file = new File($path, true);
+        $mimeType = $file->getMimeType();
+        $fileContent = file_get_contents($path);
+
+        // If the file is an image, serve it directly
+        if (strpos($mimeType, 'image') !== false) {
+            return $this->response
+                ->setHeader('Content-Type', $mimeType)
+                ->setStatusCode(200)
+                ->setBody($fileContent);
+        }
+
+        // For other file types, serve normally
+        return $this->response
+            ->setHeader('Content-Type', $mimeType)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $file->getBasename() . '"')
+            ->setStatusCode(200)
+            ->setBody($fileContent);
     }
 }
