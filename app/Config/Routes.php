@@ -54,11 +54,13 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     // Employees Print
     $routes->post('employees/print', 'EmployeesController::print', ['as' => 'employees-print']);
     // Edit Employee
-    $routes->get('employees/(:any)', 'EmployeesController::edit/$1', ['as' => 'employees-edit']);
+    $routes->get('employees/(:any)/edit', 'EmployeesController::edit/$1', ['as' => 'employees-edit']);
     // Update Employee
     $routes->post('employees-update', 'EmployeesController::update', ['as' => 'employees-update']);
     // Update Employee lock state
     $routes->post('employees-lock-info', 'EmployeesController::update_lock_state', ['as' => 'employees-lock-info']);
+    // Employee show
+    $routes->get('employees/(:any)/show', 'EmployeesController::print_form/$1', ['as' => 'employees-show']);
 
     /**
      * Files Route
