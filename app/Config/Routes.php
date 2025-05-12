@@ -43,6 +43,11 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     // Update user status
     $routes->post('user-update-status', 'UserController::update_status', ['as' => 'user-update-status']);
 
+    // Bulk User Registration Routes
+    $routes->get('users-bulk-create', 'BulkUserController::create', ['as' => 'users-bulk-create']);
+    $routes->post('users-bulk-store', 'BulkUserController::store', ['as' => 'users-bulk-store']);
+    $routes->get('users-download-template', 'BulkUserController::download_template', ['as' => 'users-download-template']);
+
 
     /**
      * ADMIN
