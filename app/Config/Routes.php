@@ -204,4 +204,17 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->post('get-notification', 'NotificationController::index', ['as' => 'get-notification']);
     // Show notification details
     $routes->get('notification/(:any)', 'NotificationController::show/$1', ['as' => 'notification-show']);
+
+    // Memo routes
+    $routes->group('memo', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('/', 'MemoController::index', ['as' => 'memos']);
+        $routes->get('create', 'MemoController::create', ['as' => 'memos-create']);
+        $routes->post('store', 'MemoController::store', ['as' => 'memos-store']);
+        $routes->get('edit/(:num)', 'MemoController::edit/$1', ['as' => 'memos-edit']);
+        $routes->post('edit/(:num)', 'MemoController::update/$1', ['as' => 'memos-update']);
+        $routes->post('delete', 'MemoController::delete', ['as' => 'memos-delete']);
+        $routes->get('download/(:num)', 'MemoController::download/$1', ['as' => 'memos-download']);
+        $routes->get('preview/(:num)', 'MemoController::preview/$1', ['as' => 'memos-preview']);
+        $routes->get('search-users', 'MemoController::searchUsers', ['as' => 'memos-search-users']);
+    });
 });

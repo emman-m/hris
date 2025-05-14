@@ -3,17 +3,17 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Libraries\Policy\AuthPolicy;
-use App\Models\Announcement;
 use App\Services\WidgetService;
 
 class HomeController extends BaseController
 {
     protected $widgetService;
+    protected $memo;
 
     public function __construct()
     {
         $this->widgetService = new WidgetService();
+        $this->memo = model('Memo');
     }
 
     public function index()
@@ -35,6 +35,9 @@ class HomeController extends BaseController
 
         $data['tardinessRate'] = $this->widgetService->getTardinessRate();
         $data['turnOverRate'] = $this->widgetService->getTurnoverRate();
+
+        // Get recent memos where current user is a recipient
+        $data['memos'] = $this->memo->getDashboardMemos(session()->get('user_id'));
 
         return view('Pages/Dashboard/dashboard', $data);
     }
