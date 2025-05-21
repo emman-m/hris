@@ -56,6 +56,22 @@ $pageTitle = 'Update Employee';
     <div class="container-xl">
         <div class="row row-deck row-cards">
             <div class="col-12">
+                <div class="col-auto ms-auto">
+                    <!-- Print Form -->
+                    <a class="btn btn-outline-primary" href="<?= route_to('employees-show', $user_id) ?>" target="_blank" title="Print">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-printer">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" />
+                            <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />
+                            <path d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" />
+                        </svg>
+                        Print
+                    </a>
+                </div>
+            </div>
+            <div class="col-12">
 
                 <form action="<?= route_to('employees-update') ?>" class="card" method="post">
                     <?= csrf_field() ?>
@@ -63,7 +79,7 @@ $pageTitle = 'Update Employee';
                     <!-- User role -->
                     <input type="hidden" name="user_id" value="<?= $user_id ?>">
 
-                    <?= view('Pages/Employees/Partials/employees_form', ['form' => $form, 'errors' => $errors])?>
+                    <?= view('Pages/Employees/Partials/employees_form', ['form' => $form, 'errors' => $errors]) ?>
 
 
                     <div class="card-footer d-flex justify-content-between">

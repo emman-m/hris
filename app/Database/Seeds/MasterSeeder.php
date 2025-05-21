@@ -11,13 +11,14 @@ use App\Database\Seeds\Test\UserSeeder as TestUserSeeder;
 class MasterSeeder extends Seeder
 {
     public function run()
-    {
-        $this->call(UserSeeder::class);
-        $this->call(UsersInfoSeeder::class);
-
+    {        
         if (getenv('CI_ENVIRONMENT') === 'development') {
             $this->call(TestUserSeeder::class);
+            $this->call(UsersInfoSeeder::class);
             $this->call(EmployeeInfoSeeder::class);
+        } else {
+            $this->call(UserSeeder::class);
+            $this->call(UsersInfoSeeder::class);
         }
     }
 }

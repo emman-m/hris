@@ -43,6 +43,11 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     // Update user status
     $routes->post('user-update-status', 'UserController::update_status', ['as' => 'user-update-status']);
 
+    // Bulk User Registration Routes
+    $routes->get('users-bulk-create', 'BulkUserController::create', ['as' => 'users-bulk-create']);
+    $routes->post('users-bulk-store', 'BulkUserController::store', ['as' => 'users-bulk-store']);
+    $routes->get('users-download-template', 'BulkUserController::download_template', ['as' => 'users-download-template']);
+
 
     /**
      * ADMIN
@@ -54,11 +59,13 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     // Employees Print
     $routes->post('employees/print', 'EmployeesController::print', ['as' => 'employees-print']);
     // Edit Employee
-    $routes->get('employees/(:any)', 'EmployeesController::edit/$1', ['as' => 'employees-edit']);
+    $routes->get('employees/(:any)/edit', 'EmployeesController::edit/$1', ['as' => 'employees-edit']);
     // Update Employee
     $routes->post('employees-update', 'EmployeesController::update', ['as' => 'employees-update']);
     // Update Employee lock state
     $routes->post('employees-lock-info', 'EmployeesController::update_lock_state', ['as' => 'employees-lock-info']);
+    // Employee show
+    $routes->get('employees/(:any)/show', 'EmployeesController::print_form/$1', ['as' => 'employees-show']);
 
     /**
      * Files Route
@@ -197,4 +204,23 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
     $routes->post('get-notification', 'NotificationController::index', ['as' => 'get-notification']);
     // Show notification details
     $routes->get('notification/(:any)', 'NotificationController::show/$1', ['as' => 'notification-show']);
+
+    // Memo routes
+    $routes->group('memo', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('/', 'MemoController::index', ['as' => 'memos']);
+        $routes->get('create', 'MemoController::create', ['as' => 'memos-create']);
+        $routes->post('store', 'MemoController::store', ['as' => 'memos-store']);
+        $routes->get('edit/(:num)', 'MemoController::edit/$1', ['as' => 'memos-edit']);
+        $routes->post('edit/(:num)', 'MemoController::update/$1', ['as' => 'memos-update']);
+        $routes->post('delete', 'MemoController::delete', ['as' => 'memos-delete']);
+        $routes->get('download/(:num)', 'MemoController::download/$1', ['as' => 'memos-download']);
+        $routes->get('preview/(:num)', 'MemoController::preview/$1', ['as' => 'memos-preview']);
+        $routes->get('search-users', 'MemoController::searchUsers', ['as' => 'memos-search-users']);
+    });
+
+    // Reports routes
+    $routes->group('reports', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('turnover-rate', 'ReportController::turnoverRate', ['as' => 'reports-turnover-rate']);
+        $routes->get('tardiness-rate', 'ReportController::tardinessRate', ['as' => 'reports-tardiness-rate']);
+    });
 });

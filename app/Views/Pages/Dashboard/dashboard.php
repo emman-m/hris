@@ -21,18 +21,16 @@ $pageTitle = 'Dashboard';
 
 <!-- Body -->
 <?= $this->section('content') ?>
-
 <div class="page-header d-print-none">
     <div class="container-xl">
         <div class="row g-2 align-items-center">
             <div class="col">
-                <h2 class="page-title">
-                    <?= $pageTitle; ?>
-                </h2>
+                <h2 class="page-title"><?= $pageTitle; ?></h2>
             </div>
         </div>
     </div>
 </div>
+
 <div class="page-body">
     <div class="container-xl">
         <div class="row row-deck row-cards">
@@ -187,15 +185,11 @@ $pageTitle = 'Dashboard';
                 <div class="card">
                     <div class="card-stamp card-stamp-md">
                         <div class="card-stamp-icon bg-primary" style="transform: scaleX(-1) rotate(-10deg);">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-speakerphone">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speakerphone">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M18 8a3 3 0 0 1 0 6" />
                                 <path d="M10 8v11a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1v-5" />
-                                <path
-                                    d="M12 8h0l4.524 -3.77a.9 .9 0 0 1 1.476 .692v12.156a.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8" />
+                                <path d="M12 8h0l4.524 -3.77a.9 .9 0 0 1 1.476 .692v12.156a.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8" />
                             </svg>
                         </div>
                     </div>
@@ -206,39 +200,65 @@ $pageTitle = 'Dashboard';
                             <div class="h1 m-auto">No announcement</div>
                         <?php endif; ?>
                     </div>
+                </div>
+            </div>
             
-                </div>
-            </div>
-            <!-- <div class="col-12">
-                <div class="card">
-                    <div class="card-body" style="height: 10rem"></div>
-                </div>
-            </div>
-            <div class="col-md-12 col-lg-8">
-                <div class="card">
-                    <div class="card-body" style="height: 10rem"></div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card">
-                    <div class="card-body" style="height: 10rem"></div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card">
-                    <div class="card-body" style="height: 10rem"></div>
-                </div>
-            </div>
-            <div class="col-md-12 col-lg-8">
-                <div class="card">
-                    <div class="card-body" style="height: 10rem"></div>
-                </div>
-            </div>
+            <!-- Memos -->
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body" style="height: 10rem"></div>
+                    <div class="card-stamp card-stamp-md">
+                        <div class="card-stamp-icon bg-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-text">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                <path d="M9 9l1 0" />
+                                <path d="M9 13l6 0" />
+                                <path d="M9 17l6 0" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Recent Memos</h3>
+                        <?php if (!empty($memos)): ?>
+                            <div class="list-group list-group-flush">
+                                <?php foreach ($memos as $memo): ?>
+                                    <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <h4 class="mb-1"><?= esc($memo['title']) ?></h4>
+                                                <div class="text-secondary">
+                                                    From: <?= esc($memo['creator_name']) ?><br>
+                                                    To: <?= implode(', ', array_map(function($recipient) { return $recipient['name']; }, $memo['recipients'])) ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a href="<?= route_to('memos-download', $memo['id']) ?>" target="_blank" class="btn btn-outline-primary">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                        <polyline points="7 11 12 16 17 11" />
+                                                        <line x1="12" y1="4" x2="12" y2="16" />
+                                                    </svg>
+                                                    Download
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <iframe src="<?= route_to('memos-preview', $memo['id']) ?>" width="100%" height="400" style="border: none;"></iframe>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php else: ?>
+                            <div class="text-center py-4">
+                                <p class="text-secondary">No memos available</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
-            </div> -->
+            </div>
+            
         </div>
     </div>
 </div>

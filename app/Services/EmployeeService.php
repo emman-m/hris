@@ -9,12 +9,26 @@ class EmployeeService extends Service
     protected $user;
     protected $notification;
     protected $auth;
+    protected $employeesInfo;
+    protected $education;
+    protected $dependent;
+    protected $employmentHistory;
+    protected $affiliation;
+    protected $licensure;
+    protected $positionHistory;
 
     public function __construct()
     {
         $this->user = model('User');
         $this->notification = new NotificationService();
         $this->auth = new AuthPolicy();
+        $this->employeesInfo = model('EmployeeInfo');
+        $this->education = model('Education');
+        $this->dependent = model('Dependent');
+        $this->employmentHistory = model('EmploymentHistory');
+        $this->affiliation = model('Affiliation');
+        $this->licensure = model('Licensure');
+        $this->positionHistory = model('PositionHistory');
     }
 
     public static function parseEmployeesInfo(array $context)
@@ -187,5 +201,30 @@ class EmployeeService extends Service
         ];
 
         $this->notification->sendEmail($emailData);
+    }
+
+    public function getEmployeesData($userId)
+    {
+        $user = $this->user->getUserByuserId($userId);
+        $employeeInfo = $this->employeesInfo->findByUserId($userId)->first();
+
+        // Guard clause
+        if (!$employeeInfo) {
+            return null;
+        }
+
+        $employeeInfo['educations'] = $this->education->findAllByUserId($userId);
+        $employeeInfo['dependents'] = $this->dependent->findAllByUserId($userId);
+        $employeeInfo['employmentHistory'] = $this->employmentHistory->findAllByUserId($userId);
+        $employeeInfo['affiliationPro'] = $this->affiliation->findAllProByUserId($userId);
+        $employeeInfo['affiliationSocio'] = $this->affiliation->findAllSocioByUserId($userId);
+        $employeeInfo['licensure'] = $this->licensure->findByUserId($userId)->first();
+        $employeeInfo['pastPosition'] = $this->positionHistory->findAllPastByUserId($userId);
+        $employeeInfo['currentPosition'] = $this->positionHistory->findAllCurrentByUserId($userId);
+
+        return [
+            'user' => $user,
+            'employeeInfo' => $employeeInfo,
+        ];
     }
 }

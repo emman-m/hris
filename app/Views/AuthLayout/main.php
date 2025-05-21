@@ -46,6 +46,7 @@
     <script>
         const csrfTokenName = '<?= csrf_token() ?>';
         let csrfTokenValue = '<?= csrf_hash() ?>';
+        const baseUrl = '<?= base_url() ?>';
     </script>
     <?= $this->renderSection('footer-script') ?>
 

@@ -23,7 +23,7 @@ class EmployeesController extends BaseController
     protected $positionHistory;
     protected $employeeService;
 
-    
+
 
     public function __construct()
     {
@@ -277,7 +277,7 @@ class EmployeesController extends BaseController
             // Education
             foreach ($post['e_level'] as $key => $value) {
                 $this->education->upsert([
-                    'id' => $post['e_id'][$key],
+                    'id' => $post['e_id'][$key] ?? null,
                     'user_id' => $post['user_id'],
                     'level' => $value,
                     'school_address' => $post['e_school_address'][$key],
@@ -290,7 +290,7 @@ class EmployeesController extends BaseController
             // Dependents
             foreach ($post['d_name'] as $key => $value) {
                 $this->dependent->upsert([
-                    'id' => $post['d_id'][$key],
+                    'id' => $post['d_id'][$key] ?? null,
                     'user_id' => $post['user_id'],
                     'name' => $value,
                     'birth' => $post['d_birth'][$key] ?? null,
@@ -301,7 +301,7 @@ class EmployeesController extends BaseController
             // Employment History
             foreach ($post['eh_name'] as $key => $value) {
                 $this->employmentHistory->upsert([
-                    'id' => $post['eh_id'][$key],
+                    'id' => $post['eh_id'][$key] ?? null,
                     'user_id' => $post['user_id'],
                     'name' => $value,
                     'position' => $post['eh_position'][$key] ?? null,
@@ -314,7 +314,7 @@ class EmployeesController extends BaseController
             foreach ($post['a_p_type'] as $key => $value) {
                 if ($post['a_p_name'][$key] !== '' && $post['a_p_position'][$key] !== '') {
                     $this->affiliation->upsert([
-                        'id' => $post['a_p_id'][$key],
+                        'id' => $post['a_p_id'][$key] ?? null,
                         'user_id' => $post['user_id'],
                         'type' => $value,
                         'name' => $post['a_p_name'][$key],
@@ -327,7 +327,7 @@ class EmployeesController extends BaseController
             foreach ($post['a_s_type'] as $key => $value) {
                 if ($post['a_s_name'][$key] !== '' && $post['a_s_position'][$key] !== '') {
                     $this->affiliation->upsert([
-                        'id' => $post['a_s_id'][$key],
+                        'id' => $post['a_s_id'][$key] ?? null,
                         'user_id' => $post['user_id'],
                         'type' => $value,
                         'name' => $post['a_s_name'][$key],
@@ -338,7 +338,7 @@ class EmployeesController extends BaseController
 
             // Licensure
             $this->licensure->upsert([
-                'id' => $post['l_id'],
+                'id' => $post['l_id'] ?? null,
                 'user_id' => $post['user_id'],
                 'license' => $post['l_license'],
                 'year' => $post['l_year'],
@@ -349,7 +349,7 @@ class EmployeesController extends BaseController
             // Position History
             foreach ($post['pp_is_current'] as $key => $value) {
                 $this->positionHistory->upsert([
-                    'id' => $post['pp_id'][$key],
+                    'id' => $post['pp_id'][$key] ?? null,
                     'user_id' => $post['user_id'],
                     'is_current' => $value,
                     'position' => $post['pp_position'][$key],
@@ -361,7 +361,7 @@ class EmployeesController extends BaseController
             // Current position
             foreach ($post['cp_is_current'] as $key => $value) {
                 $this->positionHistory->upsert([
-                    'id' => $post['cp_id'][$key],
+                    'id' => $post['cp_id'][$key] ?? null,
                     'user_id' => $post['user_id'],
                     'is_current' => $value,
                     'position' => $post['cp_position'][$key],
@@ -461,5 +461,16 @@ class EmployeesController extends BaseController
                 'csrfToken' => csrf_hash(),
             ]);
         }
+    }
+
+    public function print_form(int $userId)
+    {
+        $data = $this->employeeService->getEmployeesData($userId);
+
+        // Set the content type to HTML
+        $this->response->setContentType('text/html');
+
+        // Render the print template
+        return view('Templates/Employee/Form/index', $data);
     }
 }
