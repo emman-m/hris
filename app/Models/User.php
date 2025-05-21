@@ -88,6 +88,7 @@ class User extends Model
             users_info.*,
             employees_info.department,
             employees_info.is_locked,
+            employees_info.employee_id,
         ')
             ->join('users_info', 'users.id = users_info.user_id')
             ->join('employees_info', 'users.id = employees_info.user_id', 'LEFT')
@@ -113,6 +114,7 @@ class User extends Model
                 ->orLike('users_info.middle_name', $filters['search'])
                 ->orLike("CONCAT(users_info.first_name, ' ', users_info.middle_name, ' ', users_info.last_name)", "%{$filters['search']}%")
                 ->orLike('users.email', $filters['search'])
+                ->orLike('employees_info.employee_id', $filters['search'])
                 ->groupEnd();
         }
 

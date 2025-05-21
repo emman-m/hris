@@ -68,7 +68,7 @@ Employees
                             <div class="col-md-4">
                                 <input type="text" name="search" class="form-control"
                                     value="<?= service('request')->getGet('search') ?>"
-                                    placeholder="Search by name or email">
+                                    placeholder="Search by employee id, name or email">
                             </div>
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary">Filter</button>
@@ -116,6 +116,7 @@ Employees
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Employee ID</th>
                                     <th>Email</th>
                                     <th>Department</th>
                                     <th class="w-1"></th>
@@ -128,6 +129,9 @@ Employees
                                             <span
                                                 class="badge bg-<?= $item['status'] === 'Active' ? 'green' : 'red' ?> badge-information"></span>
                                             <?= $item['name'] ?>
+                                        </td>
+                                        <td class="text-secondary">
+                                            <?= $item['employee_id'] ?>
                                         </td>
                                         <td class="text-secondary">
                                             <?= $item['email'] ?>
