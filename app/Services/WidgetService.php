@@ -235,9 +235,14 @@ class WidgetService extends Service
             $query = $this->attendance
                 ->select('attendances.employee_id, attendances.time_in, employees_info.department')
                 ->join('employees_info', 'employees_info.employee_id = attendances.employee_id', 'left')
-                ->where('attendances.transaction_date', $currentDate)
-                ->orderBy('attendances.time_in', 'ASC');
+                ->where('attendances.transaction_date', $currentDate);
 
+            // Add department filter if specified
+            if ($department && $department !== 'all') {
+                $query->where('employees_info.department', $department);
+            }
+
+            $query->orderBy('attendances.time_in', 'ASC');
             $attendances = $query->findAll();
 
             // Group by employee_id and get earliest time_in
@@ -306,15 +311,6 @@ class WidgetService extends Service
             $rates[$currentDate] = round($rate, 2);
 
             $currentDate = date('Y-m-d', strtotime('+1 day', strtotime($currentDate)));
-        }
-
-        // If specific department is selected, filter the data
-        if ($department && $department !== 'all') {
-            $filteredRates = [];
-            foreach ($rates as $date => $rate) {
-                $filteredRates[$date] = $departmentRates[$department]['rates'][$date] ?? 0;
-            }
-            $rates = $filteredRates;
         }
 
         return [
