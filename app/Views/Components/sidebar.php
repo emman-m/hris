@@ -226,6 +226,37 @@ use App\Enums\UserRole;
                         </span>
                     </a>
                 </li>
+
+                <!-- Reports -->
+                <?php if (session()->get('role') !== UserRole::EMPLOYEE->value): ?>
+                    <li class="nav-item dropdown <?= in_array(session()->get('menu'), ['reports-turnover-rate', 'reports-tardiness-rate']) ? 'active' : '' ?>">
+                        <a class="nav-link dropdown-toggle" href="#navbar-reports" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M3 3m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z" />
+                                    <path d="M12 8l4 4l-4 4" />
+                                    <path d="M8 12h8" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Reports
+                            </span>
+                        </a>
+                        <div class="dropdown-menu show">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    <a class="dropdown-item <?= session()->get('menu') == 'reports-turnover-rate' ? 'active' : '' ?>" href="<?= route_to('reports-turnover-rate') ?>">
+                                        Turnover Rate
+                                    </a>
+                                    <a class="dropdown-item <?= session()->get('menu') == 'reports-tardiness-rate' ? 'active' : '' ?>" href="<?= route_to('reports-tardiness-rate') ?>">
+                                        Tardiness Rate
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

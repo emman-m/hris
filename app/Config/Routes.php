@@ -217,4 +217,10 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
         $routes->get('preview/(:num)', 'MemoController::preview/$1', ['as' => 'memos-preview']);
         $routes->get('search-users', 'MemoController::searchUsers', ['as' => 'memos-search-users']);
     });
+
+    // Reports routes
+    $routes->group('reports', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('turnover-rate', 'ReportController::turnoverRate', ['as' => 'reports-turnover-rate']);
+        $routes->get('tardiness-rate', 'ReportController::tardinessRate', ['as' => 'reports-tardiness-rate']);
+    });
 });
