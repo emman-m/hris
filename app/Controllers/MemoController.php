@@ -295,7 +295,7 @@ class MemoController extends BaseController
             // Delete memo (this will cascade delete recipients due to foreign key)
             if ($this->memoModel->delete($id)) {
                 $db->transComplete();
-                
+
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => 'Memo deleted successfully',
@@ -408,7 +408,8 @@ class MemoController extends BaseController
         $perPage = 10;
 
         $query = $this->userModel->where('users.role', UserRole::EMPLOYEE->value)
-            ->join('users_info', 'users_info.user_id = users.id');
+            ->join('users_info', 'users_info.user_id = users.id')
+            ->join('employees_info', 'employees_info.user_id = users.id', 'left');
 
         if (!empty($search)) {
             $query->groupStart()
@@ -416,11 +417,12 @@ class MemoController extends BaseController
                 ->orLike('users_info.middle_name', $search)
                 ->orLike('users_info.last_name', $search)
                 ->orLike('users.email', $search)
+                ->orLike('employees_info.employee_id', $search)
                 ->groupEnd();
         }
 
         $total = $query->countAllResults(false);
-        $users = $query->select('users.id, CONCAT(users_info.first_name, " ", users_info.middle_name, " ", users_info.last_name) as name')
+        $users = $query->select('users.id, CONCAT("[", employees_info.employee_id, "] " ,users_info.first_name, " ", users_info.middle_name, " ", users_info.last_name) as name')
             ->limit($perPage, ($page - 1) * $perPage)
             ->findAll();
 
