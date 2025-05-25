@@ -218,6 +218,14 @@ $routes->group('hris', ['filter' => 'auth'], function ($routes) {
         $routes->get('search-users', 'MemoController::searchUsers', ['as' => 'memos-search-users']);
     });
 
+    // Department Heads routes
+    $routes->group('department-heads', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('/', 'DepartmentHeadController::index', ['as' => 'department-heads']);
+        $routes->post('assign', 'DepartmentHeadController::assign', ['as' => 'department-heads-assign']);
+        $routes->post('remove', 'DepartmentHeadController::remove', ['as' => 'department-heads-remove']);
+        $routes->get('search-employees', 'DepartmentHeadController::searchEmployees', ['as' => 'department-heads-search']);
+    });
+
     // Reports routes
     $routes->group('reports', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->get('turnover-rate', 'ReportController::turnoverRate', ['as' => 'reports-turnover-rate']);

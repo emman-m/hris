@@ -1,3 +1,7 @@
+<?php
+
+use App\Enums\EducationLevel;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -94,7 +98,7 @@
 <body>
     <div class="page">
         <div class="title">PERSONNEL INFORMATION</div>
-<div class="subtitle">(This form is printed via HRMS portal)</div>
+        <div class="subtitle">(This form is printed via HRMS portal)</div>
 
         <div class="field-group">
             <div class="label">NAME:</div>
@@ -208,14 +212,17 @@
                 <div class="label">School/Address:</div>
                 <div class="field"><?= $education['school_address'] ?></div>
             </div>
-            <div class="field-group">
-                <div class="label">Degree:</div>
-                <div class="field"><?= $education['degree'] ?></div>
-            </div>
-            <div class="field-group">
-                <div class="label">Major/Minor:</div>
-                <div class="field"><?= $education['major_minor'] ?></div>
-            </div>
+            <!-- Hide fields if it is elementary or hight school -->
+            <?php if (($education['level'] !== EducationLevel::ELEMENTARY->value) && ($education['level'] !== EducationLevel::HIGHSCHOOL->value)): ?>
+                <div class="field-group">
+                    <div class="label">Degree:</div>
+                    <div class="field"><?= $education['degree'] ?></div>
+                </div>
+                <div class="field-group">
+                    <div class="label">Major/Minor:</div>
+                    <div class="field"><?= $education['major_minor'] ?></div>
+                </div>
+            <?php endif; ?>
             <div class="field-group">
                 <div class="label">Year Graduated:</div>
                 <div class="field"><?= $education['year_graduated'] ?></div>
