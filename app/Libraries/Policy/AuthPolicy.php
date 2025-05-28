@@ -41,4 +41,18 @@ class AuthPolicy
 
         return session()->get('role') === UserRole::EMPLOYEE->value;
     }
+
+    public function isDepartmentHead()
+    {
+        return session()->get('isDepartmentHead');
+    }
+
+    public function isAnyAdmin($role = null)
+    {
+        if ($role) {
+            return in_array($role, [UserRole::ADMIN->value, UserRole::HR_ADMIN->value, UserRole::HR_STAFF->value]);
+        }
+
+        return in_array(session()->get('role'), [UserRole::ADMIN->value, UserRole::HR_ADMIN->value, UserRole::HR_STAFF->value]);
+    }
 }

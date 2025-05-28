@@ -23,12 +23,14 @@ class LeaveController extends BaseController
     protected $leave;
     protected $employeeInfo;
     protected $leaveService;
+    protected $user;
 
     public function __construct()
     {
         $this->leave = model('Leave');
         $this->employeeInfo = model('EmployeeInfo');
         $this->leaveService = new LeaveService();
+        $this->user = model('User');
     }
 
     public function index()
@@ -45,8 +47,25 @@ class LeaveController extends BaseController
         // Get the query builder from the model
         $queryBuilder = $this->leave->search($filters);
 
-        if ($this->auth->isEmployee()) {
-            $queryBuilder->employee();
+        if ($this->auth->isAnyAdmin()) {
+
+        } else {
+            if ($this->request->getGet('tab') !== 'department') {
+                $queryBuilder->employee();
+            } else if ($this->request->getGet('tab') === 'department' && $this->auth->isDepartmentHead()) {
+                // If department tab is selected, only show department leaves
+                // Get the department head's department
+                $departmentHead = $this->user->getUserByuserId(session()->get('user_id'));
+
+                if ($departmentHead && $departmentHead['department']) {
+                    // Get all employees in the department
+                    $employees = $this->employeeInfo->where('department', $departmentHead['department'])->findAll();
+                    $employeeIds = array_column($employees, 'user_id');
+
+                    // Filter leaves for employees in the department
+                    $queryBuilder->whereIn('leaves.user_id', $employeeIds);
+                }
+            }
         }
 
         // Apply pagination
@@ -64,6 +83,7 @@ class LeaveController extends BaseController
             'data' => $data,
             'pager' => $pager,
             'paginationInfo' => $paginationInfo,
+            'isDeptTab' => $this->request->getGet('tab') === 'department',
         ]);
     }
 
@@ -731,6 +751,7 @@ class LeaveController extends BaseController
         // Return the view with the leave data
         return view('Pages/Leaves/show', [
             'leave' => $leave,
+            'isAnyAdmin' => $this->auth->isAnyAdmin(),
         ]);
     }
 
@@ -742,12 +763,28 @@ class LeaveController extends BaseController
             throw new PageNotFoundException('Page Not Found');
         }
 
-        $data = [
-            'id' => $id,
-            'status' => ApproveStatus::APPROVED->value,
-            'approve_user' => session()->get('user_id'),
-            'approve_date' => date('Y-m-d H:i:s'),
-        ];
+        // Check if user is department head
+        if ($this->auth->isDepartmentHead()) {
+            $data = [
+                'id' => $id,
+                'department_head_approval_status' => ApproveStatus::APPROVED->value,
+                'department_head_approval_user' => session()->get('user_id'),
+                'department_head_approval_date' => date('Y-m-d H:i:s'),
+            ];
+        } else {
+            // Only admin can approve if department head has approved
+            if ($leave['department_head_approval_status'] !== ApproveStatus::APPROVED->value) {
+                withToast('error', 'Error! Department head must approve first.');
+                return redirect()->back();
+            }
+
+            $data = [
+                'id' => $id,
+                'admin_approval_status' => ApproveStatus::APPROVED->value,
+                'admin_approval_user' => session()->get('user_id'),
+                'admin_approval_date' => date('Y-m-d H:i:s'),
+            ];
+        }
 
         return $this->update_status($data);
     }
@@ -760,12 +797,28 @@ class LeaveController extends BaseController
             throw new PageNotFoundException('Page Not Found');
         }
 
-        $data = [
-            'id' => $id,
-            'status' => ApproveStatus::DENIED->value,
-            'approve_user' => session()->get('user_id'),
-            'approve_date' => date('Y-m-d H:i:s'),
-        ];
+        // Check if user is department head
+        if ($this->auth->isDepartmentHead()) {
+            $data = [
+                'id' => $id,
+                'department_head_approval_status' => ApproveStatus::DENIED->value,
+                'department_head_approval_user' => session()->get('user_id'),
+                'department_head_approval_date' => date('Y-m-d H:i:s'),
+            ];
+        } else {
+            // Only admin can reject if department head has approved
+            if ($leave['department_head_approval_status'] !== ApproveStatus::APPROVED->value) {
+                withToast('error', 'Error! Department head must approve first.');
+                return redirect()->back();
+            }
+
+            $data = [
+                'id' => $id,
+                'admin_approval_status' => ApproveStatus::DENIED->value,
+                'admin_approval_user' => session()->get('user_id'),
+                'admin_approval_date' => date('Y-m-d H:i:s'),
+            ];
+        }
 
         return $this->update_status($data);
     }

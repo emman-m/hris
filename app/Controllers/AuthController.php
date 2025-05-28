@@ -56,22 +56,23 @@ class AuthController extends BaseController
                     if ($userinfo && password_verify($password, $user['password'])) {
                         // If user is found and password is correct
                         $session = session();
-                        $session->set(
-                            [
-                                'id' => $user['id'],
-                                'user_id' => $user['user_id'],
-                                'email' => $user['email'],
-                                'name' => $userinfo['first_name'] . ' ' . $userinfo['middle_name'] . ' ' . $userinfo['last_name'],
-                                'role' => $user['role'],
-                                'isLoggedIn' => true,
-                                'initials' => $userinfo['first_name'][0] . $userinfo['last_name'][0]
-                            ]
-                        );
+                        $session->set([
+                            'id' => $user['id'],
+                            'user_id' => $user['user_id'],
+                            'email' => $user['email'],
+                            'name' => $userinfo['first_name'] . ' ' . $userinfo['middle_name'] . ' ' . $userinfo['last_name'],
+                            'role' => $user['role'],
+                            'isLoggedIn' => true,
+                            'initials' => $userinfo['first_name'][0] . $userinfo['last_name'][0]
+                        ]);
 
                         if ($user['role'] === UserRole::EMPLOYEE->value) {
                             $employeeInfo = $this->employeeInfo->where('user_id', $user['user_id'])->first();
 
-                            $session->set('employee_id', $employeeInfo['employee_id']);
+                            $session->set([
+                                'employee_id' => $employeeInfo['employee_id'],
+                                'isDepartmentHead' => $employeeInfo['is_department_head'],
+                            ]);
                         }
 
                         // Redirect to dashboard

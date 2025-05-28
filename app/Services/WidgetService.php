@@ -86,7 +86,7 @@ class WidgetService extends Service
         $date = $dateData === null ? date('Y-m') : $dateData;
 
         $pendingLeave = $this->leave
-            ->where('status', ApproveStatus::PENDING->value)
+            ->where('admin_approval_status', ApproveStatus::PENDING->value)
             ->like('created_at', $date)
             ->countAllResults();
 

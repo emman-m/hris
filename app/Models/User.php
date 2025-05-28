@@ -70,8 +70,24 @@ class User extends Model
 
     public function getUserByuserId($id)
     {
-        return $this->select('users.*, users_info.*, employees_info.employee_id')
+        return $this->select('users.*, users_info.*, employees_info.employee_id, employees_info.department')
             ->where('users.id', $id)
+            ->join('users_info', 'users.id = users_info.user_id', 'LEFT')
+            ->join('employees_info', 'users.id = employees_info.user_id', 'LEFT')
+            ->first();
+    }
+
+    public function getDepartmentHead($department)
+    {
+        return $this->select('
+                CONCAT(users_info.first_name, " ", users_info.last_name) as name,
+                users.*,
+                users_info.*,
+                employees_info.employee_id,
+                employees_info.department
+            ')
+            ->where('employees_info.is_department_head', '1')
+            ->where('employees_info.department', $department)
             ->join('users_info', 'users.id = users_info.user_id', 'LEFT')
             ->join('employees_info', 'users.id = employees_info.user_id', 'LEFT')
             ->first();

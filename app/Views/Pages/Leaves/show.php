@@ -43,8 +43,8 @@ $pageTitle = 'Leave Details';
             <div class="col-12">
                 <div class="col-auto ms-auto">
                     <!-- Add Print Button -->
-                    <button id="printButton" class="btn btn-outline-primary" data-url="<?= route_to('leaves-print-show') ?>"
-                        title="Print" data-id="<?= $leave['id'] ?>">
+                    <button id="printButton" class="btn btn-outline-primary"
+                        data-url="<?= route_to('leaves-print-show') ?>" title="Print" data-id="<?= $leave['id'] ?>">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-printer">
@@ -66,16 +66,18 @@ $pageTitle = 'Leave Details';
             </div>
         </div>
         <!-- Approval proof -->
-        <div class="row">
-            <div class="col-12">
-                <h2>Approval Proof</h2>
-                <div class="card">
-                    <div class="card-body text-center">
-                        <img src="<?= base_url('uploads') . '/' . $leave['approval_proof'] ?>" alt="Proof">
+        <?php if ($leave['approval_proof']): ?>
+            <div class="row">
+                <div class="col-12">
+                    <h2>Approval Proof</h2>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <img src="<?= base_url('uploads') . '/' . $leave['approval_proof'] ?>" alt="Proof">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <?php endif; ?>
     </div>
 </div>
 
