@@ -63,7 +63,7 @@ class CreateOBValidator extends Validator
             ],
             'approval_proof' => [
                 'label' => 'Approval Proof',
-                'rules' => 'uploaded[approval_proof]|max_size[approval_proof,15360]|ext_in[approval_proof,pdf,docx,jpg,jpeg,png]',
+                'rules' => 'permit_empty|uploaded[approval_proof]|max_size[approval_proof,15360]|ext_in[approval_proof,pdf,docx,jpg,jpeg,png]',
                 'errors' => [
                     'required' => '{field} is required.',
                     'uploaded' => 'Please upload a valid file.',

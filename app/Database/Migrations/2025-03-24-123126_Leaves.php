@@ -75,16 +75,31 @@ class Leaves extends Migration
                 'type' => 'TIME',
                 'null' => true,
             ],
-            'approve_user' => [
+            'admin_approval_user' => [
                 'type' => 'INT',
                 'constraint' => 11,
             ],
-            'approve_date' => [
+            'admin_approval_date' => [
                 'type' => 'DATETIME',
             ],
-            'status' => [
+            'admin_approval_status' => [
                 'type' => 'ENUM',
                 'constraint' => ApproveStatus::list(),
+                'default' => ApproveStatus::PENDING->value,
+            ],
+            'department_head_approval_status' => [
+                'type' => 'ENUM',
+                'constraint' => ApproveStatus::list(),
+                'default' => ApproveStatus::PENDING->value,
+            ],
+            'department_head_approval_user' => [
+                'type' => 'INT',
+                'constraint' => 11,
+                'null' => true,
+            ],
+            'department_head_approval_date' => [
+                'type' => 'DATETIME',
+                'null' => true,
             ],
             'approval_proof' => [
                 'type' => 'VARCHAR',

@@ -193,18 +193,47 @@ use App\Enums\VLeaveType;
     </div>
 
     <div class="form-section">
-        <label>Approved by:</label>
+        <label>Department Head Approval:</label>
         <div class="row">
             <div class="col text-center">
-                <?php if ($leave['approve_by']): ?>
+                <?php if ($leave['dept_head_approve_by']): ?>
                     <p class="name">
-                        <?= $leave['approve_by'] ?>
-                        <?php if ($leave['status'] === ApproveStatus::DENIED->value): ?>
-                            <?= approve_status($leave['status']) ?>
+                        <?= $leave['dept_head_approve_by'] ?>
+                        <?php if ($leave['department_head_approval_status'] === ApproveStatus::DENIED->value): ?>
+                            <?= approve_status($leave['department_head_approval_status']) ?>
                         <?php endif; ?>
                     </p>
                 <?php else: ?>
-                    <?php if (session()->get('role') !== UserRole::EMPLOYEE->value): ?>
+                    <?php if (session()->get('isDepartmentHead')): ?>
+                        <p class="name"><?= session()->get('name') ?>
+                            <a href="<?= route_to('leaves-approve', $leave['id']) ?>" class="btn btn-primary btn-sm">
+                                Approve Leave
+                            </a>
+                            <a href="<?= route_to('leaves-reject', $leave['id']) ?>" class="btn btn-danger btn-sm">
+                                Reject Leave
+                            </a>
+                        </p>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <div class="signature-line"></div>
+                <p class="mb-0">Department Head</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <label>Admin Approval:</label>
+        <div class="row">
+            <div class="col text-center">
+                <?php if ($leave['admin_approve_by']): ?>
+                    <p class="name">
+                        <?= $leave['admin_approve_by'] ?>
+                        <?php if ($leave['admin_approval_status'] === ApproveStatus::DENIED->value): ?>
+                            <?= approve_status($leave['admin_approval_status']) ?>
+                        <?php endif; ?>
+                    </p>
+                <?php else: ?>
+                    <?php if (session()->get('role') === UserRole::ADMIN->value && $leave['department_head_approval_status'] === ApproveStatus::APPROVED->value): ?>
                         <p class="name"><?= session()->get('name') ?>
                             <a href="<?= route_to('leaves-approve', $leave['id']) ?>" class="btn btn-primary btn-sm">
                                 Approve Leave
@@ -223,6 +252,25 @@ use App\Enums\VLeaveType;
 
     <div class="form-section">
         <label>Action Taken:</label>
-        <?= approve_status($leave['status']) ?>
+        <?php if ($leave['department_head_approval_status'] === ApproveStatus::PENDING->value): ?>
+            <?= approve_status($leave['department_head_approval_status']) ?>
+        <?php elseif ($leave['department_head_approval_status'] === ApproveStatus::DENIED->value): ?>
+            <?= approve_status($leave['department_head_approval_status']) ?>
+        <?php elseif (
+            ($leave['department_head_approval_status'] === ApproveStatus::APPROVED->value) &&
+            ($leave['admin_approval_status'] === ApproveStatus::PENDING->value)
+        ): ?>
+            <?= approve_status($leave['admin_approval_status']) ?>
+        <?php elseif (
+            ($leave['department_head_approval_status'] === ApproveStatus::APPROVED->value) &&
+            ($leave['admin_approval_status'] === ApproveStatus::DENIED->value)
+        ): ?>
+            <?= approve_status($leave['admin_approval_status']) ?>
+        <?php elseif (
+            ($leave['department_head_approval_status'] === ApproveStatus::APPROVED->value) &&
+            ($leave['admin_approval_status'] === ApproveStatus::APPROVED->value)
+        ): ?>
+            <?= approve_status($leave['admin_approval_status']) ?>
+        <?php endif; ?>
     </div>
 </div>

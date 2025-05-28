@@ -90,7 +90,7 @@ $isCreate ??= false
 
 <!-- Approval proof -->
 <div class="mb-3">
-    <div class="form-label required">Approval Proof</div>
+    <div class="form-label">Approval Proof</div>
     <input type="file" name="approval_proof" class="form-control" />
     <!-- Error Message -->
     <?php if (isset($errors['approval_proof'])): ?>

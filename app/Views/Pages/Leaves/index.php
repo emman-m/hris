@@ -3,7 +3,6 @@
 use App\Enums\ApproveStatus;
 use App\Enums\LeaveType;
 use App\Enums\UserRole;
-use App\Enums\UserStatus;
 use App\Enums\VLeaveType;
 session()->set(['menu' => 'leaves']);
 
@@ -58,6 +57,26 @@ $pageTitle = 'Leaves';
 </div>
 <div class="page-body">
     <div class="container-xl">
+        <?php if (session()->get('isDepartmentHead')): ?>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="btn-group w-100">
+                                <a href="<?= current_url() ?>"
+                                    class="btn <?= empty(service('request')->getGet('tab')) ? 'btn-primary' : 'btn-outline-primary' ?>">
+                                    All Leaves
+                                </a>
+                                <a href="<?= current_url() ?>?tab=department"
+                                    class="btn <?= service('request')->getGet('tab') === 'department' ? 'btn-primary' : 'btn-outline-primary' ?>">
+                                    Department Leaves
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
         <div class="row row-deck row-cards">
             <div class="col-12">
                 <div class="card">
@@ -158,7 +177,7 @@ $pageTitle = 'Leaves';
                         <table class="table table-vcenter card-table">
                             <thead>
                                 <tr>
-                                    <?php if (!$isEmployee): ?>
+                                    <?php if (!$isEmployee || (session()->get('isDepartmentHead') && $isDeptTab)): ?>
                                         <th>Employee</th>
                                     <?php endif; ?>
                                     <th>Leave Type</th>
@@ -170,7 +189,7 @@ $pageTitle = 'Leaves';
                             <tbody>
                                 <?php foreach ($data as $item): ?>
                                     <tr>
-                                        <?php if (!$isEmployee): ?>
+                                        <?php if (!$isEmployee || (session()->get('isDepartmentHead') && $isDeptTab)): ?>
                                             <td>
                                                 <?= $item['name'] ?>
                                             </td>
@@ -179,7 +198,26 @@ $pageTitle = 'Leaves';
                                             <?= $item['type'] ?>
                                         </td>
                                         <td class="text-secondary">
-                                            <?= approve_status($item['status']) ?>
+                                            <?php if ($item['department_head_approval_status'] === ApproveStatus::PENDING->value): ?>
+                                                <?= approve_status($item['department_head_approval_status']) ?>
+                                            <?php elseif ($item['department_head_approval_status'] === ApproveStatus::DENIED->value): ?>
+                                                <?= approve_status($item['department_head_approval_status']) ?>
+                                            <?php elseif (
+                                                ($item['department_head_approval_status'] === ApproveStatus::APPROVED->value) &&
+                                                ($item['admin_approval_status'] === ApproveStatus::PENDING->value)
+                                            ): ?>
+                                                <?= approve_status($item['admin_approval_status']) ?>
+                                            <?php elseif (
+                                                ($item['department_head_approval_status'] === ApproveStatus::APPROVED->value) &&
+                                                ($item['admin_approval_status'] === ApproveStatus::DENIED->value)
+                                            ): ?>
+                                                <?= approve_status($item['admin_approval_status']) ?>
+                                            <?php elseif (
+                                                ($item['department_head_approval_status'] === ApproveStatus::APPROVED->value) &&
+                                                ($item['admin_approval_status'] === ApproveStatus::APPROVED->value)
+                                            ): ?>
+                                                <?= approve_status($item['admin_approval_status']) ?>
+                                            <?php endif; ?>
                                         </td>
                                         <td class="text-secondary">
                                             <?php if ($item['type'] === LeaveType::VACATION_LEAVE->value): ?>
@@ -192,9 +230,9 @@ $pageTitle = 'Leaves';
                                         <td>
                                             <a href="<?= route_to('leaves-show', $item['id']) ?>">Details</a>
                                             <!-- if Approval status is pending -->
-                                            <?php if ($item['status'] === ApproveStatus::PENDING->value): ?>
+                                            <?php if ($item['admin_approval_status'] === ApproveStatus::PENDING->value): ?>
 
-                                                <?php if ($isEmployee || $item['created_user_id'] === session()->get('user_id')): ?>
+                                                <?php if ($item['created_user_id'] === session()->get('user_id')): ?>
                                                     |
                                                     <?php if ($item['type'] === LeaveType::VACATION_LEAVE->value): ?>
                                                         <a href="<?= route_to('leaves-vacation-leave-edit', $item['id']) ?>">Edit</a>
@@ -204,8 +242,8 @@ $pageTitle = 'Leaves';
                                                         <a href="<?= route_to('leaves-personal-business-edit', $item['id']) ?>">Edit</a>
                                                     <?php endif; ?>
                                                 <?php endif; ?>
-                                                
-                                                <?php if ($isEmployee || $item['created_user_id'] === session()->get('user_id')): ?>
+
+                                                <?php if ($item['created_user_id'] === session()->get('user_id')): ?>
                                                     |
                                                     <a href="javascript:void(0)" class="data-delete" data-id="<?= $item['id'] ?>"
                                                         data-url="<?= route_to('leaves-delete') ?>">Delete</a>

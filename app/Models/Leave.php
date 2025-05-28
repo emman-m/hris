@@ -14,7 +14,8 @@ class Leave extends Model
     protected $protectFields = true;
     protected $allowedFields = [
         'user_id',
-        'status',
+        'admin_approval_status',
+        'department_head_approval_status',
         'type',
         'vl_type',
         'reason',
@@ -26,8 +27,10 @@ class Leave extends Model
         'venue',
         'time_in',
         'time_out',
-        'approve_user',
-        'approve_date',
+        'admin_approval_user',
+        'admin_approval_date',
+        'department_head_approval_user',
+        'department_head_approval_date',
         'approval_proof',
         'created_user_id',
     ];
@@ -67,11 +70,13 @@ class Leave extends Model
         $builder = $this->table($this->table)
             ->select('
                 CONCAT(users_info.first_name, " ", users_info.last_name) as name,
-                CONCAT(admin_user.first_name, " ", admin_user.last_name) as approve_by,
+                CONCAT(admin_user.first_name, " ", admin_user.last_name) as admin_approve_by,
+                CONCAT(dept_head_user.first_name, " ", dept_head_user.last_name) as dept_head_approve_by,
                 leaves.*
                 ')
             ->join('users_info', 'leaves.user_id = users_info.user_id', 'LEFT')
-            ->join('users_info as admin_user', 'leaves.approve_user = admin_user.user_id', 'LEFT')
+            ->join('users_info as admin_user', 'leaves.admin_approval_user = admin_user.user_id', 'LEFT')
+            ->join('users_info as dept_head_user', 'leaves.department_head_approval_user = dept_head_user.user_id', 'LEFT')
             ->join('employees_info', 'leaves.user_id = employees_info.user_id', 'LEFT')
             ->join('users', 'leaves.user_id = users.id', 'LEFT');
 
@@ -84,7 +89,8 @@ class Leave extends Model
         }
 
         if (!empty($filters['status'])) {
-            $builder->where('leaves.status', $filters['status']);
+            $builder->where('leaves.department_head_approval_status', $filters['status'])
+                   ->orWhere('leaves.admin_approval_status', $filters['status']);
         }
 
         if (!empty($filters['start_date'])) {
@@ -108,7 +114,24 @@ class Leave extends Model
     public function employee()
     {
         $this->where('leaves.user_id', session()->get('user_id'));
+        return $this;
+    }
 
+    public function departmentHead()
+    {
+        // Get the department head's department from the User model
+        $userModel = model('User');
+        $departmentHead = $userModel->getUserByuserId(session()->get('user_id'));
+        
+        if ($departmentHead && $departmentHead['department']) {
+            // Get all employees in the department
+            $employees = model('EmployeeInfo')->where('department', $departmentHead['department'])->findAll();
+            $employeeIds = array_column($employees, 'user_id');
+            
+            // Filter leaves for employees in the department
+            $this->whereIn('leaves.user_id', $employeeIds);
+        }
+        
         return $this;
     }
 
@@ -117,13 +140,15 @@ class Leave extends Model
         $builder = $this->table($this->table)
             ->select('
                 CONCAT(users_info.first_name, " ", users_info.last_name) as name,
-                CONCAT(admin_user.first_name, " ", admin_user.last_name) as approve_by,
+                CONCAT(admin_user.first_name, " ", admin_user.last_name) as admin_approve_by,
+                CONCAT(dept_head_user.first_name, " ", dept_head_user.last_name) as dept_head_approve_by,
                 leaves.*,
                 users.email,
                 users.id as user_id
                 ')
             ->join('users_info', 'leaves.user_id = users_info.user_id', 'LEFT')
-            ->join('users_info as admin_user', 'leaves.approve_user = admin_user.user_id', 'LEFT')
+            ->join('users_info as admin_user', 'leaves.admin_approval_user = admin_user.user_id', 'LEFT')
+            ->join('users_info as dept_head_user', 'leaves.department_head_approval_user = dept_head_user.user_id', 'LEFT')
             ->join('employees_info', 'leaves.user_id = employees_info.user_id', 'LEFT')
             ->join('users', 'leaves.user_id = users.id', 'LEFT')
             ->where('leaves.deleted_at', null)
